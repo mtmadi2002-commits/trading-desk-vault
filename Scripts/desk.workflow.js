@@ -24,12 +24,15 @@ const VURL = A.vault_url || ''
 const RULES = A.rules || (A.rules_path ? ('READ THE LIVING RULES FROM THIS FILE FIRST (cat it): ' + A.rules_path) : '(rules not supplied — use desk defaults: 0.5% risk, max 2 concurrent, 1.0% open-risk cap, -1.5% daily stop, stops 0.7-1.5x ATR)')
 const PRIOR = A.prior_notes || 'none supplied — discover the prior session from finviz (SPY/QQQ/IWM quote pages and the screeners).'
 const AVLEFT = (A.av_calls_remaining !== undefined) ? A.av_calls_remaining : 20
+const LESSONS = A.lessons ? A.lessons : (A.lessons_path ? ('READ THE DESK\'S OWN LESSONS FIRST (cat this file; it is the Coach\'s distilled experience from previous sessions, newest first — apply it): ' + A.lessons_path) : 'none yet — this is an early session; the Coach writes lessons after each close.')
 
 const CTX = `
 === DESK CONTEXT (shared by every seat) ===
 Mode: ${MODE}. Session being traded: ${DAY} ${DATE} (US regular session 09:30-16:00 ET). Time now: ${NOW} ET.
 PRIOR NOTES (from the orchestrating session; verified unless marked otherwise):
 ${PRIOR}
+WHAT THE DESK HAS LEARNED (Coach reviews and lessons from previous sessions — binding context for every seat; cite a lesson when it changes a decision):
+${LESSONS}
 
 === DATA SOURCES & HARD LIMITS ===
 1) Alpha Vantage MCP (load with ToolSearch 'select:mcp__Alpha_Vantage_MCP_Server__<NAME>'): FREE key = 25 requests/DAY shared across the whole desk, 1 req/sec. About ${AVLEFT} remain today. You have a per-seat CAP stated in your brief. NEVER exceed it. Space calls >=2s apart. Endpoints marked 'premium' (e.g. REALTIME_BULK_QUOTES) return FAKE sample data on this key — if a response says 'premium endpoint' or shows 2024 timestamps or MSFT/AAPL/IBM placeholder rows, DISCARD it. Working: GLOBAL_QUOTE, TIME_SERIES_INTRADAY (interval 5min, outputsize compact, extended_hours false, datatype json), TIME_SERIES_DAILY, EARNINGS_CALENDAR, NEWS_SENTIMENT, CONGRESS_TRADES, INSIDER_TRANSACTIONS. On a rate_limit error STOP calling Alpha Vantage and fall back to web.
