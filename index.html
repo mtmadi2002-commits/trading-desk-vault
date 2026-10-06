@@ -28,6 +28,11 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
 .light.run{background:var(--run);animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in oklab,var(--run) 45%,transparent)}50%{box-shadow:0 0 0 7px transparent}}
 @media (prefers-reduced-motion:reduce){.light.run{animation:none;box-shadow:0 0 0 3px color-mix(in oklab,var(--run) 35%,transparent)} .seat.running::before{animation:none}}
+.scene{position:relative;margin-top:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0b0e13}
+.scene canvas{width:100%!important;height:auto!important}
+.scene-hint{position:absolute;left:12px;bottom:10px;right:12px;font:500 .7rem var(--mono);color:#aab4c8;background:rgba(11,14,19,.72);padding:6px 10px;border-radius:6px;pointer-events:none}
+.scene-panel{position:absolute;top:12px;right:12px;width:min(360px,calc(100% - 24px));background:rgba(21,26,33,.96);border:1px solid #334052;border-radius:8px;padding:12px 14px;color:#e8ebf0;font-size:.86rem}
+.scene-panel .p-name{font-weight:800;font-size:1rem;margin-bottom:4px} .scene-panel .p-st{font:600 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8d97a7;margin-bottom:8px} .scene-panel .p-st.running{color:#4aa3ff} .scene-panel .p-st.done{color:#3ec38a} .scene-panel .p-st.refused{color:#ef5f5f} .scene-panel .p-meta{margin-top:8px;font:500 .7rem var(--mono);color:#8d97a7}
 /* stat tiles */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
 .tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
@@ -90,6 +95,11 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
   <div><span class="k">Mode</span><span class="v" id="mode">paper-local</span></div>
 </header>
 
+<section class="scene" id="scene3d">
+  <div class="scene-hint" id="scene3d-note">Drag to orbit · scroll to zoom · tap a robot for details. Blue eyes = working, green = done, red = refused by the guards. Gold packets = information moving right now.</div>
+  <div class="scene-panel" id="scene3d-panel" hidden></div>
+</section>
+
 <section class="tiles" id="tiles">
   <div class="tile"><div class="k">Equity (paper)</div><div class="v num" id="t-eq">—</div><div class="s" id="t-eq-s">ledger</div></div>
   <div class="tile"><div class="k">Day P&amp;L</div><div class="v num" id="t-pnl">—</div><div class="s">% of equity · indicative until the Coach replays</div></div>
@@ -131,7 +141,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
 
 <div class="foot">Paper account. Quotes 15–20 min delayed (finviz) until a real-time feed is connected; the Coach's 16:24 replay against 5-minute bars is the number that counts. Rules change only through the Coach's change policy. Mode is set in <span class="mono">Desk/Live.md</span>.</div>
 </div>
-<script>window.__VAULT_FILES__=["Dashboard.md", "Desk/Live.md", "Desk/Rules Changelog.md", "Desk/Rules.md", "Desk/Seats.md", "Journal/2026-10-06 Journal.md", "Plans/2026-10-06 Plan.md", "Plans/2026-10-06.desk.json", "Plans/2026-10-06.premarket.json", "README.md", "Scripts/RUNBOOK.md", "Scripts/broker/exec.py", "Scripts/desk.workflow.js", "Scripts/inject_files.py", "Scripts/render_plan.py", "Scripts/render_premarket.py", "Templates/Journal.md", "Templates/Lesson.md", "Templates/Review.md"];</script>
+<script>window.__VAULT_FILES__=["Dashboard.md", "Desk/Live.md", "Desk/Rules Changelog.md", "Desk/Rules.md", "Desk/Seats.md", "Journal/2026-10-06 Journal.md", "Plans/2026-10-06 Plan.md", "Plans/2026-10-06.desk.json", "Plans/2026-10-06.premarket.json", "README.md", "Scripts/RUNBOOK.md", "Scripts/broker/exec.py", "Scripts/desk.workflow.js", "Scripts/inject_files.py", "Scripts/render_plan.py", "Scripts/render_premarket.py", "Templates/Journal.md", "Templates/Lesson.md", "Templates/Review.md", "floor3d.js"];</script>
 <script>
 (function(){
   var SEATS=[
@@ -167,7 +177,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
   var track=$('track'), T0=8*60, T1=21*60+30; function pct(min){return Math.max(0,Math.min(100,(min-T0)/(T1-T0)*100))}
   var ticks=SCHED.map(function(sch){var t=el('div','tick'); var hm=sch[0].split(':'); t.dataset.min=(+hm[0])*60+(+hm[1]); t.style.left=pct(+t.dataset.min)+'%'; t.innerHTML='<span class="mode">'+sch[1]+'</span><div class="dot"></div><span class="lbl">'+sch[0]+'</span>'; track.appendChild(t); return t});
   var nowEl=el('div','now'); nowEl.innerHTML='<span>now</span>'; track.appendChild(nowEl);
-  var runsToday={}, nowRunning=null;
+  var runsToday={}, nowRunning=null; window.__DESK__={seats:{}, running:[], nowMode:null};
   function layoutTrack(nowMin){ nowEl.style.left=pct(nowMin)+'%'; var next=null;
     ticks.forEach(function(t){var m=+t.dataset.min; var mode=t.querySelector('.mode').textContent; t.className='tick';
       if(nowRunning&&nowRunning.mode===mode&&Math.abs(nowMin-m)<70){t.classList.add('running')}
@@ -193,7 +203,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
       var fl=d.floor!=null?d.floor:(d.peak_equity!=null?d.peak_equity*0.5:100); $('t-floor').textContent='$'+Number(fl).toFixed(2); $('t-floor-s').textContent='50% of peak $'+Number(d.peak_equity!=null?d.peak_equity:200).toFixed(2)+' · room $'+Number(eq-fl).toFixed(2);
       var risk=pos.reduce(function(a,p){return a+(+p.size_pct||0)},0); $('t-risk').textContent=risk.toFixed(2)+'%';
       if(d.mode) $('mode').textContent=esc(d.mode);
-      nowRunning=d.now_running||null; var dl=$('dlight'); if(nowRunning){ dl.className='light run'; $('dstate').textContent=esc(nowRunning.mode)+' · '+esc((nowRunning.seats||[]).join(', ')||'working')+' since '+hhmm(nowRunning.since) } else { dl.className='light'; $('dstate').textContent='idle · last '+esc((d.last_run&&d.last_run.mode)||'—')+' '+hhmm(d.last_run&&d.last_run.at) }
+      nowRunning=d.now_running||null; window.__DESK__.running=nowRunning?(nowRunning.seats||[]):[]; window.__DESK__.nowMode=nowRunning?nowRunning.mode:null; if(nowRunning&&nowRunning.doing){Object.keys(nowRunning.doing).forEach(function(k){window.__DESK__.seats[k]=Object.assign({},window.__DESK__.seats[k]||{},{summary:nowRunning.doing[k]})})} var dl=$('dlight'); if(nowRunning){ dl.className='light run'; $('dstate').textContent=esc(nowRunning.mode)+' · '+esc((nowRunning.seats||[]).join(', ')||'working')+' since '+hhmm(nowRunning.since) } else { dl.className='light'; $('dstate').textContent='idle · last '+esc((d.last_run&&d.last_run.mode)||'—')+' '+hhmm(d.last_run&&d.last_run.at) }
       SEATS.forEach(function(s){var c=$('seat-'+s.k); var running=nowRunning&&(nowRunning.seats||[]).indexOf(s.k)>=0; c.classList.toggle('running',!!running); if(running){c.querySelector('[data-st]').textContent='running';c.querySelector('[data-st]').className='status running';c.querySelector('[data-doing]').textContent=esc(nowRunning.doing&&nowRunning.doing[s.k]||('Working on '+nowRunning.mode+'…'));c.querySelector('[data-bar]').style.width='60%'}});
       // plan
       var plan=d.plan; var pre=d.premarket; var st={}; if(pre&&pre.trade_status) pre.trade_status.forEach(function(t){st[t.ticker]=t});
@@ -210,7 +220,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
       var latest={}; rows.forEach(function(r){ if(!latest[r.seat]) latest[r.seat]=r });
       var today=$('session').textContent; runsToday={};
       rows.forEach(function(r){ if(r.date===today&&r.status!=='running'){ runsToday[r.mode]=true; var hm=(r.time_et||'').split(':'); if(hm.length===2) runsToday[r.mode+'@'+((+hm[0])*60+(+hm[1]))]=true } });
-      SEATS.forEach(function(s){ var r=latest[s.k]; var c=$('seat-'+s.k); if(!r||c.classList.contains('running')) return;
+      SEATS.forEach(function(s){ var r=latest[s.k]; if(r){ window.__DESK__.seats[s.k]={status:r.status, summary:r.summary, last:hhmm(r.ts)+' '+(r.mode||''), dur:dur(r.duration_s), tools:r.tool_uses, mode:r.mode}; } var c=$('seat-'+s.k); if(!r||c.classList.contains('running')) return;
         var st=c.querySelector('[data-st]'); st.textContent=r.status; st.className='status '+esc(r.status); c.classList.toggle('refused',r.status==='refused');
         c.querySelector('[data-doing]').textContent=esc(r.summary); c.querySelector('[data-last]').textContent=hhmm(r.ts)+' '+esc(r.mode); c.querySelector('[data-dur]').textContent=dur(r.duration_s); c.querySelector('[data-tools]').textContent=esc(r.tool_uses==null?'—':r.tool_uses);
         c.querySelector('[data-bar]').style.width=(r.status==='done'?'100%':'0') });
@@ -228,3 +238,5 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
   });
 })();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="floor3d.js"></script>
