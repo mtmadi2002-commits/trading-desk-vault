@@ -46,7 +46,8 @@ def day_stats(bars):
 def read_ladder():
     """Desk/Trail.md frontmatter -> (unit, rungs_at, rungs_lock); None if the note is missing."""
     import re
-    f = V / "Desk" / "Trail.md"
+    import os
+    f = pathlib.Path(os.environ.get("DESK_TRAIL", V / "Desk" / "Trail.md"))
     if not f.exists(): return None
     m = re.match(r"^---\n(.*?)\n---", f.read_text(), re.S)
     if not m: return None
