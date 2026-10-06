@@ -1,23 +1,24 @@
 {
  "equity_start": 200.0,
- "positions": {
-  "NVDA": {
-   "side": "long",
+ "positions": {},
+ "closed": [
+  {
+   "symbol": "NVDA",
    "qty": 0.42,
-   "qty_initial": 0.42,
    "entry": 241.9,
-   "stop": 236.0,
-   "stop_initial": 236.0,
-   "t1": 246.6,
-   "t2": 250.0,
-   "risk_pct": 1.25,
+   "exit": 239.27,
+   "pnl": -1.104599999999998,
+   "reason": "15:55 flat rule (exit-rule; stop 236.00 / T1 246.60 never printed)",
+   "day": "2026-10-06",
+   "at": "2026-10-06T15:45:01.624490-04:00",
+   "side": "long",
    "setup": "ath-breakout",
    "trade_id": "20261006-104743-NVDA",
-   "opened": "2026-10-06T10:47:43.446485-04:00",
-   "scaled": false
+   "risk_usd": 2.4780000000000024,
+   "r": -0.446,
+   "opened": "2026-10-06T10:47:43.446485-04:00"
   }
- },
- "closed": [],
+ ],
  "day": "2026-10-06",
  "peak_equity": 200.0
 }
