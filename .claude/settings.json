@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -I /home/user/trading-desk-vault/Scripts/broker/exec.py *)",
+      "Bash(git -C /home/user/trading-desk-vault *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git fetch *)"
+    ]
+  }
+}

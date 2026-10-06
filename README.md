@@ -33,8 +33,11 @@ Routines are bound to the originating Claude Code session (it holds the Alpha Va
 ## The learning rule (in `vault/Desk/Rules.md`)
 The Coach may tighten any risk rule on one piece of evidence, may loosen only with ≥ 10 journaled trades, and never touches the −1.5% daily stop or the no-overnight rule. Every change is a changelog row linking the review note that justified it.
 
+## Execution layer (`vault/Scripts/broker/exec.py`)
+One command, three backends, same guards: `paper-local` (now) → `alpaca-paper` (real-time fills, no money) → `alpaca-live`. Every order is a bracket (entry limit + stop + take-profit). Guards on every order: risk ≤ 0.5%/trade, open risk ≤ 1.0%, max 2 positions, notional ≤ 25% of equity, no entries after 15:00, flatten 15:55, daily stop −1.5%; a refusal is logged, never worked around. The mode lives in `vault/Desk/Live.md` and only you change it. Scheduled runs pass `--unattended`, and `alpaca-live` is refused for them unless `allow_unattended_live: true` is also set there.
+
 ## Honest limits
-- **Paper only.** No broker is connected; nothing is executed for real. Connect a broker (e.g. an Alpaca MCP) and the execution seat swaps in.
+- **Demo trades until you flip `Desk/Live.md`.** To get real-time demo fills (`alpaca-paper`): add `ALPACA_KEY_ID` / `ALPACA_SECRET_KEY` as environment secrets and allow `paper-api.alpaca.markets` + `data.alpaca.markets` in the environment's network policy.
 - Quotes are 15–20 min delayed (finviz) and the monitor runs hourly, so intraday fills are indicative; the Coach's replay against 5-minute bars is the number that counts.
 - Alpha Vantage free key: 25 calls/day desk-wide; Firecrawl ~10 req/min.
 - Obsidian sync: the vault is the GitHub repo `mtmadi2002-commits/trading-desk-vault`; every run pulls, commits and pushes `main`, and the Obsidian Git plugin (pre-configured in `.obsidian/`) pulls it every 5 minutes.
