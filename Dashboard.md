@@ -3,7 +3,7 @@ type: dashboard
 ---
 # Trading Desk — Dashboard
 
-**Rules:** [[Rules]] · [[Rules Changelog]] · [[Seats]] · [[Live]] (mode + guards) · [[Targets]] (user milestones $500 → $1,000 → $10,000 and what the limits allow)
+**Rules:** [[Rules]] · [[Rules Changelog]] · [[Seats]] · [[Live]] (mode + guards) · [[Targets]] (user milestones $500 → $1,000 → $10,000 and what the limits allow) · [[Expectancy]] (per-setup stats, sizes setups) · `Backtests/` (setup replays on 5-min bars)
 
 ## Latest
 - Plan: [[2026-10-06 Plan]]

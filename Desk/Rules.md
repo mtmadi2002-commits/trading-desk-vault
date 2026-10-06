@@ -1,8 +1,8 @@
 ---
 type: rules
-version: 2
+version: 3
 updated: 2026-10-06
-updated_by: User — risk profile set to AGGRESSIVE (Coach may tighten, may not loosen further)
+updated_by: User — setup expectancy, both-sides rule, broker-resting orders (Coach may tighten, may not loosen)
 ---
 # Desk Rules (living — read by every seat, rewritten only by the Coach)
 
@@ -44,6 +44,18 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 - Every level cites its source. "est VWAP" = HLC/3 proxy until replaced by live VWAP at 09:45; if no live VWAP, only hard prior-day levels are valid triggers.
 - Alpha Vantage free key: 25 calls/day desk-wide; premium endpoints return fake sample data — discard anything with 2024 timestamps or MSFT/AAPL/IBM placeholder rows.
 - Firecrawl: ~10 requests/min desk-wide; one at a time, 7 s apart.
+
+## Setup expectancy (binding on the Head Trader and the Coach)
+- Every planned trade carries a `setup_type` and every execution passes it to the broker layer (`--setup`). `Desk/Expectancy.md` (generated from the ledger) is the scorecard per setup.
+- Status rule: **sample** (< 10 trades) → default size · **proven** (≥ 10, avg R ≥ 0.3) → may be sized at the max risk number · **marginal** (≥ 10, 0 ≤ avg R < 0.3) → low-confidence size · **disabled** (≥ 10, avg R < 0) → not planned until the Coach reviews it with a backtest.
+- Before a NEW setup_type enters the plan at default size, the Coach runs `Scripts/backtest.py` on it when 5-minute history exists (`exec.py bars`); a setup with negative backtest expectancy starts at the low-confidence size.
+- Sizing up a proven setup is the only way size ever increases; it never exceeds the max in the Risk section.
+
+## Both sides
+- The Screener always delivers short candidates; when the regime is risk-off / trend-down, at least one ranked trade is a short. No forcing longs into a red tape or shorts into a green one.
+
+## Resting orders at the broker (alpaca modes)
+- When the desk runs on Alpaca (paper or live), the first monitor tick RESTS each live plan trade as a stop-limit bracket (`exec.py rest`): the broker fires the entry the moment the trigger prints, with the stop and T1 attached. The hourly tick then manages (scale, breakeven, exits) and cancels anything the premarket update scrapped. Alpaca brackets are whole shares.
 
 ## Change policy (binding on the Coach)
 - The Coach may TIGHTEN any risk rule immediately on one piece of evidence.

@@ -54,3 +54,14 @@ trading-desk/
   plans/                 rendered playbooks (md + html + raw json)
   trading-desk-vault.zip
 ```
+
+## Going from delayed demo fills to real-time (free, still no money)
+1. Open an Alpaca account (free) and create **paper** API keys.
+2. In the Claude Code cloud environment settings add secrets `ALPACA_KEY_ID` and `ALPACA_SECRET_KEY`, and allow the hosts `paper-api.alpaca.markets` and `data.alpaca.markets` in the network policy.
+3. Nothing else changes while `Desk/Live.md` still says `mode: paper-local`: the desk immediately gets **real-time quotes** (`exec.py quote`), **5-minute history for backtests** (`exec.py bars`) and exact bars for the Coach's replay.
+4. Set `mode: alpaca-paper` in `Desk/Live.md` to let the broker hold **resting stop-limit brackets** (`exec.py rest`): the entry fires the second the trigger prints, with the stop and target attached, instead of waiting for the hourly check. Alpaca brackets are whole shares, so a $200 account can rest NU-sized names but not a $240 stock.
+
+## What the desk measures
+- `Desk/Expectancy.md` — per-setup trades, win %, average R, status (sample / proven / marginal / disabled). The Head Trader sizes from it; the Coach reviews it nightly.
+- `Backtests/<TICKER> Backtest.md` — `Scripts/backtest.py` replays orb-breakout, day2-continuation, vwap-pullback and breakout-prior-high on 5-minute bars before a setup is planned at default size.
+- `Desk/Targets.md` — the user's milestone ladder; the Coach reports pace against it and never loosens a limit for it.

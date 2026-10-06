@@ -9,7 +9,8 @@ This repo is the Obsidian vault and codebase of an automated, seven-seat, PAPER 
 ## Map
 - `Dashboard.md` — start page. `Desk/Rules.md` — living rules (v2, aggressive profile). `Desk/Rules Changelog.md` — every change with evidence. `Desk/Live.md` — execution mode + guards (**only the user edits this**). `Desk/Seats.md` — the seven seats.
 - `Plans/<date> Plan.md` (+ `.desk.json`, `.premarket.json`) — the day's playbook with sources. `Journal/<date> Journal.md` + `Journal/ledger.json` — what was executed. `Reviews/`, `Lessons/`, `Tickers/` — what the Coach learned.
-- `Scripts/desk.workflow.js` — the 4-mode workflow (plan / premarket / monitor / coach). `Scripts/RUNBOOK.md` — exactly what each scheduled run does. `Scripts/broker/exec.py` — execution layer with the guards. `Scripts/render_plan.py`, `render_premarket.py`, `inject_files.py` — renderers.
+- `Scripts/desk.workflow.js` — the 4-mode workflow (plan / premarket / monitor / coach). `Scripts/RUNBOOK.md` — exactly what each scheduled run does. `Scripts/broker/exec.py` — execution layer with the guards (+ `quote`/`bars`/`rest`/`orders`/`stats` once Alpaca paper keys exist). `Scripts/backtest.py` — setup replays on 5-min bars in `Data/bars/`. `Scripts/build_lessons.py` — writes `Desk/Lessons Digest.md` and `Desk/Expectancy.md`.
+- `Desk/Targets.md` — user milestones (goals, never limits). `Desk/Expectancy.md` — per-setup stats; the status rule in `Desk/Rules.md` sizes setups from it. `Scripts/render_plan.py`, `render_premarket.py`, `inject_files.py` — renderers.
 - `index.html` + `floor3d.js` — the Desk Floor page (https://claude.ai/artifact/JSScJUS6LxVYYfr98XfUVL): 2D seat cards + 3D robots, fed by that artifact's database (`state/desk`, `activity`, `journal`, `alerts`).
 
 ## Hard rules

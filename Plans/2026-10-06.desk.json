@@ -1940,7 +1940,8 @@
      "Seat 7: https://www.riotimesonline.com/brazil-stocks-real-first-round-2026/ (Polymarket 83.2% Flavio; Ibov close 206,911.89 +7.70%; USDBRL 5.0022)",
      "Risk Manager: corrected stop 14.72 / size 0.5% / halving conditions / 09:45 re-check / entry cap 15.46 / ITUB exit; JOLTS window deleted per https://www.bls.gov/schedule/news_release/jolts.htm"
     ],
-    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers."
+    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers.",
+    "setup_type": "day2-continuation"
    },
    {
     "rank": 2,
@@ -1968,7 +1969,8 @@
      "Macro seat: sector_bias 'Mega-cap tech: long-bias on pullbacks, no chasing'; regime chop; 10Y 5.311% (CNBC https://www.cnbc.com/2026/10/04/stock-market-today-live-updates.html)",
      "Risk Manager: corrected breakout stop 166.90 / size 0.25%; alt leg stop 162.00 / 0.5% preferred; OR-width filter; TSLA+TSM+NDX confirmation; fill cap 174.60; re-entry 0.25% max"
     ],
-    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers."
+    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers.",
+    "setup_type": "day2-continuation"
    },
    {
     "rank": 3,
@@ -1996,7 +1998,8 @@
      "Macro seat: SPY levels 774.83 pivot / 769.60 gap-fill; 10Y 5.311% (CNBC https://www.cnbc.com/2026/10/04/stock-market-today-live-updates.html); breadth 57 new highs vs 243 new lows (Reuters)",
      "Risk Manager: corrected stop 236.00 / size 0.25% always / trigger >= 240.60 / fill cap 241.90 / no-chase 244.80 / window 09:45-11:00 / no entries after 12:30"
     ],
-    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers."
+    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers.",
+    "setup_type": "ath-breakout"
    }
   ],
   "watch_only": [

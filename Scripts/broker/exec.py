@@ -10,6 +10,15 @@ Paper account compounds: equity = paper_equity (Live.md) + sum of realized P&L; 
   exec.py flatten --reason "15:55 flat rule"
   exec.py positions
   exec.py ledger                           -> paper-local ledger (positions, closed trades, day P&L %)
+  exec.py quote  --symbol NU               -> REAL-TIME last trade + bid/ask from Alpaca's data API (IEX feed, free with paper keys); any mode
+  exec.py rest   --symbol NU --side buy --trigger 15.46 --limit-cap 15.60 --stop 14.72 --t1 16.00 --risk-pct 5 --setup day2-continuation
+                                           -> RESTING bracket at the broker: stop-limit entry that the BROKER fires the second the trigger prints,
+                                              with the stop-loss and take-profit attached. alpaca-paper / alpaca-live only (paper-local has no live tape).
+  exec.py orders                           -> open orders at the broker;  exec.py cancel --symbol NU  -> cancel resting orders for a symbol
+  exec.py bars   --symbol NU --days 60     -> 5-minute history from Alpaca's data API (free with paper keys) saved to Data/bars/NU-alpaca.json
+                                              in the same shape Scripts/backtest.py reads (Alpha Vantage's free key cannot serve this history)
+  exec.py stats                            -> per-setup expectancy from the ledger (n, win rate, avg R, expectancy R) — the Coach sizes from this
+Every entry carries --setup <type> (the plan's setup_type) so expectancy can be measured per setup.
 
 Mode comes from the vault note Desk/Live.md (frontmatter `mode:`):
   paper-local   simulate fills locally against the quote you pass (--fill) or the entry price; ledger in Journal/ledger.json
@@ -79,6 +88,14 @@ def alpaca(method, path, body=None, data_api=False):
     except Exception as e:
         fail(f"alpaca {method} {path} unreachable: {e} (is the host allow-listed in the environment network policy?)")
 
+def have_keys(): return bool(os.environ.get("ALPACA_KEY_ID") and os.environ.get("ALPACA_SECRET_KEY"))
+def quote(symbol):
+    """Real-time (IEX feed) last trade + NBBO-ish quote. Works in every mode once paper keys exist."""
+    if not have_keys(): fail("quote needs ALPACA_KEY_ID / ALPACA_SECRET_KEY (free paper keys) in environment secrets")
+    t = alpaca("GET", f"/v2/stocks/{symbol}/trades/latest?feed=iex", data_api=True).get("trade", {})
+    q = alpaca("GET", f"/v2/stocks/{symbol}/quotes/latest?feed=iex", data_api=True).get("quote", {})
+    return dict(symbol=symbol, last=t.get("p"), last_at=t.get("t"), bid=q.get("bp"), ask=q.get("ap"), bid_size=q.get("bs"), ask_size=q.get("as"), feed="iex-realtime")
+
 UNATTENDED = ("--unattended" in sys.argv)
 if UNATTENDED: sys.argv.remove("--unattended")
 
@@ -139,13 +156,12 @@ def cmd_preflight(a):
         acct = account(); out.update(equity=acct["equity"], peak_equity=acct.get("peak_equity"), floor=acct.get("floor"), day_pnl_pct=round(acct["day_pnl_pct"], 3), positions=list(acct["positions"].keys()))
     ok(**out)
 
-def cmd_enter(a):
-    if not live_armed(): fail("alpaca-live not armed: needs Desk/Live.md confirm_live sentence, env ALPACA_LIVE_ARMED=1, and (for scheduled runs) allow_unattended_live: true")
-    acct = account()
-    dist = abs(a.entry - a.stop)
+def size_order(a, acct, entry):
+    """Shared sizing + guards for enter/rest. Returns (qty, eff_risk, clipped, cash_free, dist)."""
+    dist = abs(entry - a.stop)
     if dist <= 0: fail("stop must differ from entry")
     raw = acct["equity"] * (a.risk_pct / 100.0) / dist
-    frac = bool(CFG.get("fractional_shares", False)) and MODE != "alpaca-live"
+    frac = bool(CFG.get("fractional_shares", False)) and MODE == "paper-local"  # Alpaca rejects fractional qty on bracket/stop orders -> whole shares at the broker
     qty = math.floor(raw * 100) / 100.0 if frac else math.floor(raw)
     if qty < (float(CFG.get("min_qty", 0.01)) if frac else 1): fail(f"computed qty {raw:.4f} below minimum ({'0.01 fractional' if frac else '1 whole share'}) — risk {a.risk_pct}% of ${acct['equity']:.2f} is ${acct['equity']*a.risk_pct/100:.2f} against a ${dist:.2f} stop")
     # CASH ACCOUNT: an order can never exceed the notional cap or the cash not already in open positions — clip, don't refuse
@@ -154,32 +170,114 @@ def cmd_enter(a):
     max_notional = min(cap_notional, cash_free)
     if max_notional < acct["equity"] * 0.05: fail(f"no cash: {cash_free:.2f} free of {acct['equity']:.2f} (open positions use the rest)")
     clipped = None
-    if qty * a.entry > max_notional:
-        q2 = (math.floor(max_notional / a.entry * 100) / 100.0) if frac else math.floor(max_notional / a.entry)
-        if q2 < (float(CFG.get("min_qty", 0.01)) if frac else 1): fail(f"cash {max_notional:.2f} buys less than the minimum quantity of {a.symbol} at {a.entry}")
+    if qty * entry > max_notional:
+        q2 = (math.floor(max_notional / entry * 100) / 100.0) if frac else math.floor(max_notional / entry)
+        if q2 < (float(CFG.get("min_qty", 0.01)) if frac else 1): fail(f"cash {max_notional:.2f} buys less than the minimum quantity of {a.symbol} at {entry}")
         clipped = f"clipped from {qty} to {q2} by {'cash' if max_notional < cap_notional else 'notional cap'} ({max_notional:.2f})"; qty = q2
-    notional = qty * a.entry
     eff_risk = 100.0 * qty * dist / acct["equity"]
     guard_common(acct, new_risk_pct=eff_risk, entering=True)
     if a.symbol in acct["positions"]: fail(f"already in {a.symbol}")
+    return qty, eff_risk, clipped, cash_free, dist
+
+def cmd_enter(a):
+    if not live_armed(): fail("alpaca-live not armed: needs Desk/Live.md confirm_live sentence, env ALPACA_LIVE_ARMED=1, and (for scheduled runs) allow_unattended_live: true")
+    acct = account()
+    qty, eff_risk, clipped, cash_free, dist = size_order(a, acct, a.entry)
+    notional = qty * a.entry
     limit = a.limit_cap if a.limit_cap else a.entry
     if MODE == "paper-local":
         fill = a.fill if a.fill else a.entry
         if (a.side == "buy" and fill > limit) or (a.side == "sell" and fill < limit): fail(f"fill {fill} worse than limit cap {limit} — cancelled")
-        L = load_ledger(); L["positions"][a.symbol] = dict(side="long" if a.side == "buy" else "short", qty=qty, entry=fill, stop=a.stop, t1=a.t1, t2=a.t2, risk_pct=a.risk_pct, opened=et_now().isoformat(), scaled=False)
+        L = load_ledger(); L["positions"][a.symbol] = dict(side="long" if a.side == "buy" else "short", qty=qty, qty_initial=qty, entry=fill, stop=a.stop, stop_initial=a.stop, t1=a.t1, t2=a.t2, risk_pct=a.risk_pct, setup=a.setup, trade_id=f"{et_now().strftime('%Y%m%d-%H%M%S')}-{a.symbol}", opened=et_now().isoformat(), scaled=False)
         save_ledger(L); return ok(action="enter", symbol=a.symbol, qty=qty, fill=fill, stop=a.stop, t1=a.t1, t2=a.t2, notional=round(qty * fill, 2), risk_pct_requested=a.risk_pct, risk_pct_effective=round(eff_risk, 2), clipped=clipped, cash_free_after=round(cash_free - qty * fill, 2), indicative=False)
     body = dict(symbol=a.symbol, qty=str(qty), side=a.side, type="limit", limit_price=str(round(limit, 2)), time_in_force="day", order_class="bracket",
                 take_profit=dict(limit_price=str(round(a.t1, 2))), stop_loss=dict(stop_price=str(round(a.stop, 2))))
     o = alpaca("POST", "/v2/orders", body)
-    ok(action="enter", symbol=a.symbol, qty=qty, order_id=o.get("id"), status=o.get("status"), limit=limit, stop=a.stop, t1=a.t1, notional=round(notional, 2), risk_pct_requested=a.risk_pct, risk_pct_effective=round(eff_risk, 2), clipped=clipped, bracket=True)
+    remember_broker_meta(a, qty, dist)
+    ok(action="enter", symbol=a.symbol, qty=qty, order_id=o.get("id"), status=o.get("status"), limit=limit, stop=a.stop, t1=a.t1, notional=round(notional, 2), risk_pct_requested=a.risk_pct, risk_pct_effective=round(eff_risk, 2), clipped=clipped, bracket=True, setup=a.setup)
+
+def remember_broker_meta(a, qty, dist):
+    L = load_ledger(); L.setdefault("broker_meta", {})[a.symbol] = dict(setup=a.setup, risk_usd=qty * dist, trade_id=f"{et_now().strftime('%Y%m%d-%H%M%S')}-{a.symbol}", opened=et_now().isoformat()); save_ledger(L)
+
+def cmd_rest(a):
+    """Resting bracket: the BROKER watches the tape and fires the entry when the trigger prints. Needs a live tape -> alpaca modes only."""
+    if MODE == "paper-local": fail("rest needs alpaca-paper or alpaca-live (a broker watching a real-time tape); paper-local has no tape — use enter at the hourly check")
+    if not live_armed(): fail("alpaca-live not armed")
+    acct = account()
+    qty, eff_risk, clipped, cash_free, dist = size_order(a, acct, a.trigger)
+    if a.side == "buy" and not (a.stop < a.trigger <= a.limit_cap): fail("buy rest needs stop < trigger <= limit-cap")
+    if a.side == "sell" and not (a.limit_cap <= a.trigger < a.stop): fail("sell rest needs limit-cap <= trigger < stop")
+    body = dict(symbol=a.symbol, qty=str(qty), side=a.side, type="stop_limit", stop_price=str(round(a.trigger, 2)), limit_price=str(round(a.limit_cap, 2)), time_in_force="day", order_class="bracket",
+                take_profit=dict(limit_price=str(round(a.t1, 2))), stop_loss=dict(stop_price=str(round(a.stop, 2))))
+    o = alpaca("POST", "/v2/orders", body)
+    remember_broker_meta(a, qty, dist)
+    ok(action="rest", symbol=a.symbol, qty=qty, order_id=o.get("id"), status=o.get("status"), trigger=a.trigger, limit_cap=a.limit_cap, stop=a.stop, t1=a.t1, risk_pct_requested=a.risk_pct, risk_pct_effective=round(eff_risk, 2), clipped=clipped, bracket=True, setup=a.setup, note="broker fires the entry when the trigger prints; expires at the close")
+
+def cmd_orders(a):
+    if MODE == "paper-local": return ok(action="orders", orders=[], note="paper-local keeps no resting orders")
+    os_ = alpaca("GET", "/v2/orders?status=open&nested=true")
+    ok(action="orders", orders=[dict(id=o.get("id"), symbol=o.get("symbol"), side=o.get("side"), type=o.get("type"), qty=o.get("qty"), stop=o.get("stop_price"), limit=o.get("limit_price"), status=o.get("status"), legs=len(o.get("legs") or [])) for o in os_])
+
+def cmd_cancel(a):
+    if MODE == "paper-local": return ok(action="cancel", symbol=a.symbol, note="nothing resting in paper-local")
+    alpaca("DELETE", f"/v2/orders?symbols={a.symbol}"); ok(action="cancel", symbol=a.symbol)
+
+def cmd_quote(a): ok(action="quote", **quote(a.symbol))
+
+def cmd_bars(a):
+    """Pull regular-hours 5-minute bars for the last N days (IEX feed) and save them AV-style for backtest.py."""
+    if not have_keys(): fail("bars needs ALPACA_KEY_ID / ALPACA_SECRET_KEY (free paper keys) in environment secrets")
+    end = datetime.datetime.now(datetime.timezone.utc); start = end - datetime.timedelta(days=int(a.days * 1.5) + 3)
+    series = {}; page = None
+    while True:
+        path = f"/v2/stocks/{a.symbol}/bars?timeframe=5Min&start={start.strftime('%Y-%m-%dT%H:%M:%SZ')}&limit=10000&adjustment=raw&feed=iex" + (f"&page_token={page}" if page else "")
+        r = alpaca("GET", path, data_api=True)
+        for b in r.get("bars", []) or []:
+            try:
+                from zoneinfo import ZoneInfo; t = datetime.datetime.fromisoformat(b["t"].replace("Z", "+00:00")).astimezone(ZoneInfo("America/New_York"))
+            except Exception: t = datetime.datetime.fromisoformat(b["t"].replace("Z", "+00:00")) - datetime.timedelta(hours=4)
+            hm = t.strftime("%H:%M")
+            if "09:30" <= hm < "16:00": series[t.strftime("%Y-%m-%d %H:%M:%S")] = {"1. open": str(b["o"]), "2. high": str(b["h"]), "3. low": str(b["l"]), "4. close": str(b["c"]), "5. volume": str(b["v"])}
+        page = r.get("next_page_token")
+        if not page: break
+    out = VAULT / "Data" / "bars"; out.mkdir(parents=True, exist_ok=True); f = out / f"{a.symbol.upper()}-alpaca.json"
+    f.write_text(json.dumps({"Meta Data": {"1. Information": "5min bars, regular hours, IEX feed via Alpaca", "2. Symbol": a.symbol.upper()}, "Time Series (5min)": series}))
+    days = sorted({k[:10] for k in series})
+    ok(action="bars", symbol=a.symbol.upper(), file=str(f), bars=len(series), sessions=len(days), first=days[0] if days else None, last=days[-1] if days else None)
+
+def cmd_stats(a):
+    """Per-setup expectancy from the ledger. A 'trade' is every closed row sharing a trade_id (scale + exit rows are one trade)."""
+    L = load_ledger(); trades = {}
+    for c in L["closed"]:
+        k = c.get("trade_id") or f"{c['symbol']}-{c.get('day')}"
+        t = trades.setdefault(k, dict(symbol=c["symbol"], setup=c.get("setup", "untagged"), side=c.get("side"), day=c.get("day"), pnl=0.0, risk_usd=c.get("risk_usd"), approx=False))
+        t["pnl"] += c["pnl"]; t["approx"] = t["approx"] or bool(c.get("approx"))
+    for t in trades.values(): t["r"] = round(t["pnl"] / t["risk_usd"], 3) if t.get("risk_usd") else None
+    by = {}
+    for t in trades.values():
+        b = by.setdefault(t["setup"], dict(setup=t["setup"], n=0, wins=0, losses=0, sum_r=0.0, sum_pnl=0.0, rs=[]))
+        b["n"] += 1; b["sum_pnl"] += t["pnl"]; b["wins" if t["pnl"] > 0 else "losses"] += 1
+        if t["r"] is not None: b["sum_r"] += t["r"]; b["rs"].append(t["r"])
+    rows = []
+    for b in by.values():
+        n = b["n"]; exp_r = (b["sum_r"] / len(b["rs"])) if b["rs"] else None
+        status = "sample" if n < 10 else ("proven" if (exp_r is not None and exp_r >= 0.3) else ("disabled" if (exp_r is not None and exp_r < 0) else "marginal"))
+        rows.append(dict(setup=b["setup"], n=n, win_rate=round(100.0 * b["wins"] / n, 1), avg_r=(round(exp_r, 3) if exp_r is not None else None), sum_pnl=round(b["sum_pnl"], 2), status=status))
+    rows.sort(key=lambda r: (-r["n"], r["setup"]))
+    ok(action="stats", setups=rows, trades=sorted(trades.values(), key=lambda t: t["day"] or ""), rule="status: sample (<10 trades) -> default size; proven (>=10, avg R >= 0.3) -> may use max risk; marginal (>=10, 0 <= avg R < 0.3) -> low-confidence size; disabled (>=10, avg R < 0) -> no entries until the Coach reviews")
+
+def closed_row(sym, p, q, px, reason):
+    pnl = (px - p["entry"]) * q * (1 if p["side"] == "long" else -1)
+    risk_usd = abs(p["entry"] - p.get("stop_initial", p["stop"])) * p.get("qty_initial", p["qty"]) or None
+    return dict(symbol=sym, qty=q, entry=p["entry"], exit=px, pnl=pnl, reason=reason, day=et_now().strftime("%Y-%m-%d"), at=et_now().isoformat(),
+                side=p["side"], setup=p.get("setup", "untagged"), trade_id=p.get("trade_id"), risk_usd=risk_usd, r=(round(pnl / risk_usd, 3) if risk_usd else None), opened=p.get("opened"))
 
 def cmd_scale(a):
     acct = account()
     if a.symbol not in acct["positions"]: fail(f"no position in {a.symbol}")
     if MODE == "paper-local":
         L = load_ledger(); p = L["positions"][a.symbol]; q = round(p["qty"] * a.fraction, 2) if isinstance(p["qty"], float) and p["qty"] != int(p["qty"]) else math.floor(p["qty"] * a.fraction); px = a.fill if a.fill else p["t1"]
-        pnl = (px - p["entry"]) * q * (1 if p["side"] == "long" else -1)
-        L["closed"].append(dict(symbol=a.symbol, qty=q, entry=p["entry"], exit=px, pnl=pnl, reason="scale at T1", day=et_now().strftime("%Y-%m-%d"), at=et_now().isoformat()))
+        row = closed_row(a.symbol, p, q, px, "scale at T1"); pnl = row["pnl"]; L["closed"].append(row)
         p["qty"] -= q; p["scaled"] = True; save_ledger(L); return ok(action="scale", symbol=a.symbol, qty=q, fill=px, pnl=round(pnl, 2), remaining=p["qty"])
     p = acct["positions"][a.symbol]; q = math.floor(abs(p["qty"]) * a.fraction)
     o = alpaca("POST", "/v2/orders", dict(symbol=a.symbol, qty=str(q), side="sell" if p["side"] == "long" else "buy", type="market", time_in_force="day"))
@@ -204,20 +302,27 @@ def cmd_exit(a):
     if a.symbol not in acct["positions"]: fail(f"no position in {a.symbol}")
     if MODE == "paper-local":
         L = load_ledger(); p = L["positions"].pop(a.symbol); px = a.fill if a.fill else p["stop"]
-        pnl = (px - p["entry"]) * p["qty"] * (1 if p["side"] == "long" else -1)
-        L["closed"].append(dict(symbol=a.symbol, qty=p["qty"], entry=p["entry"], exit=px, pnl=pnl, reason=a.reason, day=et_now().strftime("%Y-%m-%d"), at=et_now().isoformat()))
-        save_ledger(L); return ok(action="exit", symbol=a.symbol, qty=p["qty"], fill=px, pnl=round(pnl, 2), reason=a.reason)
+        row = closed_row(a.symbol, p, p["qty"], px, a.reason); pnl = row["pnl"]; L["closed"].append(row)
+        save_ledger(L); return ok(action="exit", symbol=a.symbol, qty=p["qty"], fill=px, pnl=round(pnl, 2), r=row["r"], setup=row["setup"], reason=a.reason)
     alpaca("DELETE", f"/v2/orders?symbols={a.symbol}")  # cancel bracket legs first
     r = alpaca("DELETE", f"/v2/positions/{a.symbol}")
+    record_broker_close(a.symbol, acct["positions"][a.symbol], a.reason)
     ok(action="exit", symbol=a.symbol, order_id=r.get("id"), status=r.get("status"), reason=a.reason)
+
+def record_broker_close(sym, p, reason):
+    """alpaca modes: the broker holds the truth, but the expectancy table needs a row — record the mark-to-market P&L at exit (approx) tagged with the setup we stored at entry."""
+    L = load_ledger(); meta = L.get("broker_meta", {}).get(sym, {})
+    pnl = float(p.get("unrealized", 0.0)); risk_usd = meta.get("risk_usd")
+    L["closed"].append(dict(symbol=sym, qty=abs(p["qty"]), entry=p["entry"], exit=None, pnl=pnl, reason=reason, day=et_now().strftime("%Y-%m-%d"), at=et_now().isoformat(), side=p["side"],
+                            setup=meta.get("setup", "untagged"), trade_id=meta.get("trade_id"), risk_usd=risk_usd, r=(round(pnl / risk_usd, 3) if risk_usd else None), approx=True))
+    L.get("broker_meta", {}).pop(sym, None); save_ledger(L)
 
 def cmd_flatten(a):
     if MODE == "paper-local":
         L = load_ledger(); out = []
         for sym in list(L["positions"].keys()):
             p = L["positions"].pop(sym); px = a.fill if a.fill else p["entry"]
-            pnl = (px - p["entry"]) * p["qty"] * (1 if p["side"] == "long" else -1)
-            L["closed"].append(dict(symbol=sym, qty=p["qty"], entry=p["entry"], exit=px, pnl=pnl, reason=a.reason, day=et_now().strftime("%Y-%m-%d"), at=et_now().isoformat())); out.append(sym)
+            L["closed"].append(closed_row(sym, p, p["qty"], px, a.reason)); out.append(sym)
         save_ledger(L); return ok(action="flatten", closed=out, reason=a.reason)
     alpaca("DELETE", "/v2/orders"); r = alpaca("DELETE", "/v2/positions?cancel_orders=true")
     ok(action="flatten", result=r, reason=a.reason)
@@ -232,10 +337,14 @@ if __name__ == "__main__":
     sub.add_parser("preflight"); sub.add_parser("positions"); sub.add_parser("ledger")
     e = sub.add_parser("enter"); e.add_argument("--symbol", required=True); e.add_argument("--side", choices=["buy","sell"], required=True)
     e.add_argument("--entry", type=float, required=True); e.add_argument("--stop", type=float, required=True); e.add_argument("--t1", type=float, required=True)
-    e.add_argument("--t2", type=float); e.add_argument("--risk-pct", dest="risk_pct", type=float, default=0.5); e.add_argument("--limit-cap", dest="limit_cap", type=float); e.add_argument("--fill", type=float)
+    e.add_argument("--t2", type=float); e.add_argument("--risk-pct", dest="risk_pct", type=float, default=0.5); e.add_argument("--limit-cap", dest="limit_cap", type=float); e.add_argument("--fill", type=float); e.add_argument("--setup", default="untagged")
+    r = sub.add_parser("rest"); r.add_argument("--symbol", required=True); r.add_argument("--side", choices=["buy","sell"], required=True); r.add_argument("--trigger", type=float, required=True)
+    r.add_argument("--limit-cap", dest="limit_cap", type=float, required=True); r.add_argument("--stop", type=float, required=True); r.add_argument("--t1", type=float, required=True); r.add_argument("--t2", type=float)
+    r.add_argument("--risk-pct", dest="risk_pct", type=float, default=0.5); r.add_argument("--setup", default="untagged")
+    sub.add_parser("orders"); sub.add_parser("stats"); bb = sub.add_parser("bars"); bb.add_argument("--symbol", required=True); bb.add_argument("--days", type=int, default=60); q = sub.add_parser("quote"); q.add_argument("--symbol", required=True); c = sub.add_parser("cancel"); c.add_argument("--symbol", required=True)
     s = sub.add_parser("scale"); s.add_argument("--symbol", required=True); s.add_argument("--fraction", type=float, default=0.5); s.add_argument("--fill", type=float)
     b = sub.add_parser("stop-to-breakeven"); b.add_argument("--symbol", required=True)
     x = sub.add_parser("exit"); x.add_argument("--symbol", required=True); x.add_argument("--reason", default="rule"); x.add_argument("--fill", type=float)
     f = sub.add_parser("flatten"); f.add_argument("--reason", default="flat rule"); f.add_argument("--fill", type=float)
     a = ap.parse_args()
-    {"preflight": cmd_preflight, "enter": cmd_enter, "scale": cmd_scale, "stop-to-breakeven": cmd_breakeven, "exit": cmd_exit, "flatten": cmd_flatten, "positions": cmd_positions, "ledger": cmd_ledger}[a.cmd](a)
+    {"preflight": cmd_preflight, "enter": cmd_enter, "scale": cmd_scale, "stop-to-breakeven": cmd_breakeven, "exit": cmd_exit, "flatten": cmd_flatten, "positions": cmd_positions, "ledger": cmd_ledger, "rest": cmd_rest, "orders": cmd_orders, "cancel": cmd_cancel, "quote": cmd_quote, "stats": cmd_stats, "bars": cmd_bars}[a.cmd](a)
