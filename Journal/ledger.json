@@ -1,0 +1,23 @@
+{
+ "equity_start": 200.0,
+ "positions": {
+  "NVDA": {
+   "side": "long",
+   "qty": 0.42,
+   "qty_initial": 0.42,
+   "entry": 241.9,
+   "stop": 236.0,
+   "stop_initial": 236.0,
+   "t1": 246.6,
+   "t2": 250.0,
+   "risk_pct": 1.25,
+   "setup": "ath-breakout",
+   "trade_id": "20261006-104743-NVDA",
+   "opened": "2026-10-06T10:47:43.446485-04:00",
+   "scaled": false
+  }
+ },
+ "closed": [],
+ "day": "2026-10-06",
+ "peak_equity": 200.0
+}
