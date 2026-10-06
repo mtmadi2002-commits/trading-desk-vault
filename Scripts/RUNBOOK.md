@@ -1,17 +1,18 @@
 # Desk Runbook — how a scheduled session runs one mode
 
-Vault artifact: https://claude.ai/artifact/JSScJUS6LxVYYfr98XfUVL  (files = notes + scripts; database = state/journal/alerts)
+Vault repo (source of truth): https://github.com/mtmadi2002-commits/trading-desk-vault
+Vault artifact (live mirror + database state/journal/alerts): https://claude.ai/artifact/JSScJUS6LxVYYfr98XfUVL
 Playbook page (human view of the latest plan): https://claude.ai/artifact/3p1oPXKJcVnqULQmMMEgFr
 
 The routines fire INTO the desk's own Claude Code session (it holds the Alpha Vantage and Firecrawl connectors); the container may have been recycled, so always re-fetch the vault from the artifact. Follow these steps exactly; each mode section says what to read, run and write.
 
 ## 0. Bootstrap (all modes)
 1. `TZ=America/New_York date "+%Y-%m-%d %H:%M %A"` → NOW_ET, TODAY, DAY. Session date = TODAY for premarket/monitor/coach; for plan mode it is the NEXT US trading day (skip Sat/Sun; if TODAY is Friday the plan is for Monday).
-2. Artifact `read` url=<vault> with `paths` = ["Scripts/RUNBOOK.md","Scripts/desk.workflow.js","Scripts/render_plan.py","Desk/Rules.md","Dashboard.md","Desk/Rules Changelog.md"] plus the mode's files below, `out_dir` = your scratchpad `/vault`. (Reading a file is also what lets you republish it later.)
+2. THE VAULT IS A GIT REPO: https://github.com/mtmadi2002-commits/trading-desk-vault (attached to this session). `V=<scratchpad>/vault`; if `$V/.git` exists run `git -C $V pull --rebase origin main`, else `git clone --depth 50 https://github.com/mtmadi2002-commits/trading-desk-vault $V` (timeout 10 min; on HTTP 429 sleep 10 s and retry once). If git is refused, fall back to Artifact `read` of the vault artifact with `paths` for the files you need and `out_dir` $V, and say so in the note.
 3. Load ArtifactData via ToolSearch `select:ArtifactData`. `get` collection `state` doc_id `desk` → remember its `version`.
-4. Use a workflow: `Workflow({ scriptPath: "<scratchpad>/vault/Scripts/desk.workflow.js", args: {...} })`. args always include: mode, date (session date), day, now_et, vault_dir (the scratchpad vault path), vault_url, rules (the full text of Desk/Rules.md), av_calls_remaining (from state.desk.av_calls_used_today: 25 − used; reset at midnight ET).
-5. After the workflow returns, write results as the mode section says, then republish the vault: Artifact `publish` with `url`=<vault>, `file_path`=<scratchpad>/vault/index.html (read it first via paths too), and `files` mapping ONLY the notes you changed or created (path → local file). Finally `update` state/desk (pin `if_version`) with av_calls_used_today += the calls the seats reported, and `last_run: {mode, at}`.
-6. Never trade live: this is a PAPER desk. Never invent a price. If a data source is down, say so in the note and in the alert, and stop.
+4. Use a workflow: `Workflow({ scriptPath: "$V/Scripts/desk.workflow.js", args: {...} })`. args always include: mode, date (session date), day, now_et, vault_dir ($V), vault_url, rules (the full text of Desk/Rules.md), av_calls_remaining (25 − state.desk.av_calls_used_today; resets at midnight ET).
+5. After the workflow returns, write results into $V as the mode section says, then: `git -C $V add -A && git -C $V -c user.name="Trading Desk" -c user.email="desk@users.noreply.github.com" commit -m "<mode> <date> <HH:MM ET>" && git -C $V push origin main` (on rejection: `pull --rebase` once, push again). Then MIRROR to the artifact: Artifact `publish` with `url`=<vault artifact>, `file_path`=$V/index.html, `files` mapping ONLY the notes you changed or created (read a file via `paths` first if you did not create it this session). Finally `update` state/desk (pin `if_version`) with av_calls_used_today += the calls the seats reported, and `last_run: {mode, at, commit}`.
+6. Never trade live: this is a PAPER desk. Never invent a price. If a data source is down, say so in the note and in the alert, and stop. Obsidian on the user's machine pulls `main` every 5 minutes (Obsidian Git plugin), so a push IS the sync.
 
 ## plan (evening, ~20:55 ET Sun–Thu; session date = next trading day)
 Read additionally: the most recent `Reviews/*.md` and `Lessons/*.md` if any (list files with Artifact `list` scope `files`), and yesterday's plan for context.

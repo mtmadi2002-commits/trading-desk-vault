@@ -37,7 +37,7 @@ The Coach may tighten any risk rule on one piece of evidence, may loosen only wi
 - **Paper only.** No broker is connected; nothing is executed for real. Connect a broker (e.g. an Alpaca MCP) and the execution seat swaps in.
 - Quotes are 15–20 min delayed (finviz) and the monitor runs hourly, so intraday fills are indicative; the Coach's replay against 5-minute bars is the number that counts.
 - Alpha Vantage free key: 25 calls/day desk-wide; Firecrawl ~10 req/min.
-- For live Obsidian sync, connect GitHub (Obsidian Git plugin) or re-authorize Google Drive with write access; until then the vault ships as `trading-desk-vault.zip`.
+- Obsidian sync: the vault is the GitHub repo `mtmadi2002-commits/trading-desk-vault`; every run pulls, commits and pushes `main`, and the Obsidian Git plugin (pre-configured in `.obsidian/`) pulls it every 5 minutes.
 
 ## Layout
 ```
