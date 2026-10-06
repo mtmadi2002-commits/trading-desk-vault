@@ -11,3 +11,5 @@ type: changelog
 | 2026-10-06 | 3 | Setup expectancy: setup_type on every trade; sample/proven/marginal/disabled status rule sizes setups from the ledger; backtest before a new setup at default size | user instruction (features 2–3) | User |
 | 2026-10-06 | 3 | Both sides: Screener always lists shorts; risk-off regime requires a ranked short | user instruction (feature 4) | User |
 | 2026-10-06 | 3 | Resting stop-limit brackets at the broker in alpaca modes; real-time quotes via exec.py quote when keys exist | user instruction (feature 1) | User |
+| 2026-10-06 | 4 | Winners: scale 1/3 at T1, breakeven, trail the 2/3 runner to ≥ 3R, no fixed T2 cap on trend days | user instruction (win big); today NVDA plan capped the runner at 1.37R | User |
+| 2026-10-06 | 4 | Data absence never cuts size: hard-level trigger at full planned size when live VWAP is missing | user instruction; today every entry was halved to 1.25% by a VWAP-feed switch, not by risk | User |

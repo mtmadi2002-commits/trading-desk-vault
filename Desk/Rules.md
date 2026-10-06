@@ -1,8 +1,8 @@
 ---
 type: rules
-version: 3
+version: 4
 updated: 2026-10-06
-updated_by: User — setup expectancy, both-sides rule, broker-resting orders (Coach may tighten, may not loosen)
+updated_by: User — win-big management: no size cuts for missing data feeds, hard-level triggers, runners trail to 3R+ (Coach may tighten, may not loosen)
 ---
 # Desk Rules (living — read by every seat, rewritten only by the Coach)
 
@@ -28,6 +28,15 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 - Stop distance between 0.7× and 1.5× ATR14. Below 0.7× is noise (lesson: [[2026-10-06 Review]] — all four draft stops were 0.51–0.61× ATR and were widened).
 - Quote R:R at T1 honestly after the stop is corrected; do not report 2.0 R:R from a noise stop.
 - Opening-range filter: if the 09:30–09:45 range exceeds 1.0× ATR, breakout entries in that name are void; VWAP-retest only after 10:00.
+
+## Winners (user-set 2026-10-06 — let them run)
+- Scale **one third** at T1 (≥ 1.5R), stop to breakeven on the rest. The remaining two thirds is a RUNNER: trail under each higher 5-min swing low (above each lower high for shorts), never a fixed T2 cap on a trend day. Take the runner only on the trail, a kill switch, a stall (no new high for 45 min with falling volume) or the 15:55 flat rule.
+- Target the runner at ≥ 3R. A day where the runner reaches 3R is the day that pays for the week; never clip it to "lock in" a small gain.
+- A trade that reaches +1R and comes all the way back to breakeven is a scratch, not a loss — do not re-enter it that day.
+
+## Data absence (user-set 2026-10-06)
+- A missing data feed never cuts size. If live VWAP is unavailable, the trade uses its HARD level (prior high/low, opening-range extreme, Monday close ± ATR) at the FULL planned size. VWAP is confirmation, never the sole trigger. The Head Trader writes every trade so a hard level is the primary trigger.
+- Size is cut only by the Risk section (confidence, correlation, daily P&L) and by liquidity rules in the plan (pre-market volume, spread) — never by what the desk cannot see.
 
 ## Entries
 - No entries 09:30–09:35 (09:30–09:32 minimum). No entry inside a scheduled-data window ±2 min.
