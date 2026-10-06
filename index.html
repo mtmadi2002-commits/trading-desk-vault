@@ -1,0 +1,74 @@
+<title>Trading Desk Vault</title>
+<style>
+/* layout: one column; the vault's notes as a file tree, the live paper journal from the database below */
+:root{ --bg:#f5f4ef; --surface:#fff; --fg:#1b1d22; --muted:#5d6370; --line:#d9d6cc; --accent:#b8611a; --long:#1f7a4d; --short:#b3362f; --warnbg:#fff4d6; --badbg:#fbe3e1;
+  --display:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#15171b; --surface:#1e2127; --fg:#e8e6df; --muted:#9aa0ab; --line:#33373f; --accent:#e0893a; --long:#4cc38a; --short:#ef6b61; --warnbg:#3a2f12; --badbg:#3c1d1a; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#15171b; --surface:#1e2127; --fg:#e8e6df; --muted:#9aa0ab; --line:#33373f; --accent:#e0893a; --long:#4cc38a; --short:#ef6b61; --warnbg:#3a2f12; --badbg:#3c1d1a; color-scheme:dark }
+*{box-sizing:border-box} body{background:var(--bg);color:var(--fg);font-family:var(--display);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:860px;margin:0 auto} h1{font-size:1.6rem;margin:22px 0 4px;text-wrap:balance} h2{font-size:1.1rem;margin:32px 0 10px;border-bottom:2px solid var(--line);padding-bottom:4px}
+.sub{color:var(--muted)} .eyebrow{font:500 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+ul.tree{list-style:none;padding:0;margin:0} ul.tree li{padding:6px 0;border-bottom:1px solid var(--line)} ul.tree a{color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:.9rem} ul.tree .folder{font-weight:600;font-family:var(--mono);color:var(--muted);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;margin-top:10px;border-bottom:0}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)} table{border-collapse:collapse;width:100%;font-size:.85rem} th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top} th{font:500 .68rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg);white-space:nowrap} tr:last-child td{border-bottom:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sev-critical{color:var(--short);font-weight:600} .sev-warn{color:var(--accent)} .empty{color:var(--muted);padding:12px;background:var(--surface);border:1px dashed var(--line);border-radius:6px}
+.long{color:var(--long)} .short{color:var(--short)} .foot{margin-top:36px;color:var(--muted);font-size:.8rem}
+a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<div class="wrap">
+<div class="eyebrow">Obsidian vault · persisted as artifact files + database</div>
+<h1>Trading Desk Vault</h1>
+<p class="sub">The desk's memory. Notes are the files below (open in Obsidian from the zip, or read them here). The paper journal and alerts below come live from the database that the intraday monitor writes.</p>
+
+<h2>Notes</h2>
+<ul class="tree" id="tree"></ul>
+
+<h2>Paper journal — today</h2>
+<div class="eyebrow" id="jdate"></div>
+<div id="journal"><div class="empty">No paper actions yet. The monitor writes a row here every hour (at :40) during the session; the Coach replaces indicative fills with exact ones after the close.</div></div>
+
+<h2>Alerts</h2>
+<div id="alerts"><div class="empty">No alerts yet.</div></div>
+
+<h2>Scorecard</h2>
+<div id="score"><div class="empty">The Coach fills this after each close.</div></div>
+
+<div class="foot">Rules change only through the Coach's change policy (tighten on one sample, loosen on ten). Everything here is a paper account until a broker is connected.</div>
+</div>
+<script>window.__VAULT_FILES__=["Dashboard.md", "Desk/Rules Changelog.md", "Desk/Rules.md", "Desk/Seats.md", "Journal/2026-10-06 Journal.md", "Plans/2026-10-06 Plan.md", "Scripts/desk.workflow.js", "Scripts/render_plan.py", "Templates/Journal.md", "Templates/Lesson.md", "Templates/Review.md"];</script>
+<script>
+(function(){
+  var FILES = window.__VAULT_FILES__ || [];
+  var tree=document.getElementById('tree'); var lastFolder=null;
+  FILES.forEach(function(p){ var folder=p.indexOf('/')>0?p.split('/')[0]:'(root)'; if(folder!==lastFolder){ var f=document.createElement('li'); f.className='folder'; f.textContent=folder; tree.appendChild(f); lastFolder=folder; }
+    var li=document.createElement('li'); var a=document.createElement('a'); a.href=p; a.textContent=p.replace(/^[^/]+\//,''); li.appendChild(a); tree.appendChild(li); });
+  function esc(s){ return String(s==null?'':s); }
+  function render(){
+    if(!window.claude||!window.claude.use) return;
+    window.claude.use('db').then(function(db){
+      if(!db) return;
+      var state=db.doc('state/desk');
+      state.onSnapshot(function(snap){ var d=snap&&snap.data?snap.data():null; if(!d) return;
+        document.getElementById('jdate').textContent='Session '+esc(d.session_date)+' · rules v'+esc(d.rules_version)+(d.premarket_status?' · premarket: '+esc(d.premarket_status):'');
+        if(d.scorecard&&d.scorecard.length){ var h='<div class="tbl"><table><thead><tr><th>Date</th><th>Planned</th><th>Triggered</th><th>Day R</th><th>Day P&L %</th><th>Rules v</th></tr></thead><tbody>';
+          d.scorecard.forEach(function(r){ h+='<tr><td class="num">'+esc(r.date)+'</td><td class="num">'+esc(r.planned)+'</td><td class="num">'+esc(r.triggered)+'</td><td class="num">'+esc(r.day_r)+'</td><td class="num">'+esc(r.day_pnl_pct)+'</td><td class="num">'+esc(r.rules_version)+'</td></tr>'; });
+          document.getElementById('score').innerHTML=h+'</tbody></table></div>'; }
+      });
+      db.collection('journal').orderBy('ts','asc').limit(200).onSnapshot(function(q){
+        var rows=[]; q.forEach(function(doc){ rows.push(doc.data()); });
+        if(!rows.length) return;
+        var h='<div class="tbl"><table><thead><tr><th>Time ET</th><th>Ticker</th><th>Action</th><th>Price</th><th>Size %</th><th>Rule / evidence</th><th>Exact?</th></tr></thead><tbody>';
+        rows.forEach(function(r){ h+='<tr><td class="num">'+esc(r.time_et)+'</td><td class="num '+(r.direction==='short'?'short':'long')+'">'+esc(r.ticker)+'</td><td>'+esc(r.action)+'</td><td class="num">'+esc(r.price)+'</td><td class="num">'+esc(r.size_pct)+'</td><td>'+esc(r.rule)+(r.evidence?' — '+esc(r.evidence):'')+'</td><td>'+(r.indicative?'indicative':'exact')+'</td></tr>'; });
+        document.getElementById('journal').innerHTML=h+'</tbody></table></div>';
+      });
+      db.collection('alerts').orderBy('ts','desc').limit(50).onSnapshot(function(q){
+        var rows=[]; q.forEach(function(doc){ rows.push(doc.data()); });
+        if(!rows.length) return;
+        var h='<ul>'; rows.forEach(function(r){ h+='<li><span class="num">'+esc(r.time_et)+'</span> <span class="sev-'+esc(r.severity)+'">'+esc(r.severity)+'</span> '+esc(r.text)+'</li>'; });
+        document.getElementById('alerts').innerHTML=h+'</ul>';
+      });
+    });
+  }
+  render();
+})();
+</script>
