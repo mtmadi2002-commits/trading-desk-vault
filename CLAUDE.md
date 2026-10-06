@@ -3,7 +3,7 @@
 This repo is the Obsidian vault and codebase of an automated, seven-seat, PAPER day-trading desk. It is also the live data of a running system — read this before changing anything.
 
 ## Who runs the desk
-- The **engine is a cloud Claude Code session** (https://claude.ai/code/session_01URQVpT1mE8o8ZHUQRQHzvP). Four routines fire into it on weekdays (ET): 08:50 premarket, 09:40–15:40 hourly monitor (demo execution), 16:24 coach, 20:55 next-day plan. Each run pulls `main`, writes notes, commits and pushes, and mirrors to the Desk Floor page.
+- The **engine is a cloud Claude Code session** (https://claude.ai/code/session_01URQVpT1mE8o8ZHUQRQHzvP). Five routines fire into it on weekdays (ET): 08:50 premarket, 09:40–15:40 hourly monitor (demo execution), 10:10–15:10 hourly quote refresh (live tape + ladder check, no new orders), 16:24 coach, 20:55 next-day plan. Each run pulls `main`, writes notes, commits and pushes, and mirrors to the Desk Floor page.
 - A **local session (this one, probably)** is for reading, analysing and editing. Do NOT create routines here, do NOT run the monitor/coach modes against the live ledger from here, and do NOT run `Scripts/broker/exec.py` in a non-paper mode. Pull before editing; push after; keep commits small — a run may push at any minute.
 
 ## Map
