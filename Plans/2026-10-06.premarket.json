@@ -1,152 +1,170 @@
 {
- "as_of_et": "2026-10-06 00:50 ET \u2014 DRESS REHEARSAL (market closed; all 'premarket' quotes are finviz Oct 5 after-hours prints 7:54-7:59 PM ET, 15-20 min delayed; treat as the 09:00 read and re-pull live before 09:25)",
+ "as_of_et": "2026-10-06 08:55 ET (finviz premarket quotes stamped 08:44-08:55 ET, free tier 15-20 min delayed; searches run 08:56 ET)",
  "quotes": [
   {
    "ticker": "NU",
    "prev_close": 15.18,
-   "premarket": 15.21,
-   "gap_pct": 0.2,
-   "source": "finviz https://finviz.com/quote.ashx?t=NU (Last Close 15.18 Oct 05 3:59 PM; Aftermarket 15.21 +0.03/+0.20% 7:59 PM ET; ATR 0.66, RSI 61.38, vol 180,502,182, avg 82.96M, rel vol 2.18, short float 3.66%). Pre-market volume: unknown (finviz free shows no AH/PM volume)."
+   "premarket": 15.29,
+   "gap_pct": 0.72,
+   "premarket_volume": 145500,
+   "source": "finviz https://finviz.com/quote.ashx?t=NU @08:50 ET (Prev Close 15.18, Price 15.29 +0.72%, Volume 145,500, Rel Vol 0.03, ATR 0.63, RSI 62.13, Avg Vol 84.47M, 52W high 18.98)"
   },
   {
    "ticker": "SPCX",
    "prev_close": 171.09,
-   "premarket": 172.38,
-   "gap_pct": 0.75,
-   "source": "finviz https://finviz.com/quote.ashx?t=SPCX (Last Close 171.09 +7.63%; Aftermarket 172.38 +1.29/+0.75% 7:59 PM ET; ATR 7.32, RSI 68.81, vol 135,688,935, avg 92.79M, short float 6.30%). AH 172.38 is BELOW Monday high 172.47 and below no-chase 178.40."
+   "premarket": 172.13,
+   "gap_pct": 0.61,
+   "premarket_volume": 4926096,
+   "source": "finviz https://finviz.com/quote.ashx?t=SPCX @08:53 ET (Prev Close 171.09, Price 172.13 +0.61%, Volume 4,926,096, ATR 6.98, RSI 69.36, Avg Vol 93.45M, Rel Vol 1.05)"
   },
   {
    "ticker": "NVDA",
    "prev_close": 238.9,
-   "premarket": 240.2,
-   "gap_pct": 0.54,
-   "source": "finviz https://finviz.com/quote.ashx?t=NVDA (Last Close 238.90 +2.12%; Aftermarket 240.20 +1.30/+0.54% 7:59 PM ET; ATR 5.93, RSI 66.90, vol 127,171,519, avg 122.59M). Matches plan exactly -> NO re-level required."
-  },
-  {
-   "ticker": "EWZ",
-   "prev_close": 42.98,
-   "premarket": 43.16,
-   "gap_pct": 0.42,
-   "source": "finviz https://finviz.com/quote.ashx?t=EWZ (Last Close 42.98 +12.54%; Aftermarket 43.16 +0.18/+0.42% 7:59 PM ET; ATR 1.18, RSI 77.86, vol 190,604,278, rel vol 8.31). Above the 42.74 Brazil-tell line."
-  },
-  {
-   "ticker": "ITUB",
-   "prev_close": 9.92,
-   "premarket": 9.84,
-   "gap_pct": -0.81,
-   "source": "finviz https://finviz.com/quote.ashx?t=ITUB (Last Close 9.92 +15.48%; Aftermarket 9.84 -0.08/-0.85% 7:54 PM ET; ATR 0.35, RSI 78.67, vol 113,279,545). MONDAY OPEN = 9.83, day range 9.81-10.19 per stockanalysis https://stockanalysis.com/stocks/itub/ (finviz 'Prev Close 8.59' is Friday's close, NOT Monday's open). AH 9.84 sits $0.01 above the open; closed in bottom 30% of range. Earnings Nov 3."
+   "premarket": 241.35,
+   "gap_pct": 1.03,
+   "premarket_volume": 3414891,
+   "source": "finviz https://finviz.com/quote.ashx?t=NVDA @08:53 ET (Prev Close 238.90 = plan close CONFIRMED, Price 241.35 +1.03%, Volume 3,414,891, ATR 5.72, RSI 68.70, 52W high 240.10); Reuters 08:05 'Nvidia rose 0.9% in premarket'"
   },
   {
    "ticker": "SPY",
    "prev_close": 774.83,
-   "premarket": 774.92,
-   "gap_pct": 0.01,
-   "source": "finviz https://finviz.com/quote.ashx?t=SPY (Last Close 774.83 +0.67%; Aftermarket 774.92 +0.09/+0.01% 7:59 PM ET; Prev Close 769.64; ATR 6.79, RSI 58.83, 52W high 779.37)."
+   "premarket": 777.92,
+   "gap_pct": 0.4,
+   "premarket_volume": 518772,
+   "source": "finviz https://finviz.com/quote.ashx?t=SPY @08:54 ET (Prev Close 774.83, Price 777.92 +0.40%, Volume 518,772, ATR 6.57, 52W high 779.37)"
+  },
+  {
+   "ticker": "EWZ",
+   "prev_close": 42.98,
+   "premarket": 43.35,
+   "gap_pct": 0.86,
+   "premarket_volume": 479660,
+   "source": "finviz https://finviz.com/quote.ashx?t=EWZ @08:53 ET (Prev Close 42.98, Price 43.35 +0.86%, Volume 479,660, ATR 1.16, RSI 78.66, 52W high 43.90)"
   },
   {
    "ticker": "TLT",
    "prev_close": 77.11,
-   "premarket": 77.13,
-   "gap_pct": 0.03,
-   "source": "finviz https://finviz.com/quote.ashx?t=TLT (Last Close 77.11 -0.48%; Aftermarket 77.13 +0.02/+0.03% 7:58 PM ET; RSI 22.03, 52W low 76.76, ATR 0.82; 'Daily ETF Flows: Money Pours Into TLT' etf.com 5:00 PM). Flat AH = no evidence of a further overnight yield spike; 10Y closed 5.31% per Yahoo."
+   "premarket": 77.36,
+   "gap_pct": 0.32,
+   "premarket_volume": 1602444,
+   "source": "finviz https://finviz.com/quote.ashx?t=TLT @08:54 ET (Prev Close 77.11, Price 77.36 +0.32%, Volume 1,602,444, ATR 0.79, RSI 25.45, 52W low 76.68) = bonds bid / yields easing"
+  },
+  {
+   "ticker": "ITUB",
+   "prev_close": 9.92,
+   "premarket": 9.88,
+   "gap_pct": -0.4,
+   "premarket_volume": 28024,
+   "source": "finviz https://finviz.com/quote.ashx?t=ITUB @08:44 ET (Prev Close 9.92, Price 9.88 -0.40%, Volume 28,024 = thin, ATR 0.33, RSI 77.57); Monday open NOT shown on finviz (prior Friday close 8.59, Monday +15.48% per finviz news column)"
+  },
+  {
+   "ticker": "TSLA",
+   "prev_close": 378.73,
+   "premarket": 381.64,
+   "gap_pct": 0.77,
+   "premarket_volume": 665240,
+   "source": "finviz https://finviz.com/quote.ashx?t=TSLA @08:55 ET (Prev Close 378.73, Price 381.64 +0.77%, Volume 665,240, ATR 12.18) = SPCX confirmation leg GREEN"
   }
  ],
- "index_check": "CHOP regime intact, no flip. SPY 774.83 close / 774.92 AH (+0.01%) sits above the 774.83 pivot and 5.3 pts above the 769.60 gap-fill (finviz Prev Close 769.64). ES/NQ/YM futures +0.1% each at the Monday-evening open (CNBC https://www.cnbc.com/2026/10/04/stock-market-today-live-updates.html 'Stock futures open flat'); S&P 500 closed 7,773.95 (+0.66%), Nasdaq record (CNBC). 10Y closed 5.31% (+3bp, Yahoo https://finance.yahoo.com/markets/live/stock-market-today-monday-october-5-dow-sp-500-nasdaq-081220790.html) - below the 5.35% yield-shock line; TLT 77.11/77.13 AH, RSI 22 at its 52w low 76.76 -> bonds offered but no overnight extension. NVDA 240.20 AH above ATH 240.10, SPCX 172.38 AH 0.09 below Monday high. No overnight ES gap >0.75% found. Opening-range filter values unchanged: SPCX 7.3 / NU 0.66 / NVDA 5.9. No entries 09:30-09:35; no Brazil ADR entries 08:55-09:15 (B3 open 09:00 ET now VERIFIED).",
+ "index_check": "RISK-ON, NO REGIME FLIP. SPY premarket 777.92 (+0.40%, +3.09 pts vs 774.83 close; finviz 08:54) - above the 774.83 pivot and far above the 769.60 gap-fill kill level; gap is < 3.9 pts (0.5%) so the no-entry window stays 09:30-09:35, NOT extended to 09:40. Futures (Reuters 08:05 ET https://www.reuters.com/business/wall-st-futures-rise-yields-oil-dip-2026-10-06/): Dow +0.55%, S&P 500 +0.39%, Nasdaq-100 +0.61%; S&P ~0.6% from record. 10Y: ~5.27%, down ~3 bp from Monday's 2002-high peak (Quartz https://qz.com/stock-futures-rise-bond-yields-retreat-100626); AP/USNews says it 'briefly crossed 5.35%' at Monday's high before closing ~5.32% - that was Monday, not today; YIELD SHOCK (>5.35% today) NOT tripped, and 10Y is NOT making a new intraday high above 5.311% this morning. TLT +0.32% confirms bonds bid. Oil: slipping premarket (Reuters/Quartz: more vessels transiting Hormuz vs Iranian attempts to target tankers per WSJ) - no confirmed strike on Gulf infrastructure, Brent/WTI exact levels unknown (not scraped). NDX futures green = SPCX/NVDA index confirmation satisfied pre-open; TSLA green (+0.77%); TSM premarket UNKNOWN (not scraped, budget). Tech tape: Nasdaq record close Monday, NVDA record premarket on Foxconn Q3 revenue +47% (Quartz 08:26). Watch: Barron's 07:36 'Stocks Are Ignoring the Bond Market Warning' and 01:00 'This Week's Treasury Auctions Could Send Yields Even Higher' - auctions this week confirmed in general, 13:00 3-yr slot still unverified, keep the 12:55-13:05 caution.",
  "overnight_news": [
-  "BRAZIL (VERIFIES open question): Reuters Oct 5 - Bovespa settled at 206,911.89, new closing record, +7.7% (largest since Mar 24 2020); real +4.1% to ~5.00/USD; Flavio 47% vs Lula ~45%, runoff Oct 25; Morgan Stanley sees BRL past 4.90 toward 4.50 in Q1-27. https://www.reuters.com/world/americas/brazil-markets-set-rally-bolsonaro-leads-first-round-vote-2026-10-05/",
-  "BRAZIL CAUTION (new): Reuters EXCLUSIVE Oct 5 - Lula is weighing VP Geraldo Alckmin as his next finance minister to bolster fiscal credibility and win centrist voters. Not a poll and not a Polymarket move, so the runoff-repricing kill switch is NOT tripped, but it is a 'Lula consolidating centrists' headline - watch Polymarket at 09:00. https://www.reuters.com/world/americas/brazils-lula-weighs-vp-alckmin-next-finance-minister-woo-centrist-voters-2026-10-05/",
-  "BRAZIL (supportive): Reuters Oct 5 - Bolsonaro wins endorsements from right-wing rivals for the runoff; right-wing wave in Congress. https://www.reuters.com/world/americas/bolsonaro-wins-endorsements-right-wing-rivals-brazil-election-runoff-2026-10-05/",
-  "B3 OPEN VERIFIED: Rio Times - 'B3 exchange opens at 10:00 a.m. Brasilia time ... or 9:00 a.m. Eastern'. Macro calendar's 08:00 ET entry is wrong, plan assumption is right. USD/BRL 4.98 intraday Monday (Euronews) / ~5.00 (Reuters) - the <5.00 tell is BORDERLINE. https://www.riotimesonline.com/brazil-election-markets-real-ibovespa-adrs-2026/ ; https://www.euronews.com/2026/10/05/sao-paulo-stock-exchange-soars-as-flavio-bolsonaro-takes-the-lead",
-  "US FUTURES: CNBC Oct 5 evening - Dow futures +53 (+0.1%), S&P and Nasdaq-100 futures +0.1%; Nasdaq closed at a fresh record, S&P 7,773.95; 10Y 5.31%. Stocktwits 10:45 PM 'Dow, S&P 500, Nasdaq futures edge higher after Nasdaq climbs to record high: SPCX, USAR, CEG, NVAX in focus'; AFP 10:39 PM 'Asian stocks mixed despite tech-led Wall St record'. https://www.cnbc.com/2026/10/04/stock-market-today-live-updates.html ; https://finance.yahoo.com/markets/stocks/articles/dow-p-500-nasdaq-futures-024536034.html",
-  "SPCX (no negative item): finviz headline 5:35 PM 'SpaceX subsidiary files with Florida regulators to build 32.4-mile natural gas pipeline for Starship methane at Cape Canaveral'; Stocktwits 9:58 PM 'SPCX stock makes Musk a trillionaire again: Sequoia's Maguire says investors are just starting to understand SpaceX'; 5:26 PM 'SPCX ends higher on Starship fuel plans, analyst optimism and TSMC talks'. Insider table re-confirmed: Shotwell option exercise + sale 342,170 sh @153.57 Sep 22 (Form 4 Sep 24). https://finance.yahoo.com/markets/stocks/articles/spcx-stock-makes-musk-trillionaire-015822791.html",
-  "NVDA (no new catalyst, no re-level): DigiTimes 11:36 PM 'AM Intelligence expands India AI infrastructure push with 20,000 more Nvidia Rubin GPUs'; Stocktwits 11:28 PM 'Why did NVDA, TSM, WBD stocks hit 52-week highs today?'; 11:14 PM Dan Ives bull case; 10:38 PM BeInCrypto 'what if it has a Lehman moment' (noise). TSM at a 52w high = supportive for the SPCX confirmation leg. https://www.digitimes.com/news/a20261006PR200/ai-infrastructure-capacity-asia-nvidia-rubin.html",
-  "NU (nothing new after the close): latest finviz items are Monday's rally coverage (Yahoo 12:36 PM +13.03%; Proactive 10:48 AM); XTB/Globe and Mail/Benzinga recaps only; no post-close NU-specific headline, no BofA/analyst action found. https://www.xtb.com/int/market-analysis/news-and-research/nu-holding-shares-up-13-after-bolsonaro-outperformed-polls",
-  "ITUB AH fade tell: -0.85% to 9.84 (7:54 PM) after closing 9.92 in the bottom third of a 9.81-10.19 range; AH sits one cent above the 9.83 Monday open that triggers the NU exit. Source: finviz + stockanalysis ITUB pages.",
-  "DISCARDED: Lexington Herald-Leader 'Wall St futures dip as tech stocks take a breather, 10Y 5.28%' (undated, consistent with Monday pre-open, not overnight); Rio Times live board (IBOV 192,114, Brent 88.88) is Friday-stale - do not use its Brent vs the plan's 100.63."
+  "MACRO (Reuters 08:05 ET): US futures rise as Treasury yields retreat from multi-year highs and oil dips ahead of earnings season; Dow +0.55% / S&P +0.39% / NDX +0.61%; NVDA +0.9% premarket. https://www.reuters.com/business/wall-st-futures-rise-yields-oil-dip-2026-10-06/",
+  "YIELDS (Quartz, Tue morning): 10Y ~5.27%, -3 bp from Monday's peak (highest since Apr 2002); S&P futures +0.3%, new all-time closing high 'within reach'; oil lower on rising Hormuz transits vs Iranian tanker harassment (WSJ via Quartz). https://qz.com/stock-futures-rise-bond-yields-retreat-100626",
+  "BRAZIL OFFICIAL (Rio Times Brazil Morning Call, Oct 6): Ibovespa Monday close 206,912 (+7.70%, record) = plan reference 206,911.89 CONFIRMED; USD/BRL 4.9936 (-4.21%) < 5.00; Polymarket Flavio Bolsonaro 83.7-84% / Kalshi 84% (Lula 16-17%) as of 00:20 ET Oct 6 - ABOVE the 83.2% kill-switch reference, so no repricing. B3 open time not stated. https://www.riotimesonline.com/brazils-financial-morning-call-for-tuesday-october-6-2026/ and https://www.riotimesonline.com/latin-american-pulse-for-tuesday-october-6-2026/",
+  "BRAZIL (CNBC Oct 5): Polymarket Flavio odds 85% (from 63% pre-count); runoff Oct 25; Bovespa +8% Monday. No new Quaest/Datafolha poll, no 'Super PEC'/economic-team headline, no Trump/Vance statement on Brazil found in the 24h search. https://www.cnbc.com/2026/10/05/brazilian-stocks-jump-bolsonaro-now-heavy-favorite-to-win-presidency.html",
+  "BRAZIL ADRs premarket (finviz 08:44-08:53): EWZ 43.35 +0.86% (> 42.74 tell), NU 15.29 +0.72% on only 145,500 sh, ITUB 9.88 -0.40% on 28,024 sh (thin; was AH 9.84 Monday). Complex is green-to-flat, NOT accelerating - consistent with 'slower pace' thesis; ITUB is the laggard to watch.",
+  "NU (finviz news column): NO NU-specific headline since Monday (last: MarketWatch 'Premarket movers: PTC, Nu Holdings...' Oct 5 06:00, Yahoo/Proactive 'Nu Holdings shares jump after Bolsonaro election upset' Oct 5 10:48). The 'BofA sees trouble / CFO exit' Stocktwits item on the page is dated Jun 2 2026 - STALE, ignore. Firecrawl NU search (qdr:d) returned zero results.",
+  "SPCX (finviz news, Oct 6): Barron's 08:01 'Tesla Stock Rises Again. Is It Dragging SpaceX Stock Higher?'; Yahoo 07:53 / Quartz 07:33 / Barron's 06:38 re-runs of the Morgan Stanley $300 'cheap and getting cheaper' reiteration (catalyst is still a REITERATION); Benzinga 03:33 'Elon Musk's Trump Admin Return Puts Tesla, SpaceX in Focus' (headline-risk flag, not negative); Stocktwits 01:42 'SpaceX merger buzz could dominate near-term narrative' (TSLA); Mon 17:35 SpaceX subsidiary files with Florida regulators for a 32.4-mile Starship methane pipeline at Cape Canaveral. NO launch failure / regulatory action / TSMC-Terafab denial found -> MUSK-COMPLEX kill switch NOT tripped. SPCX premarket 172.13 < Mon high 172.47 and < AH 172.38.",
+  "NVDA (finviz news, Oct 6): Quartz 08:26/08:30 'Nvidia stock hits record high after Foxconn Q3 2026 revenue surge (+47%)'; Quartz 08:03 'Morgan Stanley: Nvidia, Broadcom shielded from data-center power crunch'; IBD 08:01 'Dow rises 300 points as oil, yields drop; AMD, Nvidia, Tesla rally'. NVDA premarket 241.35 is already ABOVE the 240.10 ATH and the 240.60 trigger but BELOW the 244.80 no-chase line.",
+  "BONDS (finviz TLT news): Barron's Oct 6 01:00 'This Week's Treasury Auctions Could Send Yields Even Higher'; etf.com Oct 5 'Daily ETF Flows: Money Pours Into TLT'. Auction supply this week is real; exact 13:00 3-yr timing still unverified - keep the 12:55-13:05 caution and the no-new-tech-after-12:30 rule.",
+  "GEOPOLITICS: no confirmed overnight Iranian/Houthi strike on Gulf infrastructure found; oil is LOWER premarket (Reuters/Quartz), ES is UP -> OVERNIGHT GEOPOLITICAL SHOCK switch NOT tripped. Asia mixed, oil 'rose early Tuesday' in Asian hours then slipped by US premarket (USNews/AP https://www.usnews.com/news/business/articles/2026-10-06/asian-shares-are-mixed-after-wall-street-gains-oil-price-steadies)."
  ],
  "trade_status": [
   {
    "ticker": "NU",
    "status": "live-halved",
-   "why": "Plan rule 'AUTO-HALVE to 0.25% if ANY of: gap beyond +/-3%, pre-market volume <2M by 09:00, tech long open, spread >0.3%'. Gap +0.20% (15.21 vs 15.18) passes; pre-market VOLUME IS UNVERIFIABLE on this pull (finviz free publishes no PM volume) so the <2M condition cannot be cleared -> halved by default. RESTORE TO 0.5% only if a live feed shows NU PM volume >=2M by 09:00 AND spread <=0.3% past 09:40 AND no tech long is already open. Tell legs: EWZ 43.16 > 42.74 PASS; ITUB 9.84 vs Monday open 9.83 PASS by $0.01 (amber - closed low in range, AH down); Ibovespa close VERIFIED 206,911.89 (Reuters) -> use that number; USD/BRL ~4.98-5.00 BORDERLINE (re-read at 09:25/09:45); NU PM 15.21 >= 14.84 PASS; open not >15.84 PASS. Not scrapped: no EWZ gap-down >3%, no poll/Polymarket drop found (Alckmin finance-minister story is a caution, not a trigger). Levels unchanged (structure: Mon O 14.98 H 15.46 L 14.84; entry cap 15.46, fill cap 15.37). Exit rule now has a number: ITUB 5-min close < 9.83 while NU long = exit.",
+   "why": "HALVING RULE FIRED: 'NU pre-market volume < 2M sh by 09:00 ET' - finviz shows 145,500 sh at 08:50 ET (Rel Vol 0.03). Size 2.5% of equity (half of the 5% default; = $5 risk on a $200 account, shares = equity*0.025/0.48). Everything else passes pre-trade: gap +0.72% (15.29 vs 15.18) is inside +/-3% (14.72-15.64) so no gap-halving, no VWAP-retest-only (15.29 < 15.84 no-chase); NU premarket 15.29 > 14.84 Monday low; EWZ 43.35 > 42.74; USD/BRL 4.9936 < 5.00 (Rio Times); Polymarket Flavio 83.7-85% >= 83.2% (no runoff repricing); EWZ gap +0.86% (not > +5% / not < -3%). STILL OPEN: Ibovespa direction (B3 opens 09:00 ET - read at 09:25 AND 09:45) and ITUB vs its Monday open (finviz has no open field; ITUB 9.88 premarket vs Friday close 8.59 - almost certainly above Monday's open, confirm with a live feed). Entry stays the HELD-pullback below 15.46 after 09:45 with a 5-min close back above LIVE VWAP; if finviz premarket volume was simply delayed and a live feed shows >= 2M by 09:00, restore to 5%. Levels unchanged (plan does not instruct a NU re-level): entry 15.20 / stop 14.72 / T1 16.00 / T2 16.40; note ATR is now 0.63 (was 0.66) so the stop is 0.76x ATR (still >= 0.7x), the OR-width void threshold becomes 0.63, no-chase 15.81, fill cap 15.36 - all slightly TIGHTER than the plan's numbers, use the tighter ones.",
    "relevelled": {
     "entry": 15.2,
     "stop": 14.72,
     "target1": 16,
     "target2": 16.4,
-    "size_pct": 0.25
+    "size_pct": 2.5
    }
   },
   {
    "ticker": "SPCX",
    "status": "live",
-   "why": "No kill switch fired: AH 172.38 is below Monday high 172.47 (an opening print above it does not count) and far below no-chase 178.40; gap +0.75% (<1 ATR 7.32); no negative Musk/SpaceX/Starship/TSMC headline overnight (Florida pipeline filing, Sequoia comment, TSM 52w high are all neutral-to-positive); 10Y 5.31% < 5.35%, TLT flat AH; SPY > 769.60. Plan does not call for a re-level, so legs stand: LEG A PREFERRED (VWAP pullback) entry 168.20 / stop 162.00 / T1 180.60 / T2 185.00 at 0.5%, fill cap 170.00; LEG B (breakout) entry 172.80 / stop 166.90 / T1 180.60 / T2 185.00 at 0.25%, fill cap 174.60. Both need a 5-min close after 09:45 with TSLA+TSM+NDX all green (TSLA/TSM PM direction NOT pulled - budget; read live at 09:25). OR filter 7.3 pts; leg B window 09:45-11:30, leg A 10:00-12:30; if no live VWAP at 09:45 leg A void and leg B at 0.125%. If NU is open at 0.5%, SPCX+NU must stay <=1.0% total (leg A 0.5 + NU 0.5 = 1.0 OK; with NU halved there is headroom)."
+   "why": "No kill switch fired: no negative Musk/SpaceX/Starship/TSMC headline overnight (finviz news through 08:01 ET); TSLA green premarket (381.64 +0.77%); NDX futures +0.61%; TSM premarket UNKNOWN (not scraped) - must be green at the trigger bar. Premarket 172.13 (+0.61%) is below the 178.40 no-chase line and below Monday high 172.47, so Leg B still needs a 5-min CLOSE above 172.47 after 09:45 (an opening print above does not count); Leg A VWAP-pullback (entry 168.20 / stop 162.00 / T1 180.60 / T2 185.00, 5%) remains PREFERRED and mutually exclusive with Leg B (172.80 / 166.90 / 180.60 / 185.00, 2.5%). SPY 777.92 > 769.60, 10Y ~5.27% not at a new high > 5.311%. Re-level not required by the plan; note ATR is now 6.98 (was 7.32): OR-width void threshold becomes 7.0 pts (tighter), stops are 0.85x/0.89x ATR (valid), keep fill caps 174.60 / 170.00. Live VWAP MANDATORY at 09:45 for Leg A; if no feed, Leg A void and Leg B at half size off the hard 172.47 level."
   },
   {
    "ticker": "NVDA",
    "status": "live",
-   "why": "09:00 pull MATCHES the plan (close 238.90 / AH 240.20) -> NVDA re-level rule NOT triggered, numbers stand: trigger 5-min close >=240.60 after 09:45, stop 236.00, T1 246.60, T2 250.00, fill cap 241.90, no-chase 244.80, OR filter 5.9, window 09:45-11:00, 0.25% ALWAYS. AH 240.20 is above ATH 240.10 but below the 240.60 trigger - no gap-and-go. NDX record, 10Y 5.31% (<5.35), SPY > 774.83 pivot all pass. SLOT-CONDITIONAL, not independent: under max-2-concurrent and the one-tech-slot rule, NVDA may be opened only if the Brazil slot OR the SPCX slot is empty, and never while SPCX is on at 0.5% (leg A); with SPCX leg B at 0.25% the combined tech risk 0.5% is allowed but NU+SPCX+NVDA = 3 positions is NOT. Practical read: NVDA is the fallback if NU is not triggered by 11:00 or SPCX is scrapped at the open."
+   "why": "Tell-sized 2.5% (plan: 0.25% drafted = 2.5% aggressive, ALWAYS), only if the tech slot is free (SPCX+NVDA combined <= 5%) and total open risk after entry <= 10%, max 2 concurrent. RE-LEVEL CHECK: finviz prev close 238.90 MATCHES the plan close, so all close-keyed levels stand (trigger 240.60, stop 236.00 below Monday open 236.09, no-chase 244.80, T1 246.60, T2 250.00); premarket 241.35 (+1.03%, Foxconn +47% revenue / MS power-crunch note) is above the ATH 240.10 and the 240.60 trigger but BELOW 244.80, so it is NOT yet VWAP-retest-only - the entry is still a 5-min CLOSE >= 240.60 after 09:45 with the next bar not closing back below 240.10, NDX green, SPY > 774.83 (premarket 777.92 passes), 10Y not at a new high above 5.311% (5.27% passes). If NVDA opens above 244.80 -> VWAP-retest-only after 10:00. ATR now 5.72 (was 5.93): OR-width void threshold 5.7 pts, stop 4.60 = 0.80x ATR (valid). Window 09:45-11:00 only for the breakout, pause 09:58-10:02, nothing new after 12:30."
   }
  ],
- "kill_switches_tripped": [],
+ "kill_switches_tripped": [
+  "NU AUTO-HALVE (plan position_size_formula / open question 2): NU pre-market volume 145,500 sh at 08:50 ET (finviz) < 2M threshold -> NU sized at 2.5% instead of 5%. Caveat: finviz free data is 15-20 min delayed; if a live feed shows >= 2M by 09:00 the halving is lifted.",
+  "NO OTHER SWITCH FIRED: INDEX REGIME FLIP (SPY 777.92 > 769.60) no; YIELD SHOCK (10Y ~5.27% < 5.35%, not above 5.311%) no; OVERNIGHT GEOPOLITICAL (oil down, ES up, no confirmed strike) no; BRAZIL RUNOFF REPRICING (Polymarket 83.7-85% vs 83.2% ref) no; BRAZIL GAP (EWZ +0.86%, NU +0.72%) no; MUSK-COMPLEX HEADLINE (none negative; SPCX 172.13 < 178.40) no; NVDA RE-LEVEL (prev close 238.90 matches) no; OPEN-WINDOW EXTENSION (SPY gap +3.09 < 3.9 pts, no ADR > 5%) no."
+ ],
  "checklist_answers": [
   {
-   "question": "09:00 ET pre-market gaps vs Monday closes (NU, SPCX, NVDA, EWZ, ITUB + ITUB Monday open); any gap > close+1 ATR -> VWAP-retest-only; NU gap beyond +/-3% halves NU",
-   "answer": "(finviz AH prints as the rehearsal 09:00 read) NU 15.21 vs 15.18 = +0.20%; SPCX 172.38 vs 171.09 = +0.75% (<178.40); NVDA 240.20 vs 238.90 = +0.54% (<244.80); EWZ 43.16 vs 42.98 = +0.42%; ITUB 9.84 vs 9.92 = -0.81%. No name is beyond close+1 ATR -> no VWAP-retest-only conversion; NU gap inside +/-3% -> no gap-halving. ITUB MONDAY OPEN = 9.83 (stockanalysis; range 9.81-10.19) -> NU exit tell is 'ITUB 5-min close < 9.83'; AH 9.84 is one cent above it."
+   "question": "09:00 ET pre-market gaps vs Monday closes (NU vs 15.18/AH 15.21, SPCX vs 171.09/AH 172.38, NVDA vs 238.90/AH 240.20, EWZ vs 42.98/AH 43.16, ITUB vs 9.92/AH 9.84 + ITUB Monday open); any gap > close+1 ATR -> VWAP-retest-only; NU gap beyond +/-3% halves",
+   "answer": "finviz 08:44-08:55 ET: NU 15.29 (+0.72%; vs AH 15.21 +0.5%) - inside +/-3%, below 15.84 no-chase -> no gap-halving, no retest-only. SPCX 172.13 (+0.61%; vs AH 172.38 -0.1%) < 178.40 -> normal. NVDA 241.35 (+1.03%; vs AH 240.20 +0.5%) < 244.80 -> normal, prev close 238.90 confirmed so no re-level. EWZ 43.35 (+0.86%; vs AH 43.16 +0.4%) > 42.74 tell. ITUB 9.88 (-0.40%; vs AH 9.84 +0.4%). ITUB Monday open: UNKNOWN - finviz shows no open field; Friday close was 8.59 and ITUB rose +15.48% Monday (finviz news column) so the Monday open was well below 9.88 - treat the 'ITUB above Monday open' leg as passing unless a live feed says otherwise. No name converts to VWAP-retest-only on the gap rule."
   },
   {
-   "question": "NU pre-market volume by 09:00 ET (threshold 2M) and opening spread",
-   "answer": "UNKNOWN - finviz free shows no after-hours/pre-market volume and no PM volume source was scraped (budget). Because the <2M halving condition cannot be cleared, NU is set live-halved (0.25%) by default; restore to 0.5% only on a live read of >=2M by 09:00. Spread: unknown until 09:30; rule unchanged (>0.3% past 09:40 halves, >0.5% empties the slot)."
+   "question": "NU pre-market volume by 09:00 ET (threshold 2M; below halves to 0.25%) and opening spread (>0.3% past 09:40 halves; >0.5% empties the slot)",
+   "answer": "finviz NU Volume 145,500 at 08:50 ET (Rel Vol 0.03) - BELOW 2M -> NU HALVED to 2.5% (aggressive-scale of 0.25%). Delayed-data caveat: re-check with a live feed at 09:00; restore 5% only if >= 2M. Opening spread: UNKNOWN until 09:40 (no live quote feed in this seat)."
   },
   {
-   "question": "B3 opening time (10:00 BRT = 09:00 ET assumed, not verified); official Ibovespa Monday close 206,911.89 vs Macro seat ~208,941-210,000",
-   "answer": "BOTH VERIFIED. Rio Times: 'B3 exchange opens at 10:00 a.m. Brasilia time ... or 9:00 a.m. Eastern' -> keep the 08:55-09:15 no-Brazil-ADR-entry window. Reuters: Bovespa settled at 206,911.89, a new closing record, +7.7% -> use 206,911.89 as the single 'green vs Monday close' reference; discard the Macro seat's 208,941-210,000 range."
+   "question": "B3 opening time 10:00 BRT = 09:00 ET assumed, confirm before 08:55; official Ibovespa Monday close 206,911.89 vs ~208,941-210,000",
+   "answer": "Official close CONFIRMED: Ibovespa 206,912 (+7.70%, record) per Rio Times Morning Call Oct 6 and Latin American Pulse Oct 6; CNBC says 'up 8%'. Use 206,911.89 / 206,912 for the green-vs-Monday tell; discard the Macro seat's 208,941-210,000. B3 open time: not stated by any source found; confirmed only by timezone arithmetic (Brazil has no DST since 2019, BRT = UTC-3; EDT = UTC-4 -> 10:00 BRT = 09:00 ET). Treat as confirmed-by-arithmetic, not web-verified."
   },
   {
-   "question": "Ibovespa direction and USD/BRL at 09:25 and 09:45; Polymarket/Kalshi Flavio probability at 09:00 vs 83.2%; new Quaest/Datafolha poll, economic-team/'Super PEC' headline, Trump/Vance statement",
-   "answer": "Ibovespa 09:25/09:45 direction: unknown (B3 not open; first read at 09:00 ET). USD/BRL last 4.98 intraday Monday (Euronews) / 'around 5 per dollar' after +4.1% (Reuters) -> the <5.00 tell is borderline, must be read live. Polymarket/Kalshi: no updated figure found in any search -> unknown, check at 09:00. New Quaest/Datafolha poll: none found. Economic-team headline: YES, Reuters exclusive that Lula weighs VP Alckmin as finance minister to woo centrists (Lula-side fiscal-credibility move; a caution for the NU long, not a kill switch - watch odds). Also Reuters: Flavio won endorsements from right-wing rivals (supportive). Trump/Vance statement: none found."
+   "question": "Ibovespa direction and USD/BRL at 09:25 and 09:45; Polymarket/Kalshi Flavio probability at 09:00 vs 83.2%; new Quaest/Datafolha poll; economic-team / Super PEC headline; Trump/Vance statement",
+   "answer": "Ibovespa direction: UNKNOWN at 08:55 (B3 not open until 09:00 ET) - the 09:25/09:45 reads must come from the monitor seat. USD/BRL 4.9936 (-4.21%, Rio Times Morning Call) / 4.9982 at Monday close (Rio Times) -> < 5.00 PASSES. Polymarket Flavio 83.7% (US$174M traded) / Kalshi 84% as of 00:20 ET Oct 6 (Rio Times); CNBC Oct 5 quotes Polymarket 85% -> at or above the 83.2% reference, NO repricing kill. New Quaest/Datafolha poll: none found (24h search). Economic-team / Super PEC headline: none found. Trump/Vance statement on Brazil: none found. All three = unknown/none-found, not 'confirmed absent'."
   },
   {
    "question": "Overnight Gulf/Iran/Houthi headlines and Brent vs 100.63 / WTI vs 89.57",
-   "answer": "No Gulf/Iran/Houthi escalation surfaced in the futures/Brazil/NU searches (CNBC: futures flat; AFP: Asian stocks mixed) and no dedicated search was spent on it (budget). Brent/WTI overnight levels: UNKNOWN - the only print found (Rio Times board Brent 88.88) is Friday-stale and discarded. Treat the geopolitical switch as untested; Catalyst/Macro seat must re-check at 08:30."
+   "answer": "No confirmed overnight strike on Gulf infrastructure or the UK base found. Oil is LOWER in US premarket (Reuters 'yields, oil dip'; Quartz: more vessels transiting Hormuz vs Iranian attempts to target tankers per WSJ); AP/USNews notes oil 'rose early Tuesday' in Asian hours then steadied. Exact Brent/WTI levels: UNKNOWN (not scraped). ES is UP, not down -> OVERNIGHT GEOPOLITICAL SHOCK switch NOT tripped; tech legs and Brazil long remain valid on this leg."
   },
   {
    "question": "US 10Y vs 5.311% and ES/NQ vs 7,833 / 31,340",
-   "answer": "10Y closed 5.31% Monday (+3bp, Yahoo; CNBC says 'higher yields'); no overnight print found, TLT AH 77.13 flat (+0.03%) = no evidence of a further spike. ES/NQ: +0.1% each at the Monday-evening futures open (CNBC); exact overnight levels vs 7,833/31,340 unknown. No yield-shock (>5.35%) trip; NVDA stays live, SPCX not halved on yields."
+   "answer": "10Y ~5.27%, down ~3 bp from Monday's peak (Quartz); AP says it briefly crossed 5.35% at Monday's high and closed ~5.32% - that was Monday. No new high this morning -> NVDA stays live (not watch-only), SPCX not halved on yields, no 'no new tech longs' (>5.35%) condition. TLT +0.32% premarket confirms. ES/NQ exact levels vs 7,833/31,340: UNKNOWN (not quoted by sources); Reuters: S&P E-minis +30.75 pts (+0.39%), NDX E-minis +192 pts (+0.61%), Dow E-minis +281 (+0.55%) at ~08:05 ET."
   },
   {
-   "question": "Identity of the 10:00 ET CME-calendar item Oct 6; 13:00 3-yr note auction; Fed speakers",
-   "answer": "UNKNOWN - not researched (search budget spent on futures, Brazil, NU). Keep the 09:58-10:02 pause and the 12:55-13:05 caution as drafted; no window freed."
+   "question": "Identity of the 10:00 ET CME-calendar item; 13:00 3-yr auction; Fed speakers Tuesday",
+   "answer": "10:00 ET item: UNKNOWN (not identified by any source found) - keep the 09:58-10:02 pause. 3-yr auction at 13:00: still UNVERIFIED for the exact slot; Barron's Oct 6 01:00 'This Week's Treasury Auctions Could Send Yields Even Higher' confirms auction supply this week -> keep the 12:55-13:05 caution and the no-new-tech-after-12:30 rule. Fed speakers: UNKNOWN."
   },
   {
    "question": "Live VWAP availability at 09:45 for SPCX/NU/NVDA (proxies 167.39 / 15.16 / 238.05 must be replaced)",
-   "answer": "Cannot be determined pre-market; this is an execution-platform question. Rule stands: if no live VWAP at 09:45, SPCX leg A void (leg B 0.125% off 172.47), NU hard-level only (hold above 14.98, stop 14.72) at half size, NVDA >240.60/236.00 at half size."
+   "answer": "UNKNOWN from this seat (no live intraday feed in premarket; Alpha Vantage cap 0). The monitor seat must confirm a live VWAP at 09:45; if none, the VWAP-feed kill switch applies: SPCX Leg A void, trade only hard Monday levels at half size (SPCX > 172.47 stop 166.90; NU hold above 14.98 stop 14.72; NVDA > 240.60 stop 236.00). Technical seat's warning stands: SPCX true VWAP likely below the 167.39 proxy on a low-to-high trend day."
   },
   {
-   "question": "TSLA and TSM pre-market direction (hard confirmation for SPCX) and overnight Musk/SpaceX/Starship/TSMC-Terafab headline",
-   "answer": "TSLA/TSM PM quotes NOT pulled (scrape budget went to the ITUB open). Indirect: TSM hit a 52-week/all-time high Monday (Stocktwits 11:28 PM, Yahoo 'TSMC stock hits all-time high after Musk confirms early Terafab talks'); TSLA +2.2% Monday. Overnight headlines: Florida methane-pipeline filing (5:35 PM, neutral/positive), Sequoia Maguire bullish comment (9:58 PM), 'SPCX ends higher on Starship fuel plans, analyst optimism and TSMC talks' (5:26 PM). NO negative item -> Musk-complex switch not tripped. Read TSLA/TSM live at 09:25 and at the trigger bar."
+   "question": "TSLA and TSM pre-market direction (hard confirmation for SPCX) and any overnight Musk/SpaceX/Starship/TSMC-Terafab headline",
+   "answer": "TSLA 381.64 +0.77% premarket (finviz 08:55) = GREEN. TSM: UNKNOWN (not scraped - budget); must be green at the trigger bar. Headlines (finviz SPCX/TSLA news, Oct 6): Barron's 08:01 'Tesla Stock Rises Again. Is It Dragging SpaceX Stock Higher?'; MS $300 reiteration re-runs 06:38-07:53; Benzinga 03:33 'Elon Musk's Trump Admin Return Puts Tesla, SpaceX in Focus' (flag for X-post headline risk); Stocktwits 01:42 SpaceX-merger buzz (TSLA); Mon 17:35 Florida methane-pipeline filing. NOTHING negative (no launch failure, regulatory action, or TSMC-Terafab denial) -> SPCX stays live."
   },
   {
    "question": "EWZ borrow availability and cost after a 190.6M-share day",
-   "answer": "UNKNOWN - broker-side item, not checkable from finviz; finviz shows Option/Short = Yes/Yes only. EWZ reinstatement remains impossible until a locate is confirmed before 09:30."
+   "answer": "UNKNOWN (no broker borrow data in this seat). EWZ reinstatement is moot pre-open anyway: EWZ premarket 43.35 (+0.86%) > 42.74, complex green -> reinstatement conditions (whole-complex failure after 10:00) are far from met."
   },
   {
-   "question": "LEN: Berkshire Form 4 pre-market gap and live ATR/avg vol/VWAP",
-   "answer": "NOT PULLED (budget: 8 scrapes used on plan tickers + SPY/TLT/ITUB-open). LEN stays off the ranked list; it cannot displace a ranked trade under max-2 in any case."
+   "question": "LEN: Berkshire Form 4 gap, live ATR/avg vol/VWAP; does it earn a watch-list slot",
+   "answer": "UNKNOWN - not scraped (8-scrape budget spent on plan tickers + SPY/EWZ/TLT/ITUB/TSLA). Under max-2-concurrent it cannot displace a ranked trade; leave on watch only if the monitor seat has a spare pull."
   },
   {
-   "question": "WBD deal close Tuesday - confirm it stops trading at the open and any index-rebalance/MOC distortion",
-   "answer": "Not directly verified. Only indirect item: Stocktwits 11:28 PM 'Why did NVDA, TSM, WBD stocks hit 52-week highs today?' (WBD still traded Monday). Keep WBD on do-not-trade; MOC distortion unknown."
+   "question": "WBD deal close Tuesday - does it stop trading at the open; index-rebalance / MOC flow",
+   "answer": "UNKNOWN (not researched within budget). Not in the plan's book; no action."
   },
   {
-   "question": "Tuesday pre-market earnings LW and RPM - re-check at 08:30 for a better-liquidity catalyst only if a slot is free",
-   "answer": "Not checked (no budget); no slot is free under max-2 with NU + SPCX ranked, so no action."
+   "question": "Tuesday pre-market earnings LW and RPM - better-liquidity 'new catalyst' only if a slot is free",
+   "answer": "Not checked (budget); UNKNOWN. No free slot expected: Brazil slot = NU (halved), tech slot = SPCX (preferred) with NVDA as the 2.5% tell only if SPCX is not on."
   },
   {
-   "question": "Firecrawl budget sequencing / Alpha Vantage remaining",
-   "answer": "This seat used exactly 8 scrapes (NU, SPCX, NVDA, EWZ, ITUB, SPY, TLT, stockanalysis ITUB) + 3 searches, all one-at-a-time with 7s sleeps; one TLT attempt failed on ECONNREFUSED and was retried once successfully (no credit). Alpha Vantage: 0 calls used (cap 0)."
+   "question": "Firecrawl budget sequencing / Alpha Vantage",
+   "answer": "Used exactly 8 scrapes (NU, SPCX, NVDA, SPY, EWZ, TLT, ITUB, TSLA; 7s apart) + 3 searches (futures, Brazil, NU - the NU search returned 0 results). Alpha Vantage: 0 calls (cap 0). No rate-limit errors."
   }
  ],
- "alert_text": "REHEARSAL 09:00 RE-LEVEL (finviz AH prints as proxy, Oct 5 7:59 PM ET):\nLIVE-HALVED: NU long 0.25% (PM vol unverifiable -> halving rule fires by default; restore to 0.5% only on live >=2M by 09:00). Gap +0.2% (15.21). Entry 15.20 / stop 14.72 / T1 16.00 / T2 16.40, cap 15.46, fill cap 15.37. Ibov close VERIFIED 206,911.89; B3 opens 09:00 ET VERIFIED. ITUB Mon open = 9.83 -> exit NU on ITUB 5-min close < 9.83 (AH 9.84, amber).\nLIVE: SPCX 172.38 AH (+0.75%, below Mon high 172.47, no chase). Leg A preferred 168.20/162.00/180.60/185.00 at 0.5%; leg B 172.80/166.90 at 0.25%. Needs TSLA+TSM+NDX green at the bar. No negative Musk news.\nLIVE (slot-conditional): NVDA 240.20 AH = matches plan, no re-level. Trigger close >=240.60, stop 236.00, T1 246.60, 0.25%; only if NU or SPCX slot is empty.\nSCRAPPED: nothing new. EWZ short stays vetoed (43.16 AH > 42.74). No kill switch tripped: SPY 774.92 > 769.60, 10Y 5.31% < 5.35%, TLT flat.\nCAUTION: Reuters - Lula weighs Alckmin as finance minister (centrist pitch). Check Polymarket Flavio vs 83.2% at 09:00; >5-pt drop = no Brazil long. USD/BRL ~4.98-5.00 borderline.\nWATCH AT 09:45: (1) EWZ 42.74 - Brazil long permitted only above it. (2) SPCX 172.47 - 5-min close above = breakout leg; opening range >7.3 pts voids it (NU >0.66, NVDA >5.9).\nNo entries 09:30-09:35; pause 09:58-10:02; flat by 15:55.",
- "data_notes": "DRESS REHEARSAL: time 00:50 ET, market closed. All 'premarket' quotes are finviz Oct 5 after-hours closes (7:54-7:59 PM ET), 15-20 min delayed; gap_pct = AH/Monday close - 1. These are NOT Tuesday pre-market prints and must be re-pulled live at ~09:00 before any 09:25 tell read. Pre-market volume for NU is not available from finviz free (no AH/PM volume field) - this is why NU is set live-halved by default rather than live. finviz 'Prev Close' on each page is FRIDAY's close (NU 13.43, SPCX 158.96, NVDA 233.95, EWZ 38.19, ITUB 8.59, SPY 769.64, TLT 77.48); Monday closes are the 'Last Close' lines. ITUB Monday open 9.83 came from stockanalysis (the plan's '8.59-ish' was Friday's close - corrected). NVDA 52W High on finviz still reads 237.88 (stale vs Monday's 240.10 high) - ignore. Not obtained (budget): TSLA/TSM AH quotes, Brent/WTI overnight, Polymarket/Kalshi odds, 10:00 ET CME item identity, 3-yr auction, Fed speakers, EWZ borrow, LEN, WBD confirmation, LW/RPM earnings. Discarded: Rio Times live-board figures (Friday-stale: IBOV 192,114, Brent 88.88, USD/BRL 5.16-5.22) and the Herald-Leader 'futures dip, 10Y 5.28%' item (Monday pre-open, not overnight). Budget used: Firecrawl 8 scrapes + 3 searches (one TLT retry after ECONNREFUSED, no credit); Alpha Vantage 0. Sources per number are in the quotes[].source and overnight_news[] fields. Nothing was written to the vault."
+ "alert_text": "09:00 RE-LEVEL Tue 10/6 \u2014 tape RISK-ON: SPY 777.92 +0.4% pm (>769.60, <0.5% gap so open window stays 09:30-09:35), ES/NQ +0.4/+0.6%, 10Y ~5.27% easing (no yield shock), oil down, no Gulf strike. [finviz 08:55 / Reuters / Quartz]\nLIVE: SPCX pm 172.13 +0.6% \u2014 Leg A VWAP pullback 168.20 / stop 162.00 / T1 180.60 (5%) PREFERRED; Leg B needs a 5-min CLOSE >172.47 after 09:45 (2.5%). TSLA green +0.8%, NDX fut green, no bad Musk headline; TSM must be green at the bar.\nLIVE (tell, 2.5%, only if tech slot free): NVDA pm 241.35 +1.0% on Foxconn +47% \u2014 above ATH 240.10 but under 244.80 no-chase; still needs 5-min close >=240.60 after 09:45, stop 236.00. Opens >244.80 = VWAP-retest only.\nLIVE-HALVED: NU pm 15.29 +0.7% on 145K sh (<2M rule) -> 2.5% not 5%. Tells so far GREEN: EWZ 43.35 >42.74, BRL 4.99 <5.00, Polymarket Flavio 84% (no repricing). ITUB 9.88 -0.4% thin = laggard. Held pullback only, never above 15.46, stop 14.72.\nSCRAPPED: nothing. Book cap: 1 Brazil + 1 tech, open risk <=10%, flat 15:55.\nWATCH 09:45: (1) Ibovespa green vs 206,912 + ITUB holding \u2014 else no NU; (2) 10Y vs 5.311% \u2014 a new high kills NVDA and halves SPCX. Live VWAP MANDATORY at 09:45 or hard levels at half size. Pause 09:58-10:02, nothing new in tech after 12:30.",
+ "data_notes": "SOURCES: all quotes finviz free tier (15-20 min delayed), timestamps on page 08:44 (ITUB) to 08:55 (TSLA) ET; gap_pct = premarket/prev_close - 1. premarket_volume = finviz 'Volume' field at scrape time (NU 145,500 / SPCX 4.93M / NVDA 3.41M / SPY 519K / EWZ 480K / TLT 1.60M / ITUB 28K / TSLA 665K). Futures/yields: Reuters 08:05 ET and Quartz (10Y ~5.27%); exact ES/NQ/Brent/WTI levels not obtained. Brazil: Rio Times Morning Call + LatAm Pulse (Oct 6, 00:20 ET) and CNBC Oct 5. ATR DRIFT vs plan: NU 0.63 (plan 0.66), SPCX 6.98 (7.32), NVDA 5.72 (5.93), SPY 6.57 (6.79) - the plan only mandates a re-level for NVDA, and NVDA's prev close 238.90 matches, so NO entry/stop/target was re-levelled; the ATR-derived thresholds (OR-width void NU 0.63 / SPCX 7.0 / NVDA 5.7; NU no-chase 15.81; NU fill cap 15.36) are now slightly tighter than the plan's and the tighter number applies. All stops remain within 0.7-1.5x the updated ATR (NU 0.76x, SPCX 0.85x/0.89x, NVDA 0.80x). SIZES are quoted in the aggressive profile (Rules v3: 5% default / 2.5% low-confidence; plan text still shows drafted 0.5/0.25%). UNKNOWNS: ITUB Monday open (finviz has no open field), TSM premarket, EWZ borrow, LEN, WBD, LW/RPM, 10:00 ET item, Fed speakers, live VWAP availability, NU opening spread, Ibovespa Tuesday direction (B3 opens 09:00 ET). B3 open time confirmed by timezone arithmetic only. Budget: 8 scrapes + 3 searches used (NU search returned 0 results, 0 credits); Alpha Vantage 0 calls. Lessons Digest contains no reviews yet (all setups 'sample' -> default size); Rules v3 stop-width lesson applied in the ATR check above. Nothing written to the vault."
 }
