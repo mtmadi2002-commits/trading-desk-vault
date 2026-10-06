@@ -31,6 +31,11 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
 .scene{position:relative;margin-top:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0b0e13}
 .scene canvas{width:100%!important;height:auto!important}
 .scene-hint{position:absolute;left:12px;bottom:10px;right:12px;font:500 .7rem var(--mono);color:#aab4c8;background:rgba(11,14,19,.72);padding:6px 10px;border-radius:6px;pointer-events:none}
+.demo-btn{position:absolute;top:12px;left:12px;z-index:2;background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:8px 12px;font:700 .78rem var(--mono);cursor:pointer}
+.demo-btn:hover{filter:brightness(1.08)}
+.ticket{position:absolute;left:12px;top:52px;width:min(380px,calc(100% - 24px));max-height:46%;overflow:auto;background:rgba(11,14,19,.9);border:1px solid #334052;border-radius:8px;padding:10px 12px;color:#e8ebf0;font:500 .74rem var(--mono)}
+.ticket-title{font-weight:700;color:#f0a83a;margin-bottom:6px;letter-spacing:.06em}
+.ticket ul{list-style:none;margin:0;padding:0} .ticket li{padding:4px 0;border-top:1px solid #1f2733} .ticket li.ok{color:#3ec38a} .ticket li.bad{color:#ef5f5f}
 .scene-panel{position:absolute;top:12px;right:12px;width:min(360px,calc(100% - 24px));background:rgba(21,26,33,.96);border:1px solid #334052;border-radius:8px;padding:12px 14px;color:#e8ebf0;font-size:.86rem}
 .scene-panel .p-name{font-weight:800;font-size:1rem;margin-bottom:4px} .scene-panel .p-st{font:600 .66rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#8d97a7;margin-bottom:8px} .scene-panel .p-st.running{color:#4aa3ff} .scene-panel .p-st.done{color:#3ec38a} .scene-panel .p-st.refused{color:#ef5f5f} .scene-panel .p-meta{margin-top:8px;font:500 .7rem var(--mono);color:#8d97a7}
 /* stat tiles */
@@ -96,6 +101,8 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
 </header>
 
 <section class="scene" id="scene3d">
+  <button class="demo-btn" id="demo-btn" type="button">▶ Replay a demo trade</button>
+  <div class="ticket" id="ticket" hidden><div class="ticket-title" id="ticket-title">ORDER</div><ul id="ticket-lines"></ul></div>
   <div class="scene-hint" id="scene3d-note">Drag to orbit · scroll to zoom · tap a robot for details. Blue eyes = working, green = done, red = refused by the guards. Gold packets = information moving right now.</div>
   <div class="scene-panel" id="scene3d-panel" hidden></div>
 </section>
@@ -228,7 +235,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
       layoutTrack(etParts().min);
     }, function(e){});
     // journal
-    db.collection('journal').orderBy('ts','desc').limit(100).onSnapshot(function(q){ var rows=q.docs.map(function(x){return x.data()}); if(!rows.length) return; $('jdate').textContent=rows[0].date||'';
+    var firstJ=true; db.collection('journal').orderBy('ts','desc').limit(100).onSnapshot(function(q){ var rows=q.docs.map(function(x){return x.data()}); if(!firstJ){ q.docChanges().forEach(function(ch){ var r=ch.doc.data(); if(ch.type==='added'&&r.action==='enter'&&window.__DESK__&&window.__DESK__.playTrade){ window.__DESK__.playTrade({demo:false, symbol:r.ticker, side:r.direction==='short'?'sell':'buy', risk_pct:r.size_pct, entry:r.price, limit:r.price, fill:r.price, stop:r.stop||0, t1:r.t1||0, t2:r.t2, qty:r.qty||0, clipped:!!r.clipped, eff_risk:r.eff_risk||r.size_pct, equity_start:r.equity||200, floor:r.floor||100, path:[]}); } }); } firstJ=false; if(!rows.length) return; $('jdate').textContent=rows[0].date||'';
       var h='<div class="tbl"><table><thead><tr><th>Time</th><th>Ticker</th><th>Action</th><th>Price</th><th>Size</th><th>Rule / result</th><th>Fill</th></tr></thead><tbody>';
       rows.forEach(function(r){ h+='<tr><td class="num">'+esc(r.time_et)+'</td><td class="num '+(r.direction==='short'?'neg':'pos')+'"><b>'+esc(r.ticker)+'</b></td><td>'+esc(r.action)+'</td><td class="num">'+esc(r.price)+'</td><td class="num">'+esc(r.size_pct)+'%</td><td style="font-size:.8rem">'+esc(r.rule)+(r.evidence?' — '+esc(r.evidence).slice(0,160):'')+'</td><td>'+(r.indicative?'indicative':'exact')+'</td></tr>' });
       $('journal').innerHTML=h+'</tbody></table></div>' }, function(e){});
