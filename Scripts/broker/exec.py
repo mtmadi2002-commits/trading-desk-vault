@@ -52,7 +52,7 @@ def read_frontmatter(path):
 
 CFG = read_frontmatter(LIVE_NOTE)
 MODE = CFG.get("mode", "paper-local")
-G = dict(equity_start=float(CFG.get("paper_equity", 100000)), max_risk_pct_per_trade=float(CFG.get("max_risk_pct_per_trade", 0.5)), max_open_risk_pct=float(CFG.get("max_open_risk_pct", 1.0)),
+G = dict(floor_pct_of_peak=float(CFG.get("floor_pct_of_peak", 0)), equity_start=float(CFG.get("paper_equity", 100000)), max_risk_pct_per_trade=float(CFG.get("max_risk_pct_per_trade", 0.5)), max_open_risk_pct=float(CFG.get("max_open_risk_pct", 1.0)),
          daily_stop_pct=float(CFG.get("daily_stop_pct", 1.5)), max_notional_pct=float(CFG.get("max_notional_pct", 25)),
          max_concurrent=int(CFG.get("max_concurrent", 2)), no_entry_after_et=str(CFG.get("no_entry_after_et", "15:00")),
          flat_by_et=str(CFG.get("flat_by_et", "15:55")), paper_equity=float(CFG.get("paper_equity", 100000)))
@@ -92,8 +92,10 @@ def live_armed():
 
 # ---------------- paper-local ledger ----------------
 def load_ledger():
-    if LEDGER.exists(): return json.loads(LEDGER.read_text())
-    return {"equity_start": G["paper_equity"], "positions": {}, "closed": [], "day": et_now().strftime("%Y-%m-%d")}
+    L = json.loads(LEDGER.read_text()) if LEDGER.exists() else {"equity_start": G["paper_equity"], "positions": {}, "closed": [], "day": et_now().strftime("%Y-%m-%d")}
+    eq = L["equity_start"] + sum(c["pnl"] for c in L["closed"])
+    L["peak_equity"] = max(L.get("peak_equity", L["equity_start"]), eq)
+    return L
 def save_ledger(L): LEDGER.parent.mkdir(parents=True, exist_ok=True); LEDGER.write_text(json.dumps(L, indent=1))
 def day_pnl_pct_local(L):
     eq = L["equity_start"]; today = et_now().strftime("%Y-%m-%d")
@@ -104,14 +106,18 @@ def account():
     if MODE == "paper-local":
         L = load_ledger(); eq = L["equity_start"] + sum(c["pnl"] for c in L["closed"])
         open_risk = sum(abs(p["entry"] - p["stop"]) * p["qty"] for p in L["positions"].values())
-        return dict(equity=round(eq, 2), equity_start=L["equity_start"], profit=round(eq - L["equity_start"], 2), day_pnl_pct=day_pnl_pct_local(L), open_risk_pct=100 * open_risk / eq, positions=L["positions"], source="ledger")
+        return dict(equity=round(eq, 2), equity_start=L["equity_start"], profit=round(eq - L["equity_start"], 2), peak_equity=round(L["peak_equity"], 2), floor=round(L["peak_equity"] * G["floor_pct_of_peak"] / 100.0, 2), cash_free=round(eq - sum(p["entry"] * p["qty"] for p in L["positions"].values()), 2), day_pnl_pct=day_pnl_pct_local(L), open_risk_pct=100 * open_risk / eq, positions=L["positions"], source="ledger")
     a = alpaca("GET", "/v2/account"); pos = alpaca("GET", "/v2/positions")
     eq = float(a["equity"]); last_eq = float(a.get("last_equity", eq) or eq)
     P = {p["symbol"]: dict(qty=float(p["qty"]), entry=float(p["avg_entry_price"]), side="long" if float(p["qty"]) > 0 else "short", unrealized=float(p.get("unrealized_pl", 0))) for p in pos}
-    return dict(equity=eq, day_pnl_pct=100 * (eq - last_eq) / last_eq if last_eq else 0.0, open_risk_pct=None, positions=P, buying_power=float(a.get("buying_power", 0)), source=alpaca_base())
+    L = load_ledger(); L["peak_equity"] = max(L.get("peak_equity", eq), eq); save_ledger(L)
+    return dict(equity=eq, day_pnl_pct=100 * (eq - last_eq) / last_eq if last_eq else 0.0, open_risk_pct=None, positions=P, buying_power=float(a.get("buying_power", 0)), peak_equity=L["peak_equity"], floor=round(L["peak_equity"] * G["floor_pct_of_peak"] / 100.0, 2), source=alpaca_base())
 
 def guard_common(acct, new_risk_pct=0.0, entering=False):
     now = et_now().strftime("%H:%M")
+    floor = acct.get("floor") or 0.0
+    if floor and acct["equity"] <= floor: fail(f"FLOOR: equity {acct['equity']:.2f} <= floor {floor:.2f} (50% of peak {acct.get('peak_equity')}) — no new entries; flatten")
+    if entering and floor and acct["equity"] * new_risk_pct / 100.0 > (acct["equity"] - floor): fail(f"FLOOR: risking {acct['equity']*new_risk_pct/100:.2f} would breach the floor {floor:.2f} (room {acct['equity']-floor:.2f})")
     if acct["day_pnl_pct"] <= -G["daily_stop_pct"]: fail(f"daily stop hit: day P&L {acct['day_pnl_pct']:.2f}% <= -{G['daily_stop_pct']}% — flatten only")
     if entering:
         if now >= G["no_entry_after_et"]: fail(f"no entries after {G['no_entry_after_et']} ET (now {now})")
@@ -130,7 +136,7 @@ def cmd_preflight(a):
             out.update(market_open=clock.get("is_open"), next_open=clock.get("next_open"), next_close=clock.get("next_close"),
                        equity=acct["equity"], day_pnl_pct=round(acct["day_pnl_pct"], 3), positions=list(acct["positions"].keys()), buying_power=acct.get("buying_power"))
     else:
-        acct = account(); out.update(equity=acct["equity"], day_pnl_pct=round(acct["day_pnl_pct"], 3), positions=list(acct["positions"].keys()))
+        acct = account(); out.update(equity=acct["equity"], peak_equity=acct.get("peak_equity"), floor=acct.get("floor"), day_pnl_pct=round(acct["day_pnl_pct"], 3), positions=list(acct["positions"].keys()))
     ok(**out)
 
 def cmd_enter(a):
@@ -142,20 +148,30 @@ def cmd_enter(a):
     frac = bool(CFG.get("fractional_shares", False)) and MODE != "alpaca-live"
     qty = math.floor(raw * 100) / 100.0 if frac else math.floor(raw)
     if qty < (float(CFG.get("min_qty", 0.01)) if frac else 1): fail(f"computed qty {raw:.4f} below minimum ({'0.01 fractional' if frac else '1 whole share'}) — risk {a.risk_pct}% of ${acct['equity']:.2f} is ${acct['equity']*a.risk_pct/100:.2f} against a ${dist:.2f} stop")
+    # CASH ACCOUNT: an order can never exceed the notional cap or the cash not already in open positions — clip, don't refuse
+    cap_notional = acct["equity"] * G["max_notional_pct"] / 100.0
+    cash_free = acct["equity"] - sum((p.get("entry", 0) * p.get("qty", 0)) for p in acct["positions"].values())
+    max_notional = min(cap_notional, cash_free)
+    if max_notional < acct["equity"] * 0.05: fail(f"no cash: {cash_free:.2f} free of {acct['equity']:.2f} (open positions use the rest)")
+    clipped = None
+    if qty * a.entry > max_notional:
+        q2 = (math.floor(max_notional / a.entry * 100) / 100.0) if frac else math.floor(max_notional / a.entry)
+        if q2 < (float(CFG.get("min_qty", 0.01)) if frac else 1): fail(f"cash {max_notional:.2f} buys less than the minimum quantity of {a.symbol} at {a.entry}")
+        clipped = f"clipped from {qty} to {q2} by {'cash' if max_notional < cap_notional else 'notional cap'} ({max_notional:.2f})"; qty = q2
     notional = qty * a.entry
-    if notional > acct["equity"] * G["max_notional_pct"] / 100.0: fail(f"notional {notional:.0f} > {G['max_notional_pct']}% of equity")
-    guard_common(acct, new_risk_pct=a.risk_pct, entering=True)
+    eff_risk = 100.0 * qty * dist / acct["equity"]
+    guard_common(acct, new_risk_pct=eff_risk, entering=True)
     if a.symbol in acct["positions"]: fail(f"already in {a.symbol}")
     limit = a.limit_cap if a.limit_cap else a.entry
     if MODE == "paper-local":
         fill = a.fill if a.fill else a.entry
         if (a.side == "buy" and fill > limit) or (a.side == "sell" and fill < limit): fail(f"fill {fill} worse than limit cap {limit} — cancelled")
         L = load_ledger(); L["positions"][a.symbol] = dict(side="long" if a.side == "buy" else "short", qty=qty, entry=fill, stop=a.stop, t1=a.t1, t2=a.t2, risk_pct=a.risk_pct, opened=et_now().isoformat(), scaled=False)
-        save_ledger(L); return ok(action="enter", symbol=a.symbol, qty=qty, fill=fill, stop=a.stop, t1=a.t1, t2=a.t2, notional=round(qty * fill, 2), indicative=False)
+        save_ledger(L); return ok(action="enter", symbol=a.symbol, qty=qty, fill=fill, stop=a.stop, t1=a.t1, t2=a.t2, notional=round(qty * fill, 2), risk_pct_requested=a.risk_pct, risk_pct_effective=round(eff_risk, 2), clipped=clipped, cash_free_after=round(cash_free - qty * fill, 2), indicative=False)
     body = dict(symbol=a.symbol, qty=str(qty), side=a.side, type="limit", limit_price=str(round(limit, 2)), time_in_force="day", order_class="bracket",
                 take_profit=dict(limit_price=str(round(a.t1, 2))), stop_loss=dict(stop_price=str(round(a.stop, 2))))
     o = alpaca("POST", "/v2/orders", body)
-    ok(action="enter", symbol=a.symbol, qty=qty, order_id=o.get("id"), status=o.get("status"), limit=limit, stop=a.stop, t1=a.t1, notional=round(notional, 2), bracket=True)
+    ok(action="enter", symbol=a.symbol, qty=qty, order_id=o.get("id"), status=o.get("status"), limit=limit, stop=a.stop, t1=a.t1, notional=round(notional, 2), risk_pct_requested=a.risk_pct, risk_pct_effective=round(eff_risk, 2), clipped=clipped, bracket=True)
 
 def cmd_scale(a):
     acct = account()

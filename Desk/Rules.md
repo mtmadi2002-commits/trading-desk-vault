@@ -1,8 +1,8 @@
 ---
 type: rules
-version: 1
-updated: 2026-10-05
-updated_by: Head Trader (initial) + Risk Manager review of plan 2026-10-06
+version: 2
+updated: 2026-10-06
+updated_by: User — risk profile set to AGGRESSIVE (Coach may tighten, may not loosen further)
 ---
 # Desk Rules (living — read by every seat, rewritten only by the Coach)
 
@@ -12,13 +12,16 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 - US-listed stocks and ETFs, price ≥ $5, average volume ≥ 1M shares (prefer ≥ 3M). No OTC, warrants, or names under an LULD/halt pattern.
 - Correlated names are ONE slot (e.g. the Brazil complex EWZ/NU/ITUB/PBR/XP; the Musk complex SPCX/TSLA; SPCX+NVDA share the tech slot).
 
-## Risk (% of equity)
-- Risk per trade: 0.5% default · 0.25% for `low` confidence or a second position on the same factor · never above 0.75%.
-- `shares = (equity × risk%) / (entry − stop)`; cancel the order if the fill would be worse than entry + 0.25×ATR.
-- Max 2 concurrent positions. Total open risk ≤ 1.0% of equity at all times.
-- Soft stop −1.0% (no new entries); hard stop −1.5% (flat, done). Correlated stop-out (two stops within 15 min) = flatten and stop.
-- Re-entry after a full stop: once, at 0.25%, never if daily P&L ≤ −0.75%, never a third attempt.
+## Risk (% of equity) — profile: AGGRESSIVE (user-set 2026-10-06)
+- Account: paper, starts at $200, profits compound into equity; every size is computed from live equity.
+- Risk per trade: 5% default · 2.5% for `low` confidence or a second position on the same factor · never above 7.5%.
+- `shares = (equity × risk%) / (entry − stop)` (fractional shares allowed in paper modes); cancel the order if the fill would be worse than entry + 0.25×ATR.
+- Max 2 concurrent positions. Total open risk ≤ 10% of equity at all times. Notional per position ≤ 100% of equity.
+- Soft stop −6% (no new entries); hard stop −10% (flat, done). Correlated stop-out (two stops within 15 min) = flatten and stop.
+- Re-entry after a full stop: once, at 2.5%, never if daily P&L ≤ −6%, never a third attempt.
+- FLOOR: equity never trades below 50% of its peak balance (ratchets up, never down); at the floor, no entries and flatten. No order may risk more than the distance to the floor.
 - No overnight holds. Flat by 15:55 ET.
+- Honest expectation at this profile: +1.5R days ≈ +7.5%, stopped trades −5%; a 45% win rate at 1.5R averages about +0.6%/trade with ±5–8% daily swings. The Coach may TIGHTEN these numbers on evidence; it may not loosen them further.
 
 ## Stops and targets
 - Stops are structure levels (prior low/high, VWAP, opening-range extreme), never a round %.
@@ -45,5 +48,5 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 ## Change policy (binding on the Coach)
 - The Coach may TIGHTEN any risk rule immediately on one piece of evidence.
 - The Coach may LOOSEN a rule only with ≥ 10 journaled trades supporting it and must say so in the changelog.
-- The Coach never changes the hard daily stop (−1.5%) or the no-overnight rule.
+- The Coach never loosens the hard daily stop (−10% at the aggressive profile) or the no-overnight rule; it may tighten the stop.
 - Every rule change links the evidence note: `[[YYYY-MM-DD Review]]` or `[[Lesson - ...]]`.

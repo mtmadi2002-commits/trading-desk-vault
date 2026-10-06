@@ -1926,7 +1926,7 @@
     "target1": 16,
     "target2": 16.4,
     "rr": 1.67,
-    "size_pct_equity_at_risk": 0.5,
+    "size_pct_equity_at_risk": 5.0,
     "position_size_formula": "shares = (equity * 0.005) / (15.20 - 14.72) = equity * 0.005 / 0.48 = equity * 0.01042 (e.g. $100k equity -> 1,042 sh, ~$15.8k notional). AUTO-HALVE to 0.25% (shares = equity * 0.0025 / 0.48 = equity * 0.00521, $100k -> 521 sh) if ANY of: NU pre-market gap beyond +/-3% from 15.18 (outside 14.72-15.64); NU pre-market volume < 2M sh by 09:00 ET; a tech long (SPCX or NVDA) is already open; opening spread > 0.3% of price persisting past 09:40. Total open book risk after entry must be <= 1.0%.",
     "time_window_et": "09:45-11:30 primary (after 09:30-09:35 no-trade window and the 09:45 tell re-check; pause 09:58-10:02); second chance 13:30-15:00 on a VWAP-hold re-test if Ibovespa still green and no Brazil stop-out yet; no entries after 15:00; flat by 15:55.",
     "management": "Scale 1/2 at T1 16.00 (1.67R), stop to breakeven 15.20 on remainder, trail under live VWAP / 5-min higher lows toward T2 16.40 (2.5R). Take remainder if Ibovespa turns red intraday, if EWZ 5-min closes below 42.74, or if ITUB loses its Monday open while NU is long (bank proxy leads the complex). Hard exit (no waiting for stop) on a >5-pt drop in the Polymarket Flavio probability from 83.2% or a fresh Quaest/Datafolha poll showing Lula consolidating 3rd/4th-place voters. If stopped: no second Brazil attempt before 11:00, then only at 0.25% and never if daily realized P&L <= -0.75%; never a third attempt. Any LULD halt in NU = no re-entry for the day.",
@@ -1939,7 +1939,8 @@
      "Catalyst seat: https://www.riotimesonline.com/brazil-runoff-october-25-2026-flavio-bolsonaro-lula/ (47.03% vs 45.16%, runoff Oct 25); https://www.investing.com/news/stock-market-news/premarket-movers-brazilian-adrs-surge-leslies-plunges-4931810",
      "Seat 7: https://www.riotimesonline.com/brazil-stocks-real-first-round-2026/ (Polymarket 83.2% Flavio; Ibov close 206,911.89 +7.70%; USDBRL 5.0022)",
      "Risk Manager: corrected stop 14.72 / size 0.5% / halving conditions / 09:45 re-check / entry cap 15.46 / ITUB exit; JOLTS window deleted per https://www.bls.gov/schedule/news_release/jolts.htm"
-    ]
+    ],
+    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers."
    },
    {
     "rank": 2,
@@ -1953,7 +1954,7 @@
     "target1": 180.6,
     "target2": 185,
     "rr": 1.32,
-    "size_pct_equity_at_risk": 0.25,
+    "size_pct_equity_at_risk": 2.5,
     "position_size_formula": "LEG B: shares = (equity * 0.0025) / (172.80 - 166.90) = equity * 0.0025 / 5.90 = equity * 0.000424 (e.g. $100k -> 42 sh, ~$7.3k notional). LEG A: shares = (equity * 0.005) / (168.20 - 162.00) = equity * 0.005 / 6.20 = equity * 0.000806 ($100k -> 81 sh, ~$13.6k notional). If NVDA is already open, SPCX is capped so SPCX+NVDA combined risk <= 0.5% (i.e. leg A also at 0.25%). Total open book risk after entry must be <= 1.0%.",
     "time_window_et": "Leg B 09:45-11:30 (analyst-driven trend days follow through in the first hour then stall - Catalyst seat); leg A 10:00-12:30; NO new tech entries after 12:30 (unverified 13:00 3-yr auction + FOMC-minutes positioning); flat by 15:55.",
     "management": "Leg B: scale 1/3 at T1 180.60 (1.32R), stop to breakeven 172.80 on the remainder, trail under each higher 5-min swing low / live VWAP toward T2 185.00 (2.07R). Leg A: scale 1/2 at T1 180.60 (2.0R), stop to breakeven 168.20, trail toward T2 185.00 (2.7R). Either leg: if price stalls below 175.00 for >45 min after entry with 5-min volume declining, exit at market (follow-through failed). Tighten to breakeven if in profit at 12:55-13:05 (auction caution). Re-entry after a full stop: max ONE at 0.25% risk; none if daily realized P&L <= -0.75%; never a third attempt. If SPCX stops out, no NVDA entry for 30 minutes (same factor just failed). Any LULD halt = no re-entry for the day.",
@@ -1966,7 +1967,8 @@
      "Seat 7: https://www.bbae.com/blog/13f-highlights-where-top-investors-moved-in-q2-2026/ (Coatue/Tepper SPCX, Q2 13F stale); https://www.forbes.com/sites/alisondurkee/2026/10/05/elon-musk-becomes-a-trillionaire-again-after-spacex-stock-jumps/",
      "Macro seat: sector_bias 'Mega-cap tech: long-bias on pullbacks, no chasing'; regime chop; 10Y 5.311% (CNBC https://www.cnbc.com/2026/10/04/stock-market-today-live-updates.html)",
      "Risk Manager: corrected breakout stop 166.90 / size 0.25%; alt leg stop 162.00 / 0.5% preferred; OR-width filter; TSLA+TSM+NDX confirmation; fill cap 174.60; re-entry 0.25% max"
-    ]
+    ],
+    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers."
    },
    {
     "rank": 3,
@@ -1980,7 +1982,7 @@
     "target1": 246.6,
     "target2": 250,
     "rr": 1.3,
-    "size_pct_equity_at_risk": 0.25,
+    "size_pct_equity_at_risk": 2.5,
     "position_size_formula": "shares = (equity * 0.0025) / (240.60 - 236.00) = equity * 0.0025 / 4.60 = equity * 0.000543 (e.g. $100k -> 54 sh, ~$13.0k notional). (Risk Manager's figure at the 240.40 draft entry: equity*0.0025/4.40 = 57 sh; the trigger now requires a close >= 240.60 so 4.60 is the realistic stop distance - size is still 0.25% of equity at risk.) Alt leg: shares = equity * 0.0025 / (238.10 - 234.90) = equity * 0.0025 / 3.20. NVDA may be opened only if total open book risk after entry <= 1.0%.",
     "time_window_et": "09:45-11:00 ONLY for the ATH breakout (pause 09:58-10:02); alt pullback 10:05-12:30; NO new NVDA entries after 12:30 (unverified 13:00 3-yr auction, FOMC-minutes Wed positioning); flat by 15:55.",
     "management": "Scale 1/2 at T1 246.60 (1.30R from 240.60; 1.41R from the 240.40 draft), stop to breakeven 240.60, trail remainder under live VWAP / 5-min swing lows toward T2 250.00 (2.04R). Exit the full position at market if SPY loses 769.60 or the 10Y makes a new intraday high above 5.311%, regardless of NVDA price - this trade is the risk-on tell and must not be held through a regime flip. Tighten to breakeven if in profit at 12:55-13:05. Re-entry after a full stop: max ONE at 0.25%, none if daily realized P&L <= -0.75%. If NVDA stops out, no SPCX entry for 30 minutes.",
@@ -1993,7 +1995,8 @@
      "Seat 7: AV CONGRESS_TRADES NVDA (9 buy/9 sell since Jul 1, latest filing 2026-09-10 = no signal)",
      "Macro seat: SPY levels 774.83 pivot / 769.60 gap-fill; 10Y 5.311% (CNBC https://www.cnbc.com/2026/10/04/stock-market-today-live-updates.html); breadth 57 new highs vs 243 new lows (Reuters)",
      "Risk Manager: corrected stop 236.00 / size 0.25% always / trigger >= 240.60 / fill cap 241.90 / no-chase 244.80 / window 09:45-11:00 / no entries after 12:30"
-    ]
+    ],
+    "sizing_note": "AGGRESSIVE profile applied 2026-10-06 01:20 ET: sizes \u00d710 vs the drafted 0.5/0.25%; shares = equity \u00d7 risk% / (entry \u2212 stop), fractional allowed in paper. The formula text below still quotes the drafted numbers."
    }
   ],
   "watch_only": [
@@ -2093,6 +2096,7 @@
    }
   ],
   "session_rules": [
+   "RISK PROFILE AGGRESSIVE (user): 5% default, 2.5% low-confidence, open-risk cap 10%, daily hard stop \u221210%, soft \u22126%; the trade sizes in this plan are already scaled.",
    "PORTFOLIO CAPS (binding, Risk Manager): MAX 2 CONCURRENT POSITIONS; TOTAL OPEN RISK = sum of (entry-stop)*shares across open positions <= 1.0% of equity at all times (worst case with 20% slippage = 1.2% < 1.5% hard limit). Sizes: NU 0.5% (0.25% under halving conditions), SPCX breakout 0.25% / SPCX pullback 0.5%, NVDA 0.25% always, EWZ reinstated short 0.25% only. No single trade above 0.5%.",
    "SLOTS: Brazil slot = exactly ONE instrument (NU long; EWZ short only under the reinstatement conditions; never both). Tech slot = SPCX and NVDA share it: combined risk <= 0.5% if both are on (0.25 each); if SPCX stops out no NVDA entry for 30 minutes and vice versa. With max 2 concurrent the practical book is 1 Brazil + 1 tech.",
    "OPEN: no entries 09:30-09:35 ET in any name (extend to 09:40 if SPY opens >0.5% / 3.9 pts from 774.83 or any Brazil ADR opens >5% from Monday close). All triggers require a 5-min CLOSE after 09:45. EWZ reinstated short earliest 10:00.",

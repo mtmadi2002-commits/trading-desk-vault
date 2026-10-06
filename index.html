@@ -93,9 +93,10 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
 <section class="tiles" id="tiles">
   <div class="tile"><div class="k">Equity (paper)</div><div class="v num" id="t-eq">—</div><div class="s" id="t-eq-s">ledger</div></div>
   <div class="tile"><div class="k">Day P&amp;L</div><div class="v num" id="t-pnl">—</div><div class="s">% of equity · indicative until the Coach replays</div></div>
-  <div class="tile"><div class="k">Open risk</div><div class="v num" id="t-risk">—</div><div class="s">cap 1.0% · max 2 positions</div></div>
+  <div class="tile"><div class="k">Open risk</div><div class="v num" id="t-risk">—</div><div class="s">cap 10% · max 2 positions · aggressive</div></div>
+  <div class="tile"><div class="k">Floor</div><div class="v num" id="t-floor">—</div><div class="s" id="t-floor-s">50% of peak · refuse + flatten</div></div>
   <div class="tile"><div class="k">Positions</div><div class="v num" id="t-pos">—</div><div class="s" id="t-pos-s">none open</div></div>
-  <div class="tile"><div class="k">Rules</div><div class="v num" id="t-rules">v—</div><div class="s">rewritten only by the Coach</div></div>
+  <div class="tile"><div class="k">Rules</div><div class="v num" id="t-rules">v—</div><div class="s">aggressive · 5% per trade · stop −10%/day</div></div>
   <div class="tile"><div class="k">Premarket</div><div class="v" id="t-pre" style="font-size:.95rem;font-weight:600">—</div><div class="s">08:50 ET re-level</div></div>
 </section>
 
@@ -189,6 +190,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
       var eq=d.equity!=null?d.equity:200; var st0=d.equity_start!=null?d.equity_start:200; var pf=eq-st0; $('t-eq').textContent='$'+Number(eq).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); var es=$('t-eq-s'); es.textContent='start $'+st0+' · profit '+(pf>=0?'+':'−')+'$'+Math.abs(pf).toFixed(2)+' reinvested'; es.className='s '+(pf>0?'pos':pf<0?'neg':'');
       var pnl=d.day_pnl_pct!=null?d.day_pnl_pct:d.day_pnl_pct_indicative; var pe=$('t-pnl'); pe.textContent=fmtPct(pnl); pe.className='v num '+(pnl>0?'pos':pnl<0?'neg':'');
       var pos=d.open_positions||[]; $('t-pos').textContent=pos.length; $('t-pos-s').textContent=pos.length?pos.map(function(p){return p.ticker+' '+(p.direction||'')}).join(', '):'none open';
+      var fl=d.floor!=null?d.floor:(d.peak_equity!=null?d.peak_equity*0.5:100); $('t-floor').textContent='$'+Number(fl).toFixed(2); $('t-floor-s').textContent='50% of peak $'+Number(d.peak_equity!=null?d.peak_equity:200).toFixed(2)+' · room $'+Number(eq-fl).toFixed(2);
       var risk=pos.reduce(function(a,p){return a+(+p.size_pct||0)},0); $('t-risk').textContent=risk.toFixed(2)+'%';
       if(d.mode) $('mode').textContent=esc(d.mode);
       nowRunning=d.now_running||null; var dl=$('dlight'); if(nowRunning){ dl.className='light run'; $('dstate').textContent=esc(nowRunning.mode)+' · '+esc((nowRunning.seats||[]).join(', ')||'working')+' since '+hhmm(nowRunning.since) } else { dl.className='light'; $('dstate').textContent='idle · last '+esc((d.last_run&&d.last_run.mode)||'—')+' '+hhmm(d.last_run&&d.last_run.at) }
