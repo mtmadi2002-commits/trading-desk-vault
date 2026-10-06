@@ -186,7 +186,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
     db.doc('state/desk').onSnapshot(function(snap){ var d=snap.exists?snap.data():null; if(!d) return;
       $('session').textContent=esc(d.session_date||'—'); $('t-rules').textContent='v'+esc(d.rules_version||'—');
       $('t-pre').textContent=esc(d.premarket_status||'pending');
-      var eq=d.equity||100000; $('t-eq').textContent='$'+Number(eq).toLocaleString('en-US',{maximumFractionDigits:0});
+      var eq=d.equity!=null?d.equity:200; var st0=d.equity_start!=null?d.equity_start:200; var pf=eq-st0; $('t-eq').textContent='$'+Number(eq).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); var es=$('t-eq-s'); es.textContent='start $'+st0+' · profit '+(pf>=0?'+':'−')+'$'+Math.abs(pf).toFixed(2)+' reinvested'; es.className='s '+(pf>0?'pos':pf<0?'neg':'');
       var pnl=d.day_pnl_pct!=null?d.day_pnl_pct:d.day_pnl_pct_indicative; var pe=$('t-pnl'); pe.textContent=fmtPct(pnl); pe.className='v num '+(pnl>0?'pos':pnl<0?'neg':'');
       var pos=d.open_positions||[]; $('t-pos').textContent=pos.length; $('t-pos-s').textContent=pos.length?pos.map(function(p){return p.ticker+' '+(p.direction||'')}).join(', '):'none open';
       var risk=pos.reduce(function(a,p){return a+(+p.size_pct||0)},0); $('t-risk').textContent=risk.toFixed(2)+'%';

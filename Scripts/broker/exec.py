@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Desk execution layer. One entry point, three backends, hard interlocks.
+Paper account compounds: equity = paper_equity (Live.md) + sum of realized P&L; every size is computed from that live equity.
 
   exec.py [--unattended] preflight        -> checks mode, keys, clock, account; prints JSON (routines always pass --unattended)
   exec.py enter  --symbol NU --side buy --entry 15.20 --stop 14.72 --t1 16.00 [--t2 16.40] --risk-pct 0.5 [--limit-cap 15.37]
@@ -51,7 +52,7 @@ def read_frontmatter(path):
 
 CFG = read_frontmatter(LIVE_NOTE)
 MODE = CFG.get("mode", "paper-local")
-G = dict(max_risk_pct_per_trade=float(CFG.get("max_risk_pct_per_trade", 0.5)), max_open_risk_pct=float(CFG.get("max_open_risk_pct", 1.0)),
+G = dict(equity_start=float(CFG.get("paper_equity", 100000)), max_risk_pct_per_trade=float(CFG.get("max_risk_pct_per_trade", 0.5)), max_open_risk_pct=float(CFG.get("max_open_risk_pct", 1.0)),
          daily_stop_pct=float(CFG.get("daily_stop_pct", 1.5)), max_notional_pct=float(CFG.get("max_notional_pct", 25)),
          max_concurrent=int(CFG.get("max_concurrent", 2)), no_entry_after_et=str(CFG.get("no_entry_after_et", "15:00")),
          flat_by_et=str(CFG.get("flat_by_et", "15:55")), paper_equity=float(CFG.get("paper_equity", 100000)))
@@ -103,7 +104,7 @@ def account():
     if MODE == "paper-local":
         L = load_ledger(); eq = L["equity_start"] + sum(c["pnl"] for c in L["closed"])
         open_risk = sum(abs(p["entry"] - p["stop"]) * p["qty"] for p in L["positions"].values())
-        return dict(equity=eq, day_pnl_pct=day_pnl_pct_local(L), open_risk_pct=100 * open_risk / eq, positions=L["positions"], source="ledger")
+        return dict(equity=round(eq, 2), equity_start=L["equity_start"], profit=round(eq - L["equity_start"], 2), day_pnl_pct=day_pnl_pct_local(L), open_risk_pct=100 * open_risk / eq, positions=L["positions"], source="ledger")
     a = alpaca("GET", "/v2/account"); pos = alpaca("GET", "/v2/positions")
     eq = float(a["equity"]); last_eq = float(a.get("last_equity", eq) or eq)
     P = {p["symbol"]: dict(qty=float(p["qty"]), entry=float(p["avg_entry_price"]), side="long" if float(p["qty"]) > 0 else "short", unrealized=float(p.get("unrealized_pl", 0))) for p in pos}
@@ -116,7 +117,7 @@ def guard_common(acct, new_risk_pct=0.0, entering=False):
         if now >= G["no_entry_after_et"]: fail(f"no entries after {G['no_entry_after_et']} ET (now {now})")
         if len(acct["positions"]) >= G["max_concurrent"]: fail(f"max concurrent {G['max_concurrent']} reached")
         if new_risk_pct > G["max_risk_pct_per_trade"] + 1e-9: fail(f"risk {new_risk_pct}% > max {G['max_risk_pct_per_trade']}% per trade")
-        if acct["open_risk_pct"] is not None and acct["open_risk_pct"] + new_risk_pct > G["max_open_risk_pct"] + 1e-9:
+        if acct["open_risk_pct"] is not None and acct["open_risk_pct"] + new_risk_pct > G["max_open_risk_pct"] + 0.02:  # 0.02-pt tolerance for fill slippage on tiny accounts
             fail(f"open risk {acct['open_risk_pct']:.2f}% + {new_risk_pct}% > cap {G['max_open_risk_pct']}%")
 
 # ---------------- commands ----------------
@@ -137,8 +138,10 @@ def cmd_enter(a):
     acct = account()
     dist = abs(a.entry - a.stop)
     if dist <= 0: fail("stop must differ from entry")
-    qty = math.floor(acct["equity"] * (a.risk_pct / 100.0) / dist)
-    if qty < 1: fail("computed qty < 1 share")
+    raw = acct["equity"] * (a.risk_pct / 100.0) / dist
+    frac = bool(CFG.get("fractional_shares", False)) and MODE != "alpaca-live"
+    qty = math.floor(raw * 100) / 100.0 if frac else math.floor(raw)
+    if qty < (float(CFG.get("min_qty", 0.01)) if frac else 1): fail(f"computed qty {raw:.4f} below minimum ({'0.01 fractional' if frac else '1 whole share'}) — risk {a.risk_pct}% of ${acct['equity']:.2f} is ${acct['equity']*a.risk_pct/100:.2f} against a ${dist:.2f} stop")
     notional = qty * a.entry
     if notional > acct["equity"] * G["max_notional_pct"] / 100.0: fail(f"notional {notional:.0f} > {G['max_notional_pct']}% of equity")
     guard_common(acct, new_risk_pct=a.risk_pct, entering=True)
@@ -158,7 +161,7 @@ def cmd_scale(a):
     acct = account()
     if a.symbol not in acct["positions"]: fail(f"no position in {a.symbol}")
     if MODE == "paper-local":
-        L = load_ledger(); p = L["positions"][a.symbol]; q = math.floor(p["qty"] * a.fraction); px = a.fill if a.fill else p["t1"]
+        L = load_ledger(); p = L["positions"][a.symbol]; q = round(p["qty"] * a.fraction, 2) if isinstance(p["qty"], float) and p["qty"] != int(p["qty"]) else math.floor(p["qty"] * a.fraction); px = a.fill if a.fill else p["t1"]
         pnl = (px - p["entry"]) * q * (1 if p["side"] == "long" else -1)
         L["closed"].append(dict(symbol=a.symbol, qty=q, entry=p["entry"], exit=px, pnl=pnl, reason="scale at T1", day=et_now().strftime("%Y-%m-%d"), at=et_now().isoformat()))
         p["qty"] -= q; p["scaled"] = True; save_ledger(L); return ok(action="scale", symbol=a.symbol, qty=q, fill=px, pnl=round(pnl, 2), remaining=p["qty"])

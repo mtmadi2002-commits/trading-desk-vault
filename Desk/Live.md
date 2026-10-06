@@ -10,9 +10,14 @@ max_notional_pct: 25
 max_concurrent: 2
 no_entry_after_et: "15:00"
 flat_by_et: "15:55"
-paper_equity: 100000
+paper_equity: 200
+fractional_shares: true
+min_qty: 0.01
+profits_reinvested: true
 ---
 # Live switch
+
+**Account:** starts at **$200** (paper). Every closed trade's P&L is added to equity and the next order is sized from the new equity — profits compound, losses shrink the next size. In `paper-local` and `alpaca-paper` the ledger allows fractional shares (0.01 minimum) so a $1 risk still buys a slice of a $170 stock; `alpaca-live` uses whole shares, so on a $200 account most names above ~$40 are refused by the 25% notional cap until the account grows — that refusal is logged, not worked around.
 
 This note is the ONLY place the desk's execution mode is set. The Coach never edits it; only you do.
 
