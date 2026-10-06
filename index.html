@@ -121,7 +121,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
 <h2>Live tape <span class="n" id="tape-asof">waiting for the first tick</span></h2>
 <section class="tape" id="tape">
   <div class="tbl"><table><thead><tr><th>Ticker</th><th class="num">Last</th><th class="num">Chg</th><th class="num">Day range</th><th>Position</th><th class="num">Unrealized</th></tr></thead><tbody id="tape-body"><tr><td colspan="6">No quotes yet — the first monitor tick writes them here and every later tick refreshes them.</td></tr></tbody></table></div>
-  <div class="s" id="tape-note">Values update the moment the desk writes them (live database). Quotes are page snapshots the seats pulled, 15–20 min delayed until Alpaca keys exist; the countdown shows when the next refresh is due.</div>
+  <div class="s" id="tape-note">Values update the moment the desk writes them (live database); the countdown shows the desk's next refresh. <label style="cursor:pointer;white-space:nowrap"><input type="checkbox" id="autopull"> <b>Auto-pull quotes while this page is open</b></label> — every 5 min during market hours through <i>your</i> Firecrawl connector (about 1 credit per ticker per pull; you are asked once). Rows pulled this way are marked <span class="pos">●</span> live-pulled.</div>
 </section>
 
 <h2>The floor <span class="n" id="floor-n"></span></h2>
@@ -204,13 +204,30 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
   function dur(s){ if(s==null) return '—'; s=Math.round(s); return s<90? s+'s' : Math.round(s/60)+'m' }
   var lastQuotes=null, nextMin=null;
   function fmtIn(mins){ if(mins==null) return ''; if(mins<1) return 'now'; if(mins<60) return 'in '+Math.round(mins)+' min'; return 'in '+Math.floor(mins/60)+'h '+String(Math.round(mins%60)).padStart(2,'0')+'m' }
-  function renderTape(){ var q=lastQuotes, pos=(window.__DESK__&&window.__DESK__.positions)||[]; var body=$('tape-body'); if(!body) return; if(!q||!q.quotes||!q.quotes.length) return;
+  function renderTape(){ var pos=(window.__DESK__&&window.__DESK__.positions)||[]; var body=$('tape-body'); if(!body) return; var q={quotes:mergedQuotes(), as_of_et:(lastQuotes&&lastQuotes.as_of_et)||''}; if(!q.quotes.length) return;
     var byT={}; pos.forEach(function(p){byT[p.ticker]=p}); var h='', mark=0;
     q.quotes.forEach(function(x){ var p=byT[x.ticker]; var last=+x.last; var chg=x.change_pct; var rng=(x.day_low!=null&&x.day_high!=null)?(Number(x.day_low).toFixed(2)+' – '+Number(x.day_high).toFixed(2)):'—'; var pc='', uc='', ptxt='—', utxt='—';
       if(p&&p.entry!=null&&last){ var sgn=(p.direction==='short')?-1:1; var qty=+p.qty||0; var u=(last-p.entry)*sgn*qty; var r=(p.stop!=null&&p.entry!==p.stop)?((last-p.entry)*sgn/Math.abs(p.entry-p.stop)):null; mark+=u; ptxt=(p.direction||'long')+' '+(qty?qty+' sh @'+Number(p.entry).toFixed(2):'')+(p.stop!=null?' · stop '+Number(p.stop).toFixed(2):''); utxt=(u>=0?'+':'−')+'$'+Math.abs(u).toFixed(2)+(r!=null?' ('+(r>=0?'+':'')+r.toFixed(2)+'R)':''); uc=u>0?'pos':u<0?'neg':'' }
-      h+='<tr><td><b>'+esc(x.ticker)+'</b></td><td class="num">'+(last?last.toFixed(2):'—')+'</td><td class="num '+(chg>0?'pos':chg<0?'neg':'')+'">'+(chg!=null?fmtPct(chg):'—')+'</td><td class="num">'+rng+'</td><td>'+esc(ptxt)+'</td><td class="num '+uc+'">'+utxt+'</td></tr>' });
-    body.innerHTML=h; var a=$('tape-asof'); a.innerHTML='<span class="live"></span>as of '+esc((q.as_of_et||'').slice(0,16))+' ET'+(nextMin!=null?' · next refresh '+fmtIn(nextMin):'');
+      h+='<tr><td><b>'+esc(x.ticker)+'</b>'+(x.live?' <span class="pos" title="pulled by this page via your Firecrawl connector">●</span>':'')+'</td><td class="num">'+(last?last.toFixed(2):'—')+'</td><td class="num '+(chg>0?'pos':chg<0?'neg':'')+'">'+(chg!=null?fmtPct(chg):'—')+'</td><td class="num">'+rng+'</td><td>'+esc(ptxt)+'</td><td class="num '+uc+'">'+utxt+'</td></tr>' });
+    body.innerHTML=h; var a=$('tape-asof'); var newest=0; Object.keys(pulled).forEach(function(t){newest=Math.max(newest,pulled[t].pulled_at||0)}); a.innerHTML='<span class="live"></span>'+(newest?'live-pulled '+hhmm(newest)+' ET · desk ':'as of ')+esc((q.as_of_et||'').slice(0,16))+' ET'+(nextMin!=null?' · desk refresh '+fmtIn(nextMin):'');
     if(pos.length){ var es=$('t-eq-s'); if(es&&window.__DESK__.eq!=null){ es.textContent='ledger $'+Number(window.__DESK__.eq).toFixed(2)+' · mark '+(mark>=0?'+':'−')+'$'+Math.abs(mark).toFixed(2)+' open'; es.className='s '+(mark>0?'pos':mark<0?'neg':'') } } }
+  // --- auto-pull quotes through the viewer's Firecrawl connector (opt-in)
+  var pulled={}, pullWatches={}, mcpNS=null, pullOn=false;
+  var ETFS={SPY:1,QQQ:1,IWM:1,DIA:1,EWZ:1,TLT:1,USO:1,GLD:1,SLV:1,XLK:1,XLE:1,XLF:1,SMH:1,ARKK:1,KWEB:1,FXI:1,EEM:1,HYG:1,UVXY:1,SQQQ:1,TQQQ:1};
+  function saUrl(t){ return 'https://stockanalysis.com/'+(ETFS[t]?'etf/':'stocks/')+t.toLowerCase()+'/' }
+  function parseSA(md){ if(typeof md!=='string') return null; var m=md.match(/Alerts Compare\s+([\d.,]+)\s+([+\-−]?[\d.,]+)\s*\(([+\-−]?[\d.,]+)%\)\s+([^\n]+)/); if(!m) return null;
+    var num=function(x){return +String(x).replace(/[,−]/g,function(c){return c===','?'':'-'})}; var out={last:num(m[1]), change_pct:num(m[3]), as_of:m[4].trim()};
+    var r=md.match(/Day'?s Range\s*\|\s*([\d.,]+)\s*-\s*([\d.,]+)/); if(r){out.day_low=num(r[1]);out.day_high=num(r[2])} var pc=md.match(/Previous Close\s*\|\s*([\d.,]+)/); if(pc) out.prev_close=num(pc[1]); return out }
+  function marketHours(){ var p=etParts(); return ['Mon','Tue','Wed','Thu','Fri'].indexOf(p.wd)>=0 && p.min>=565 && p.min<=965 }
+  function pullTickers(){ var t={SPY:1}; var pl=window.__DESK__.plan; if(pl&&pl.trades) pl.trades.forEach(function(x){t[x.ticker]=1}); (window.__DESK__.positions||[]).forEach(function(x){t[x.ticker]=1}); return Object.keys(t) }
+  function stopPulls(){ Object.keys(pullWatches).forEach(function(k){try{pullWatches[k]()}catch(e){}}); pullWatches={} }
+  function startPulls(){ if(!mcpNS||!pullOn||!marketHours()) return; pullTickers().forEach(function(t){ if(pullWatches[t]) return;
+      pullWatches[t]=mcpNS.watchTool('Firecrawl','firecrawl_scrape',{url:saUrl(t),formats:['markdown'],onlyMainContent:true,maxAge:0},function(ev){
+        if(ev.type==='error'){ var c=ev.error&&ev.error.code; if(c==='needs_reauth'||c==='server_not_connected'||c==='not_in_manifest'||c==='blocked_by_policy'){ delete pulled[t]; setPullMsg(c==='needs_reauth'?'Reconnect Firecrawl in claude.ai Settings → Connectors':c==='server_not_connected'?'Add Firecrawl in claude.ai Settings → Connectors':'Firecrawl not allowed for this page — enable it in the page\'s Permissions menu'); renderTape() } return }
+        var pay=ev.result&&ev.result.payload; var md=pay&&(pay.markdown||(pay.data&&pay.data.markdown)); var q=parseSA(md); if(!q){ return }
+        q.ticker=t; q.pulled_at=(ev.result.cache&&ev.result.cache.storedAt)||Date.now(); pulled[t]=q; setPullMsg(''); renderTape() },{cache:{staleTime:0,gcTime:600000},refetchInterval:300000}) }) }
+  function setPullMsg(m){ var e=$('pull-msg'); if(!e){ e=el('div','s'); e.id='pull-msg'; $('tape').appendChild(e) } e.textContent=m; e.style.display=m?'':'none' }
+  function mergedQuotes(){ var q=lastQuotes&&lastQuotes.quotes?lastQuotes.quotes.slice():[]; var seen={}; q=q.map(function(x){ var p=pulled[x.ticker]; seen[x.ticker]=1; return p?Object.assign({},x,p,{live:true}):x }); Object.keys(pulled).forEach(function(t){ if(!seen[t]) q.push(Object.assign({ticker:t,live:true},pulled[t])) }); return q }
   function fmtPct(x){ if(x==null||x==='—'||isNaN(+x)) return '—'; var v=+x; return (v>0?'+':'')+v.toFixed(2)+'%' }
   // --- data
   if(!window.claude||!window.claude.use){ return; }
@@ -230,6 +247,7 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
       if(d.mode) $('mode').textContent=esc(d.mode);
       nowRunning=d.now_running||null; window.__DESK__.running=nowRunning?(nowRunning.seats||[]):[]; window.__DESK__.nowMode=nowRunning?nowRunning.mode:null; if(nowRunning&&nowRunning.doing){Object.keys(nowRunning.doing).forEach(function(k){window.__DESK__.seats[k]=Object.assign({},window.__DESK__.seats[k]||{},{summary:nowRunning.doing[k]})})} var dl=$('dlight'); if(nowRunning){ dl.className='light run'; $('dstate').textContent=esc(nowRunning.mode)+' · '+esc((nowRunning.seats||[]).join(', ')||'working')+' since '+hhmm(nowRunning.since) } else { dl.className='light'; $('dstate').textContent='idle · last '+esc((d.last_run&&d.last_run.mode)||'—')+' '+hhmm(d.last_run&&d.last_run.at) }
       SEATS.forEach(function(s){var c=$('seat-'+s.k); var running=nowRunning&&(nowRunning.seats||[]).indexOf(s.k)>=0; c.classList.toggle('running',!!running); if(running){c.querySelector('[data-st]').textContent='running';c.querySelector('[data-st]').className='status running';c.querySelector('[data-doing]').textContent=esc(nowRunning.doing&&nowRunning.doing[s.k]||('Working on '+nowRunning.mode+'…'));c.querySelector('[data-bar]').style.width='60%'}});
+      window.__DESK__.plan=d.plan||null; if(pullOn) startPulls();
       // plan
       var plan=d.plan; var pre=d.premarket; var st={}; if(pre&&pre.trade_status) pre.trade_status.forEach(function(t){st[t.ticker]=t});
       if(plan&&plan.trades&&plan.trades.length){ var h='<div class="tbl"><table><thead><tr><th>#</th><th>Ticker</th><th>Side</th><th>Status</th><th>Entry</th><th>Stop</th><th>T1</th><th>T2</th><th>R:R</th><th>Risk</th><th>Window ET</th></tr></thead><tbody>';
@@ -258,6 +276,12 @@ a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-of
       rows.forEach(function(r){ h+='<tr><td class="num">'+esc(r.time_et)+'</td><td class="num '+(r.direction==='short'?'neg':'pos')+'"><b>'+esc(r.ticker)+'</b></td><td>'+esc(r.action)+'</td><td class="num">'+esc(r.price)+'</td><td class="num">'+esc(r.size_pct)+'%</td><td style="font-size:.8rem">'+esc(r.rule)+(r.evidence?' — '+esc(r.evidence).slice(0,160):'')+'</td><td>'+(r.indicative?'indicative':'exact')+'</td></tr>' });
       $('journal').innerHTML=h+'</tbody></table></div>' }, function(e){});
     // alerts
+    // auto-pull toggle (opt-in, per viewer)
+    (function(){ var cb=$('autopull'); if(!cb) return; try{ pullOn=localStorage.getItem('desk.autopull')==='1' }catch(e){} cb.checked=pullOn;
+      cb.addEventListener('change',function(){ pullOn=cb.checked; try{ localStorage.setItem('desk.autopull',pullOn?'1':'0') }catch(e){} if(pullOn){ ensureMcp() } else { stopPulls(); pulled={}; setPullMsg(''); renderTape() } });
+      function ensureMcp(){ if(mcpNS){ startPulls(); return } window.claude.use('mcp').then(function(ns){ mcpNS=ns; if(!ns){ setPullMsg('Live pulls are not available in this view (connector bridge missing). The desk tape above still updates.'); return } startPulls() }) }
+      if(pullOn) ensureMcp();
+      setInterval(function(){ if(!pullOn||!mcpNS) return; if(marketHours()) startPulls(); else if(Object.keys(pullWatches).length){ stopPulls(); setPullMsg('Market closed — auto-pull paused until 09:25 ET.') } },60000); })();
     db.collection('alerts').orderBy('ts','desc').limit(40).onSnapshot(function(q){ var rows=q.docs.map(function(x){return x.data()}); if(!rows.length) return;
       var ul=el('ul','feed'); rows.forEach(function(r){ var li=el('li'); li.innerHTML='<span class="t">'+esc(r.time_et)+'</span><span><span class="sev-'+esc(r.severity)+'">'+esc(r.severity)+'</span> '+esc(r.text)+'</span>'; ul.appendChild(li) }); $('alerts').innerHTML=''; $('alerts').appendChild(ul) }, function(e){});
   });
