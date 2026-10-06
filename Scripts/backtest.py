@@ -52,14 +52,16 @@ def read_ladder():
     if not m: return None
     fm = dict(l.split(":", 1) for l in m.group(1).splitlines() if ":" in l)
     num = lambda v: [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", v)]
-    return (fm.get("unit", "R").strip().lower(), num(fm.get("rungs_at", "1 2 3 4 5 6 8 10 15")), num(fm.get("rungs_lock", "0.25 0.5 0.6 0.7 0.8 0.9 0.95 0.97 0.99")))
+    cl_after = fm.get("close_lock_after_et", "").strip().strip('"') or None; cl = (num(fm.get("close_lock", "0")) or [0])[0]
+    return (fm.get("unit", "R").strip().lower(), num(fm.get("rungs_at", "1 2 3 4 5 6 8 10 15")), num(fm.get("rungs_lock", "0.25 0.5 0.6 0.7 0.8 0.9 0.95 0.97 0.99")), cl_after, cl)
 
-def ladder_stop(ladder, sgn, fill, risk, peak, cur_stop):
-    unit, at, lock = ladder; gain = sgn * (peak - fill)
+def ladder_stop(ladder, sgn, fill, risk, peak, cur_stop, hm=None):
+    unit, at, lock, cl_after, cl = ladder; gain = sgn * (peak - fill)
     prog = gain / risk if unit == "r" else 100.0 * gain / fill
     rung = None
     for a, l in zip(at, lock):
         if prog + 1e-9 >= a: rung = l
+    if cl_after and cl and gain > 0 and hm and hm >= cl_after and (rung is None or rung < cl): rung = cl
     if rung is None: return cur_stop
     new = fill + sgn * rung * gain
     return max(cur_stop, new) if sgn == 1 else min(cur_stop, new)
@@ -79,7 +81,7 @@ def simulate_trail(bars, i, side, entry, stop, t1, cap, ladder, scale=1/3):
         if not scaled and ((b["h"] >= T1) if sgn == 1 else (b["l"] <= T1)):
             r_total += scale * t1; scaled = True; cur_stop = max(cur_stop, fill) if sgn == 1 else min(cur_stop, fill)
         peak = max(peak, b["h"]) if sgn == 1 else min(peak, b["l"])
-        cur_stop = ladder_stop(ladder, sgn, fill, risk, peak, cur_stop)
+        cur_stop = ladder_stop(ladder, sgn, fill, risk, peak, cur_stop, hm)
         if hm >= "15:55": return r_total + ((1 - scale) if scaled else 1.0) * sgn * (b["c"] - fill) / risk
     last = bars[-1][1]["c"]
     return r_total + ((1 - scale) if scaled else 1.0) * sgn * (last - fill) / risk

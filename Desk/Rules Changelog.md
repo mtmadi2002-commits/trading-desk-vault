@@ -13,4 +13,4 @@ type: changelog
 | 2026-10-06 | 3 | Resting stop-limit brackets at the broker in alpaca modes; real-time quotes via exec.py quote when keys exist | user instruction (feature 1) | User |
 | 2026-10-06 | 4 | Winners: scale 1/3 at T1, breakeven, trail the 2/3 runner to ≥ 3R, no fixed T2 cap on trend days | user instruction (win big); today NVDA plan capped the runner at 1.37R | User |
 | 2026-10-06 | 4 | Data absence never cuts size: hard-level trigger at full planned size when live VWAP is missing | user instruction; today every entry was halved to 1.25% by a VWAP-feed switch, not by risk | User |
-| 2026-10-06 | 4 | Rising stop ladder (Desk/Trail.md): runner stop locks 25/50/60/70/80/90/95/97/99% of peak profit at 1/2/3/4/5/6/8/10/15R; exec.py trail applies it every tick, backtest --trail measures it | user instruction ("secret weapon") | User |
+| 2026-10-06 | 4 | Rising stop ladder (Desk/Trail.md): runner stop locks 10–100% of peak profit on half-R rungs from 0.5R to 20R, and 90% after 15:25 ET ("take it all"); exec.py trail applies it every tick, backtest --trail measures it | user instruction ("secret weapon") | User |

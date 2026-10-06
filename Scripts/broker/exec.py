@@ -239,6 +239,9 @@ def ladder_stop(side, entry, stop_initial, peak, cur_stop):
     rung = None
     for a, l in zip(at, lock):
         if prog + 1e-9 >= a: rung = (a, l)
+    # take-it-all: late in the session a profitable position locks close_lock of its peak profit regardless of rung
+    cl_after = str(TRAIL.get("close_lock_after_et", "")); cl = float(TRAIL.get("close_lock", 0) or 0)
+    if cl_after and cl and gain > 0 and et_now().strftime("%H:%M") >= cl_after and (rung is None or rung[1] < cl): rung = ("close", cl)
     if rung is None: return cur_stop, None, round(prog, 3)
     new = entry + sgn * rung[1] * gain
     new = max(cur_stop, new) if sgn == 1 else min(cur_stop, new)
