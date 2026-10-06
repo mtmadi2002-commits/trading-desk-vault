@@ -8,15 +8,18 @@ type: dashboard
 ## Latest
 - Plan: [[2026-10-06 Plan]]
 - Journal: [[2026-10-06 Journal]]
-- Review: (after close Oct 6)
+- Review: [[2026-10-06 Review]]
 
 ## Scorecard (updated by the Coach)
 | Date | Trades planned | Triggered | Wins | Losses | Day R | Day P&L % | Rules v |
 |---|---|---|---|---|---|---|---|
-| 2026-10-06 | 3 | — | — | — | — | — | 1 |
+| 2026-10-06 | 3 | 1 (NVDA) | 0 | 1 | -0.446 | -0.55% | 5 |
 
 ## Lessons
-- (the Coach adds one wikilink per lesson)
+- [[Lesson - A trigger seen late is a chase, not a breakout]]
+- [[Lesson - A name that opens above its breakout trigger has already broken out]]
+- [[Lesson - A kill switch that is certain to trip is a sizing rule in disguise]]
+- [[Lesson - Day-2 pullback entries miss the strongest continuation]]
 
 ## How this vault is used
 Each evening the desk writes `Plans/<date> Plan`. During the session the monitor appends to `Journal/<date> Journal`. After the close the Coach writes `Reviews/<date> Review` and `Lessons/…`, then edits [[Rules]] under its change policy. Open this folder as an Obsidian vault.

@@ -1,8 +1,8 @@
 ---
 type: rules
-version: 4
+version: 5
 updated: 2026-10-06
-updated_by: User — win-big management: no size cuts for missing data feeds, hard-level triggers, runners trail to 3R+ (Coach may tighten, may not loosen)
+updated_by: Coach — [[2026-10-06 Review]]: late-seen triggers and gapped-through breakouts tightened; plan kill switches may not cut size for a missing feed (clarify)
 ---
 # Desk Rules (living — read by every seat, rewritten only by the Coach)
 
@@ -25,8 +25,8 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 
 ## Stops and targets
 - Stops are structure levels (prior low/high, VWAP, opening-range extreme), never a round %.
-- Stop distance between 0.7× and 1.5× ATR14. Below 0.7× is noise (lesson: [[2026-10-06 Review]] — all four draft stops were 0.51–0.61× ATR and were widened).
-- Quote R:R at T1 honestly after the stop is corrected; do not report 2.0 R:R from a noise stop.
+- Stop distance between 0.7× and 1.5× ATR14. Below 0.7× is noise (lesson: [[2026-10-06 Review]] — all four draft stops were 0.51–0.61× ATR and were widened; the 0.78× ATR NVDA stop at 236.00 then held a 238.93 close-low).
+- Quote R:R at T1 honestly after the stop is corrected; do not report 2.0 R:R from a noise stop. T1 is quoted from the realistic fill (trigger + expected slippage), not from the trigger alone.
 - Opening-range filter: if the 09:30–09:45 range exceeds 1.0× ATR, breakout entries in that name are void; VWAP-retest only after 10:00.
 
 ## Winners (user-set 2026-10-06 — let them run)
@@ -37,10 +37,13 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 ## Data absence (user-set 2026-10-06)
 - A missing data feed never cuts size. If live VWAP is unavailable, the trade uses its HARD level (prior high/low, opening-range extreme, Monday close ± ATR) at the FULL planned size. VWAP is confirmation, never the sole trigger. The Head Trader writes every trade so a hard level is the primary trigger.
 - Size is cut only by the Risk section (confidence, correlation, daily P&L) and by liquidity rules in the plan (pre-market volume, spread) — never by what the desk cannot see.
+- Plan-level kill switches and session rules may not cut size for a missing feed; the Risk Manager strikes any such switch before the plan is final. A switch that is certain to trip at 09:45 is a sizing rule in disguise (clarify: [[2026-10-06 Review]] — the VWAP-feed switch halved every size for a feed the desk knew it did not have).
 
 ## Entries
 - No entries 09:30–09:35 (09:30–09:32 minimum). No entry inside a scheduled-data window ±2 min.
 - Never buy above the prior day's high on a name that moved > 10% that day (chase rule). Pullback-and-hold entries only on day-2 of a gap.
+- Late-seen trigger: the fill cap (entry + 0.25×ATR) limits slippage on the trigger bar only. A trigger first observed after its bar has closed is valid only if the last price is within 0.1×ATR of the trigger AND T1 is ≥ 1.5R from the actual fill; otherwise skip — a late entry is a chase, not a breakout (tighten: [[2026-10-06 Review]] — NVDA trigger 240.60 on the 09:45 bar, filled 10:46 at the 241.90 cap, T1 0.80R, −0.446R).
+- Gapped-through trigger: if a name opens above its breakout trigger level, the breakout leg is void for the day; the only valid entry is a retest-and-hold — price returns to within 0.1×ATR of the level and a 5-min bar closes back above it after 09:45. Pullback and VWAP-retest legs are unaffected (tighten: [[2026-10-06 Review]] — NVDA open 242.10 > 240.60, first-hour high 243.37 was the day's high, close 239.24; SPCX same shape).
 - Day-2 of an election/macro gap: the liquid core continues at a slower pace; the +18–30% names fade. Trade the core long on held pullbacks; do not short the core.
 - M&A: targets pinned to the deal price and acquirers on announcement day are not day trades (merger arb only).
 
@@ -51,7 +54,7 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 
 ## Data hygiene
 - Every level cites its source. "est VWAP" = HLC/3 proxy until replaced by live VWAP at 09:45; if no live VWAP, only hard prior-day levels are valid triggers.
-- Alpha Vantage free key: 25 calls/day desk-wide; premium endpoints return fake sample data — discard anything with 2024 timestamps or MSFT/AAPL/IBM placeholder rows.
+- Alpha Vantage free key: 25 calls/day desk-wide; premium endpoints return fake sample data — discard anything with 2024 timestamps or MSFT/AAPL/IBM placeholder rows. TIME_SERIES_INTRADAY returned the premium/rate_limit error on 2026-10-06; until Alpaca bars exist the Coach's replay is range-based from stockanalysis quote pages.
 - Firecrawl: ~10 requests/min desk-wide; one at a time, 7 s apart.
 
 ## Setup expectancy (binding on the Head Trader and the Coach)
