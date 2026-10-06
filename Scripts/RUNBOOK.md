@@ -20,7 +20,7 @@ args.prior_notes: 3–8 lines you verify yourself first with Firecrawl (7 s apar
 Write: `Plans/<date> Plan.md` via `python3 -I Scripts/render_plan.py run.json <date> out.md` (save the workflow result JSON first; add `rules_version` and `run_id` keys to the JSON before rendering); `Journal/<date> Journal.md` from Templates/Journal.md; update Dashboard.md "Latest" links and add a scorecard row with planned trade count. Database: `set` state/desk fields session_date, plan (the `final` object), rules_version, premarket_status "pending", plus `delete` any `journal`/`alerts` docs from a previous date (list first). Push summary: regime, the ranked trades with entry/stop/T1/size, the vetoes, the two numbers to watch at the open.
 
 ## premarket (08:50 ET weekdays; session date = today)
-Read additionally: `Plans/<today> Plan.md`, `Journal/<today> Journal.md`. args.plan = state/desk.plan.
+Read additionally: `Plans/<today> Plan.md`, `Journal/<today> Journal.md`. args.plan_path = `$V/Plans/<today>.desk.json` (the plan JSON the evening run saves next to the note; state/desk.plan holds the same `final` object), args.rules_path = `$V/Desk/Rules.md`.
 Write: append a "## Premarket update (HH:MM ET)" section to the Plan note with the trade_status table, checklist answers, kill switches tripped and the alert text; `update` state/desk premarket (the whole object) and premarket_status (e.g. "2 live, 1 scrapped"). Push: the alert_text.
 
 ## monitor (hourly at :40, 09:40–15:40 ET weekdays — the platform minimum is 1 h; session date = today)

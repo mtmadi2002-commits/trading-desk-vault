@@ -21,7 +21,7 @@ const DAY = A.day || 'the session day'
 const NOW = A.now_et || 'unknown'
 const VAULT = A.vault_dir || '/tmp/vault'
 const VURL = A.vault_url || ''
-const RULES = A.rules || '(rules not supplied — use desk defaults: 0.5% risk, max 2 concurrent, 1.0% open-risk cap, -1.5% daily stop, stops 0.7-1.5x ATR)'
+const RULES = A.rules || (A.rules_path ? ('READ THE LIVING RULES FROM THIS FILE FIRST (cat it): ' + A.rules_path) : '(rules not supplied — use desk defaults: 0.5% risk, max 2 concurrent, 1.0% open-risk cap, -1.5% daily stop, stops 0.7-1.5x ATR)')
 const PRIOR = A.prior_notes || 'none supplied — discover the prior session from finviz (SPY/QQQ/IWM quote pages and the screeners).'
 const AVLEFT = (A.av_calls_remaining !== undefined) ? A.av_calls_remaining : 20
 
@@ -227,7 +227,7 @@ YOUR JOB: Tell the desk what kind of day ${DAY} ${DATE} is likely to be and wher
 2. SPY levels: take the prior session's O/H/L/C from PRIOR NOTES if present, else scrape https://stockanalysis.com/etf/spy/ (Open, Day's Range, Previous Close). Scrape https://finviz.com/quote.ashx?t=SPY for SMA20/50, 52w high, ATR, RSI. Derive support/resistance from the prior session's H/L, the prior day's levels, and round numbers; state each level's source.
 3. Define no-trade windows (e.g. 10:00 ET data release ±5 min, first 2 minutes after the open if gap > X).
 Alpha Vantage CAP for this seat: 1 call max (optional — e.g. GLOBAL_QUOTE on VXX or TLT). Prefer web.
-Be concrete about the day-2 bias for the prior session's biggest theme: after an outsized one-day move on a surprise, what tends to happen on day 2 (gap-and-fade vs continuation), and what would flip it. Label anything from memory as 'not web-verified'.
+Be concrete about the day-2 bias for the prior session's biggest theme: after an outsized one-day move on a surprise, what tends to happen on day 2 (gap-and-fade vs continuation), and what would flip it. Label anything from memory as 'not web-verified'.`,
     { label: 'macro', phase: 'Analyze', schema: MACRO_SCHEMA }),
 
   () => agent(`You are SEAT 3: the TECHNICAL analyst.
@@ -372,7 +372,7 @@ const PREMARKET_SCHEMA = {
 async function runPremarket() {
   phase('Premarket')
   log('Premarket re-level of the plan for ' + DATE)
-  const plan = A.plan ? JSON.stringify(A.plan, null, 1) : '(no plan supplied)'
+  const plan = A.plan ? JSON.stringify(A.plan, null, 1) : (A.plan_path ? ('READ THE PLAN FROM THIS JSON FILE (jq .final ' + A.plan_path + ' — the object with trades/kill_switches/open_questions/session_rules)') : '(no plan supplied)')
   return await agent(`You are the HEAD TRADER at 09:00 ET doing the pre-market re-level.
 ${CTX}
 === LIVING RULES ===
@@ -423,10 +423,10 @@ const WATCH_SCHEMA = {
 async function runMonitor() {
   phase('Monitor')
   log('Monitor tick ' + NOW + ' ET for ' + DATE)
-  const plan = A.plan ? JSON.stringify(A.plan, null, 1) : '(no plan supplied)'
-  const pre = A.premarket ? JSON.stringify(A.premarket, null, 1) : '(no premarket update supplied)'
-  const journal = A.journal ? JSON.stringify(A.journal, null, 1) : '[]'
-  const tickers = (A.plan && A.plan.trades) ? A.plan.trades.map(t => t.ticker) : []
+  const plan = A.plan ? JSON.stringify(A.plan, null, 1) : (A.plan_path ? ('READ THE PLAN FROM THIS JSON FILE (jq .final ' + A.plan_path + ' — the object with trades/kill_switches/open_questions/session_rules)') : '(no plan supplied)')
+  const pre = A.premarket ? JSON.stringify(A.premarket, null, 1) : (A.premarket_path ? ('READ THE PREMARKET UPDATE FROM: ' + A.premarket_path) : '(no premarket update supplied)')
+  const journal = A.journal ? JSON.stringify(A.journal, null, 1) : (A.journal_path ? ('READ TODAY\'S JOURNAL ROWS + LEDGER FROM: ' + A.journal_path) : '[]')
+  const tickers = (A.plan && A.plan.trades) ? A.plan.trades.map(t => t.ticker) : (A.tickers || [])
   const [exec, watch] = await parallel([
     () => agent(`You are the EXECUTION seat (Head Trader intraday, PAPER account) at ${NOW} ET.
 ${CTX}
@@ -486,10 +486,10 @@ const COACH_SCHEMA = {
 async function runCoach() {
   phase('Coach')
   log('Coach: replaying ' + DATE + ' against actual bars')
-  const plan = A.plan ? JSON.stringify(A.plan, null, 1) : '(no plan supplied)'
+  const plan = A.plan ? JSON.stringify(A.plan, null, 1) : (A.plan_path ? ('READ THE PLAN FROM THIS JSON FILE (jq .final ' + A.plan_path + ' — the object with trades/kill_switches/open_questions/session_rules)') : '(no plan supplied)')
   const pre = A.premarket ? JSON.stringify(A.premarket, null, 1) : '(none)'
-  const journal = A.journal ? JSON.stringify(A.journal, null, 1) : '[]'
-  const tickers = (A.plan && A.plan.trades) ? A.plan.trades.map(t => t.ticker) : []
+  const journal = A.journal ? JSON.stringify(A.journal, null, 1) : (A.journal_path ? ('READ TODAY\'S JOURNAL ROWS + LEDGER FROM: ' + A.journal_path) : '[]')
+  const tickers = (A.plan && A.plan.trades) ? A.plan.trades.map(t => t.ticker) : (A.tickers || [])
   return await agent(`You are the COACH. The session ${DATE} is over. You learn from it and rewrite the desk's rules under the change policy.
 ${CTX}
 === LIVING RULES (current; you may rewrite them) ===
