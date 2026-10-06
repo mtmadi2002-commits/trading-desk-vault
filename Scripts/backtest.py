@@ -43,6 +43,47 @@ def load_bars(ticker):
 def day_stats(bars):
     return dict(o=bars[0][1]["o"], h=max(b["h"] for _, b in bars), l=min(b["l"] for _, b in bars), c=bars[-1][1]["c"])
 
+def read_ladder():
+    """Desk/Trail.md frontmatter -> (unit, rungs_at, rungs_lock); None if the note is missing."""
+    import re
+    f = V / "Desk" / "Trail.md"
+    if not f.exists(): return None
+    m = re.match(r"^---\n(.*?)\n---", f.read_text(), re.S)
+    if not m: return None
+    fm = dict(l.split(":", 1) for l in m.group(1).splitlines() if ":" in l)
+    num = lambda v: [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", v)]
+    return (fm.get("unit", "R").strip().lower(), num(fm.get("rungs_at", "1 2 3 4 5 6 8 10 15")), num(fm.get("rungs_lock", "0.25 0.5 0.6 0.7 0.8 0.9 0.95 0.97 0.99")))
+
+def ladder_stop(ladder, sgn, fill, risk, peak, cur_stop):
+    unit, at, lock = ladder; gain = sgn * (peak - fill)
+    prog = gain / risk if unit == "r" else 100.0 * gain / fill
+    rung = None
+    for a, l in zip(at, lock):
+        if prog + 1e-9 >= a: rung = l
+    if rung is None: return cur_stop
+    new = fill + sgn * rung * gain
+    return max(cur_stop, new) if sgn == 1 else min(cur_stop, new)
+
+def simulate_trail(bars, i, side, entry, stop, t1, cap, ladder, scale=1/3):
+    """v4 Winners + rising-stop ladder: scale `scale` at T1 (breakeven), the runner follows the ladder (stop only rises) until hit or 15:55."""
+    sgn = 1 if side == "long" else -1
+    fill = bars[i][1]["c"]
+    if sgn * (fill - entry) > cap: return None
+    risk = abs(fill - stop)
+    if risk <= 0: return None
+    T1 = fill + sgn * t1 * risk; cur_stop = stop; peak = fill; scaled = False; r_total = 0.0
+    for hm, b in bars[i + 1:]:
+        hit_stop = (b["l"] <= cur_stop) if sgn == 1 else (b["h"] >= cur_stop)
+        if hit_stop:
+            return r_total + ((1 - scale) if scaled else 1.0) * sgn * (cur_stop - fill) / risk
+        if not scaled and ((b["h"] >= T1) if sgn == 1 else (b["l"] <= T1)):
+            r_total += scale * t1; scaled = True; cur_stop = max(cur_stop, fill) if sgn == 1 else min(cur_stop, fill)
+        peak = max(peak, b["h"]) if sgn == 1 else min(peak, b["l"])
+        cur_stop = ladder_stop(ladder, sgn, fill, risk, peak, cur_stop)
+        if hm >= "15:55": return r_total + ((1 - scale) if scaled else 1.0) * sgn * (b["c"] - fill) / risk
+    last = bars[-1][1]["c"]
+    return r_total + ((1 - scale) if scaled else 1.0) * sgn * (last - fill) / risk
+
 def simulate(bars, i, side, entry, stop, t1, t2, cap):
     """Walk forward from bar i (entry fills at the trigger bar close if within the cap). Returns R multiple (half at T1, half at T2/close)."""
     sgn = 1 if side == "long" else -1
@@ -69,7 +110,7 @@ def simulate(bars, i, side, entry, stop, t1, t2, cap):
     last = bars[-1][1]["c"]
     return r_total + (0.5 if half_done else 1.0) * sgn * (last - fill) / risk
 
-def run_setup(days, setup, side, stop_atr, t1, t2):
+def run_setup(days, setup, side, stop_atr, t1, t2, ladder=None):
     names = list(days); out = []
     for di in range(14, len(names)):
         d = names[di]; bars = days[d]
@@ -99,7 +140,7 @@ def run_setup(days, setup, side, stop_atr, t1, t2):
                 if pulled_back and sgn * (b["c"] - vwap) > 0 and sgn * (b["c"] - vwap) < 0.5 * atr: trig = b["c"]; stop = b["c"] - sgn * stop_atr * atr
             if trig is None: continue
             if setup == "orb-breakout" and abs(b["c"] - stop) > stop_atr * atr: stop = b["c"] - sgn * stop_atr * atr
-            r = simulate(bars, i, side, trig, stop, t1, t2, cap)
+            r = simulate_trail(bars, i, side, trig, stop, t1, cap, ladder) if ladder else simulate(bars, i, side, trig, stop, t1, t2, cap)
             if r is not None: out.append(dict(day=d, side=side, time=hm, fill=round(b["c"], 2), stop=round(stop, 2), atr=round(atr, 2), r=round(r, 2)))
             break
     return out
@@ -116,19 +157,20 @@ def summarize(trades):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("tickers", nargs="+"); ap.add_argument("--setup", default="all"); ap.add_argument("--side", default="both")
-    ap.add_argument("--stop-atr", type=float, default=0.8); ap.add_argument("--t1", type=float, default=1.5); ap.add_argument("--t2", type=float, default=2.5); ap.add_argument("--md", help="directory to write <TICKER> Backtest.md into")
+    ap.add_argument("--stop-atr", type=float, default=0.8); ap.add_argument("--t1", type=float, default=1.5); ap.add_argument("--t2", type=float, default=2.5); ap.add_argument("--md", help="directory to write <TICKER> Backtest.md into"); ap.add_argument("--trail", action="store_true", help="manage with Rules v4 Winners + the rising-stop ladder in Desk/Trail.md instead of fixed T1/T2")
     a = ap.parse_args()
     setups = ["orb-breakout", "day2-continuation", "vwap-pullback", "breakout-prior-high"] if a.setup == "all" else [a.setup]
     sides = ["long", "short"] if a.side == "both" else [a.side]
-    report = {}
+    report = {}; ladder = read_ladder() if a.trail else None
+    if a.trail and not ladder: raise SystemExit("--trail needs Desk/Trail.md")
     for tk in a.tickers:
         days, files = load_bars(tk); rows = []
         for s in setups:
             for sd in sides:
-                tr = run_setup(days, s, sd, a.stop_atr, a.t1, a.t2); rows.append(dict(setup=s, side=sd, **summarize(tr), trades=tr))
-        report[tk.upper()] = dict(files=files, sessions=len(days), params=dict(stop_atr=a.stop_atr, t1=a.t1, t2=a.t2), results=rows)
+                tr = run_setup(days, s, sd, a.stop_atr, a.t1, a.t2, ladder); rows.append(dict(setup=s, side=sd, **summarize(tr), trades=tr))
+        report[tk.upper()] = dict(files=files, sessions=len(days), params=dict(stop_atr=a.stop_atr, t1=a.t1, t2=a.t2, management=("v4 winners + ladder" if ladder else "fixed T1/T2")), results=rows)
         if a.md:
-            md = [f"---\ntype: backtest\nticker: {tk.upper()}\nsessions: {len(days)}\nparams: stop {a.stop_atr}xATR, T1 {a.t1}R, T2 {a.t2}R\nfiles: {', '.join(files)}\n---",
+            md = [f"---\ntype: backtest\nticker: {tk.upper()}\nsessions: {len(days)}\nparams: stop {a.stop_atr}xATR, T1 {a.t1}R, {'runner on the Desk/Trail.md ladder' if ladder else f'T2 {a.t2}R'}\nfiles: {', '.join(files)}\n---",
                   f"# {tk.upper()} backtest — {len(days)} sessions ({list(days)[0]} → {list(days)[-1]})", "",
                   "Mechanical replay of the desk's setup types on 5-minute bars (Alpha Vantage). Stop first when a bar touches both. Scale 1/2 at T1, breakeven, rest to T2 or 15:55. One trade per setup per day. **A setup with avg R < 0 here should not be in the plan at default size.**", "",
                   "| Setup | Side | Trades | Win % | Avg R | Sum R | Avg win | Avg loss | Worst run |", "|---|---|---|---|---|---|---|---|---|"]

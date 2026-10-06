@@ -30,7 +30,7 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 - Opening-range filter: if the 09:30–09:45 range exceeds 1.0× ATR, breakout entries in that name are void; VWAP-retest only after 10:00.
 
 ## Winners (user-set 2026-10-06 — let them run)
-- Scale **one third** at T1 (≥ 1.5R), stop to breakeven on the rest. The remaining two thirds is a RUNNER: trail under each higher 5-min swing low (above each lower high for shorts), never a fixed T2 cap on a trend day. Take the runner only on the trail, a kill switch, a stall (no new high for 45 min with falling volume) or the 15:55 flat rule.
+- Scale **one third** at T1 (≥ 1.5R), stop to breakeven on the rest. The remaining two thirds is a RUNNER on the **rising stop ladder in [[Trail]]** (peak-tracked; locks 25% of peak profit at 1R, 50% at 2R, 60% at 3R … 99% at 15R; the stop only ever rises). No fixed T2 cap on a trend day. Take the runner only on the trail, a kill switch, a stall (no new high for 45 min with falling volume) or the 15:55 flat rule.
 - Target the runner at ≥ 3R. A day where the runner reaches 3R is the day that pays for the week; never clip it to "lock in" a small gain.
 - A trade that reaches +1R and comes all the way back to breakeven is a scratch, not a loss — do not re-enter it that day.
 

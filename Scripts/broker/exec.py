@@ -17,6 +17,8 @@ Paper account compounds: equity = paper_equity (Live.md) + sum of realized P&L; 
   exec.py orders                           -> open orders at the broker;  exec.py cancel --symbol NU  -> cancel resting orders for a symbol
   exec.py bars   --symbol NU --days 60     -> 5-minute history from Alpaca's data API (free with paper keys) saved to Data/bars/NU-alpaca.json
                                               in the same shape Scripts/backtest.py reads (Alpha Vantage's free key cannot serve this history)
+  exec.py trail  --symbol NU --last 16.10  -> apply the rising stop ladder in Desk/Trail.md (peak-tracked; stop only rises). Prints the new stop and
+                                              stop_hit=true when --last is through it (then call exit). Alpaca modes also replace the broker stop leg.
   exec.py stats                            -> per-setup expectancy from the ledger (n, win rate, avg R, expectancy R) — the Coach sizes from this
 Every entry carries --setup <type> (the plan's setup_type) so expectancy can be measured per setup.
 
@@ -224,6 +226,46 @@ def cmd_cancel(a):
 
 def cmd_quote(a): ok(action="quote", **quote(a.symbol))
 
+TRAIL = read_frontmatter(VAULT / "Desk" / "Trail.md")
+def _flist(v):
+    if isinstance(v, list): return [float(x) for x in v]
+    return [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", str(v))]
+def ladder_stop(side, entry, stop_initial, peak, cur_stop):
+    """Rising-stop ladder: once peak profit crosses a rung, lock that rung's share of peak profit. Never lowers the stop."""
+    at = _flist(TRAIL.get("rungs_at", [1, 2, 3, 4, 5, 6, 8, 10, 15])); lock = _flist(TRAIL.get("rungs_lock", [0.25, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.97, 0.99]))
+    unit = str(TRAIL.get("unit", "R")).lower(); sgn = 1 if side == "long" else -1
+    risk = abs(entry - stop_initial); gain = sgn * (peak - entry)
+    prog = (gain / risk) if unit == "r" and risk > 0 else (100.0 * gain / entry)
+    rung = None
+    for a, l in zip(at, lock):
+        if prog + 1e-9 >= a: rung = (a, l)
+    if rung is None: return cur_stop, None, round(prog, 3)
+    new = entry + sgn * rung[1] * gain
+    new = max(cur_stop, new) if sgn == 1 else min(cur_stop, new)
+    return round(new, 4), rung, round(prog, 3)
+
+def cmd_trail(a):
+    acct = account()
+    if a.symbol not in acct["positions"]: fail(f"no position in {a.symbol}")
+    L = load_ledger()
+    if MODE == "paper-local":
+        p = L["positions"][a.symbol]
+    else:
+        p = L.setdefault("broker_meta", {}).setdefault(a.symbol, {}); bp = acct["positions"][a.symbol]
+        p.setdefault("side", bp["side"]); p.setdefault("entry", bp["entry"]); p.setdefault("stop", p.get("stop_initial", bp["entry"])); p.setdefault("stop_initial", p["stop"])
+    sgn = 1 if p["side"] == "long" else -1
+    p["peak"] = max(p.get("peak", p["entry"]), a.last) if sgn == 1 else min(p.get("peak", p["entry"]), a.last)
+    old = p["stop"]; new, rung, prog = ladder_stop(p["side"], p["entry"], p.get("stop_initial", p["stop"]), p["peak"], old)
+    p["stop"] = new; save_ledger(L)
+    replaced = []
+    if MODE != "paper-local" and new != old:
+        for o in alpaca("GET", f"/v2/orders?status=open&symbols={a.symbol}&nested=true"):
+            for leg in [o] + (o.get("legs") or []):
+                if leg.get("type") in ("stop", "stop_limit") and leg.get("status") in ("new", "accepted", "held"):
+                    replaced.append(alpaca("PATCH", f"/v2/orders/{leg['id']}", dict(stop_price=str(round(new, 2)))).get("id"))
+    hit = (a.last <= new) if sgn == 1 else (a.last >= new)
+    ok(action="trail", symbol=a.symbol, side=p["side"], entry=p["entry"], peak=p["peak"], progress=prog, unit=str(TRAIL.get("unit", "R")), rung=(dict(at=rung[0], lock=rung[1]) if rung else None), stop_before=old, stop=new, raised=(new != old), stop_hit=hit, last=a.last, replaced=replaced)
+
 def cmd_bars(a):
     """Pull regular-hours 5-minute bars for the last N days (IEX feed) and save them AV-style for backtest.py."""
     if not have_keys(): fail("bars needs ALPACA_KEY_ID / ALPACA_SECRET_KEY (free paper keys) in environment secrets")
@@ -341,10 +383,10 @@ if __name__ == "__main__":
     r = sub.add_parser("rest"); r.add_argument("--symbol", required=True); r.add_argument("--side", choices=["buy","sell"], required=True); r.add_argument("--trigger", type=float, required=True)
     r.add_argument("--limit-cap", dest="limit_cap", type=float, required=True); r.add_argument("--stop", type=float, required=True); r.add_argument("--t1", type=float, required=True); r.add_argument("--t2", type=float)
     r.add_argument("--risk-pct", dest="risk_pct", type=float, default=0.5); r.add_argument("--setup", default="untagged")
-    sub.add_parser("orders"); sub.add_parser("stats"); bb = sub.add_parser("bars"); bb.add_argument("--symbol", required=True); bb.add_argument("--days", type=int, default=60); q = sub.add_parser("quote"); q.add_argument("--symbol", required=True); c = sub.add_parser("cancel"); c.add_argument("--symbol", required=True)
+    sub.add_parser("orders"); sub.add_parser("stats"); tr = sub.add_parser("trail"); tr.add_argument("--symbol", required=True); tr.add_argument("--last", type=float, required=True); bb = sub.add_parser("bars"); bb.add_argument("--symbol", required=True); bb.add_argument("--days", type=int, default=60); q = sub.add_parser("quote"); q.add_argument("--symbol", required=True); c = sub.add_parser("cancel"); c.add_argument("--symbol", required=True)
     s = sub.add_parser("scale"); s.add_argument("--symbol", required=True); s.add_argument("--fraction", type=float, default=0.5); s.add_argument("--fill", type=float)
     b = sub.add_parser("stop-to-breakeven"); b.add_argument("--symbol", required=True)
     x = sub.add_parser("exit"); x.add_argument("--symbol", required=True); x.add_argument("--reason", default="rule"); x.add_argument("--fill", type=float)
     f = sub.add_parser("flatten"); f.add_argument("--reason", default="flat rule"); f.add_argument("--fill", type=float)
     a = ap.parse_args()
-    {"preflight": cmd_preflight, "enter": cmd_enter, "scale": cmd_scale, "stop-to-breakeven": cmd_breakeven, "exit": cmd_exit, "flatten": cmd_flatten, "positions": cmd_positions, "ledger": cmd_ledger, "rest": cmd_rest, "orders": cmd_orders, "cancel": cmd_cancel, "quote": cmd_quote, "stats": cmd_stats, "bars": cmd_bars}[a.cmd](a)
+    {"preflight": cmd_preflight, "enter": cmd_enter, "scale": cmd_scale, "stop-to-breakeven": cmd_breakeven, "exit": cmd_exit, "flatten": cmd_flatten, "positions": cmd_positions, "ledger": cmd_ledger, "rest": cmd_rest, "orders": cmd_orders, "cancel": cmd_cancel, "quote": cmd_quote, "stats": cmd_stats, "trail": cmd_trail, "bars": cmd_bars}[a.cmd](a)
