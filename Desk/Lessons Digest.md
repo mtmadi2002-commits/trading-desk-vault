@@ -11,11 +11,13 @@ Status rule: **sample** (<10 trades) → default size · **proven** (≥10, avg 
 | Setup | Trades | Win % | Avg R | P&L $ | Status |
 |---|---|---|---|---|---|
 | ath-breakout | 1 | 0.0 | -0.446 | -1.1 | **sample** |
+| breakdown-short | 1 | 100.0 | 0.178 | 0.88 | **sample** |
 
 
 | Day | Ticker | Setup | Side | R | P&L $ |
 |---|---|---|---|---|---|
 | 2026-10-06 | NVDA | ath-breakout | long | -0.446 | -1.1 |
+| 2026-10-07 | TEM | breakdown-short | short | 0.178 | 0.88 |
 
 ## Review 2026-10-06 Review
 # 2026-10-06 Review — Coach
