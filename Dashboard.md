@@ -6,14 +6,15 @@ type: dashboard
 **Rules:** [[Rules]] · [[Rules Changelog]] · [[Seats]] · [[Live]] (mode + guards) · [[Targets]] (user milestones $500 → $1,000 → $10,000 and what the limits allow) · [[Expectancy]] (per-setup stats, sizes setups) · `Backtests/` (setup replays on 5-min bars)
 
 ## Latest
-- Plan: [[2026-10-06 Plan]]
-- Journal: [[2026-10-06 Journal]]
+- Plan: [[2026-10-07 Plan]] (yesterday: [[2026-10-06 Plan]])
+- Journal: [[2026-10-07 Journal]]
 - Review: [[2026-10-06 Review]]
 
 ## Scorecard (updated by the Coach)
 | Date | Trades planned | Triggered | Wins | Losses | Day R | Day P&L % | Rules v |
 |---|---|---|---|---|---|---|---|
 | 2026-10-06 | 3 | 1 (NVDA) | 0 | 1 | -0.446 | -0.55% | 5 |
+| 2026-10-07 | 4 | — | — | — | — | — | 5 |
 
 ## Lessons
 - [[Lesson - A trigger seen late is a chase, not a breakout]]
