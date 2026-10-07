@@ -1,6 +1,23 @@
 {
  "equity_start": 200.0,
- "positions": {},
+ "positions": {
+  "TEM": {
+   "side": "short",
+   "qty": 1.16,
+   "qty_initial": 1.16,
+   "entry": 71.34,
+   "stop": 75.6,
+   "stop_initial": 75.6,
+   "t1": 64.4,
+   "t2": null,
+   "risk_pct": 2.5,
+   "setup": "breakdown-short",
+   "trade_id": "20261007-124712-TEM",
+   "opened": "2026-10-07T12:47:12.002295-04:00",
+   "scaled": false,
+   "peak": 71.34
+  }
+ },
  "closed": [
   {
    "symbol": "NVDA",
