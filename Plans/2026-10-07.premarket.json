@@ -1,0 +1,164 @@
+{
+ "as_of_et": "2026-10-07 08:55 ET (finviz quote lines stamped 08:53-08:55 ET, 15-20 min delayed; searches 08:56-08:58 ET)",
+ "quotes": [
+  {
+   "ticker": "CTVA",
+   "prev_close": 13.91,
+   "premarket": 14.15,
+   "premarket_volume": 199931,
+   "gap_pct": 1.73,
+   "source": "https://finviz.com/quote.ashx?t=CTVA (14.15 at 08:53 ET, +0.24 / +1.72%; Prev Close 13.91; Volume 199,931; ATR 0.63; Rel Vol 0.12). Headlines: no Oct 7 item on finviz; investing.com 03:26 AM: KeyBanc upgrade to Overweight PT $17; Corteva PR 08:00: Q3 earnings Nov 11 AMC"
+  },
+  {
+   "ticker": "VST",
+   "prev_close": 160.5,
+   "premarket": 156.5,
+   "premarket_volume": 261563,
+   "gap_pct": -2.49,
+   "source": "https://finviz.com/quote.ashx?t=VST (156.50 at 08:53 ET, -4.00 / -2.49%; Prev Close 160.50; Volume 261,563; ATR 5.90; RSI 65.20). Headlines: Oct-06 04:30PM MarketWatch 'Vistra outperforms'; 04:30PM Barron's 'Power Stocks Just Broke Out'; 02:31PM Stocktwits 'CEG, VST, TLN Jump'; nothing dated Oct 7"
+  },
+  {
+   "ticker": "NOK",
+   "prev_close": 10.97,
+   "premarket": 10.54,
+   "premarket_volume": 3777696,
+   "gap_pct": -3.92,
+   "source": "https://finviz.com/quote.ashx?t=NOK (10.54 at 08:54 ET, -0.43 / -3.93%; Prev Close 10.97; Volume 3,777,696 = Helsinki-hours ADR flow; ATR 0.48; RSI 51.37). Headlines: Oct-06 08:39PM DigiTimes 'Nokia, ICEYE satellite'; 07:40AM Quartz 'CEO Hotard on AI data center supply constraints'; 05:12AM Stocktwits chips slip premarket; nothing Oct 7. NOKIA.HE x EURUSD NOT read (budget)"
+  },
+  {
+   "ticker": "TEM",
+   "prev_close": 71.98,
+   "premarket": 70.4,
+   "premarket_volume": 566335,
+   "gap_pct": -2.2,
+   "source": "https://finviz.com/quote.ashx?t=TEM (70.40 at 08:54 ET, -1.58 / -2.20%; Prev Close 71.98; Volume 566,335; ATR 5.98; RSI 47.06; SMA20 -6.42% -> ~75.2, SMA50 +9.12% -> ~64.5 back-solved). Headlines: Oct-06 06:47AM MarketWatch 'Healthcare-linked stocks extend gains' (-13.85% day); Oct-01 PR Newswire AI drug discovery; Oct-01 08:34AM ESMO abstracts; nothing Oct 7 (no defence/buyback/ARK re-buy on the page)"
+  },
+  {
+   "ticker": "SPY",
+   "prev_close": 779.09,
+   "premarket": 776.19,
+   "premarket_volume": 1005852,
+   "gap_pct": -0.37,
+   "source": "https://finviz.com/quote.ashx?t=SPY (776.19 at 08:55 ET, -2.90 / -0.37%; Prev Close 779.09; 52W High 781.62; ATR 6.61; Volume 1,005,852). Headlines: Today 02:14AM Benzinga 'Will S&P 500 Open Up or Down'; Oct-06 06:35PM Stocktwits records; WSJ live 10-07: S&P futures 7843.25 -0.39%, VIX 15.80 +5.26%, DXY 97.52 +0.39%"
+  },
+  {
+   "ticker": "TLT",
+   "prev_close": 77.28,
+   "premarket": 76.56,
+   "premarket_volume": 2542800,
+   "gap_pct": -0.93,
+   "source": "https://finviz.com/quote.ashx?t=TLT (76.56 at 08:55 ET, -0.72 / -0.93%; Prev Close 77.28; 52W Low 76.68 -> premarket BELOW the 52W low; RSI 21.43; Volume 2,542,800). Headlines: Oct-06 10:05AM Benzinga Dalio on China/Japan Treasury demand; Oct-06 01:00AM Barron's 'This Week's Treasury Auctions Could Send Yields Even Higher'; Oct-05 etf.com TLT inflows"
+  },
+  {
+   "ticker": "CEG",
+   "prev_close": 300.4,
+   "premarket": 289.65,
+   "premarket_volume": 148759,
+   "gap_pct": -3.58,
+   "source": "https://finviz.com/quote.ashx?t=CEG (289.65 at 08:55 ET, -10.75 / -3.58%; Prev Close 300.40; ATR 12.90; Volume 148,759). Headlines: Today 07:35AM Barron's 'The Stock Market's AI Rally Faces 3 Big Problems All at the Same Time'; Oct-06 10:40PM Stocktwits futures mixed; 09:33PM Stocktwits Van Eck on nuclear bottom"
+  },
+  {
+   "ticker": "TXG",
+   "prev_close": 80.66,
+   "premarket": 77.78,
+   "premarket_volume": 41730,
+   "gap_pct": -3.57,
+   "source": "https://finviz.com/quote.ashx?t=TXG (77.78 at 08:55 ET, -2.88 / -3.57%; Prev Close 80.66; ATR 6.29; Volume 41,730 thin). Headlines: Oct-06 01:09PM TIKR NeoGenomics -12% (TXG -17.47% day); 08:16AM Stocktwits Cathie Wood unloads $18M TWST; nothing Oct 7"
+  }
+ ],
+ "index_check": "SPY 776.19 pre-market at 08:55 ET (finviz, -0.37%, gap -2.90 = 0.43x ATR 6.61) vs plan levels: BELOW Tue low 777.96 and pivot 779.09, ABOVE the 774.83 Mon-close kill (INDEX OPEN switch NOT tripped; 'scrap longs 1-3' does not fire). S&P futures 7843.25 -0.39%, DJIA futures -0.71%, VIX 15.80 +5.26%, DXY 97.52 +0.39%, Gold -0.93% (WSJ live 10-07). Reuters 08:22 ET: 'Wall St futures slip as yields and oil rebound; Fed minutes in focus'. 10Y 'above 5.33%' this morning (Investopedia 10-07) vs 5.277-5.281% Tue close (CNBC) and the 5.349% 24-yr high = 2 bp under the 5.35% RATES switch; TLT 76.56 pre-market is below its 52W low 76.68. Brent $101.33 +0.75% at 1200 GMT (Reuters) / $101.39 (cruxinvestor) vs 100.59 Tue close = +0.7%, under the $103.50 risk-off line. ARMED, not tripped: if the first 5-min close after 09:45 prints below 777.96 the plan's own rule voids the up-drift (no new long entries until a SPY 5-min close back above 779.09) - at the indicated 776.19 that is the base case, so CTVA needs SPY >= 779.09 on the entry tick, not just its own retest. 781.62 (TEM squeeze-skip) is 5.4 pts above the indication.",
+ "overnight_news": [
+  "RATES: 10Y above 5.33% pre-market (Investopedia 10-07, 'Futures Slip After S&P 500, Nasdaq Close at Records'); Reuters 10-07 08:22 ET 'Wall St futures slip as yields and oil rebound; Fed minutes in focus' (Cardillo: oil and yields will set direction). TLT -0.93% pre-market below its 52W low (finviz). Fed minutes today confirmed by Reuters/Morningstar/Investopedia; exact 14:00 / 13:00 auction times NOT verified on federalreserve.gov / treasurydirect.gov (no budget).",
+  "OIL/GULF: Brent $101.33 +0.75% at 1200 GMT (Reuters 10-07 'Oil rises as storms, air strikes threaten supply'); cruxinvestor: Brent +0.8% to $101.39, WTI $90.05 'after Houthi attacks on two Saudi airports'; WSJ: Brent back above $100 after Houthi attacks on Saudi Arabia, Hormuz shipping risks persist; XTB: Brent near $100 on renewed Saudi-Houthi tensions. No Reuters/AP-confirmed refinery or Hormuz strike; the 'Saudi refineries burn' YouTube title stays unverified; Brent is +0.7% not +3% -> GEOPOLITICS switch not tripped.",
+  "CTVA (rank 1): KeyBanc upgrade to Overweight from Sector Weight, PT $17 (investing.com 10-07 03:26 AM) on top of JPM OW $19 / MS $18 / BMO; Corteva PR 08:00 ET: Q3 2026 earnings Wednesday Nov 11 after the close (GuruFocus/finviz) - resolves the Nov 3 vs Nov 11 conflict (Nov 11). Pre-market 14.10 (investing.com) / 14.15 (finviz 08:53). No state-AG/DOJ headline seen.",
+  "POWER/VST: CEG 289.65 -3.58% pre-market (finviz 08:55) - below its 291.00 gap-hold line and the 300.40 mandatory VST condition; VST 156.50 -2.49% (below its own 156.80 structure stop). Barron's 10-07 07:35 'The Stock Market's AI Rally Faces 3 Big Problems All at the Same Time' (on the CEG page). No new VST/CEG Form 144/4 on the CEG page (last: Novotny proposed sale Sep 17).",
+  "NOK: ADR 10.54 -3.93% on 3.78M pre-market shares (Helsinki-hours flow, finviz 08:54) - below the 10.60 structure stop; no Nokia headline since Oct-06 08:39PM DigiTimes (ICEYE satellite) and the CEO's AI supply-constraint comments (Quartz 07:40AM Oct 6). Stocktwits Oct 6: chips/memory slipped pre-market after the October rally.",
+  "GENOMICS/TEM: TEM 70.40 -2.20% (below Tue low 71.34), TXG 77.78 -3.57% (already below the 79.90 confirmation level, thin 41,730 sh); no sell-side defence, buyback or ARK re-buy headline on the TEM or TXG finviz pages as of 08:55; TWST not checked (budget).",
+  "SPY/breadth: WSJ futures S&P -0.39%, Dow -0.71%, VIX 15.80 +5.26%, Stoxx 600 -0.93%, DXY +0.39%; Investopedia 'Futures Slip After S&P 500, Nasdaq Close at Records'. Morningstar morning briefing excerpt mentions 'Treasury yields hitting 6%' without context - treated as unverified (likely 30-yr/long-end commentary), not a level."
+ ],
+ "trade_status": [
+  {
+   "ticker": "CTVA",
+   "status": "vwap-retest-only",
+   "why": "RETEST-ONLY (hold-of-close form, unchanged levels): finviz 14.15 at 08:53 ET (+1.72%) is above the prior-day high 14.06 and the fill cap 14.05, so per the plan ('if CTVA opens above 14.06 and never trades back to 13.98: no trade') and Rules v5 gapped-through, the only valid entry is price trading back into 13.84-13.98 and a 5-min bar closing back above 13.91 after 09:45; monitor check: day LOW <= 13.98 AND day LOW >= 13.44 AND last 13.91-14.05. Fill cap 14.05, NO fill above 14.06 (chase guard). Entry 13.96 / stop 13.44 / T1 14.74 / T2 15.05 reference, runner >= 3R ~15.52 - no relevel (plan gives no 09:00 relevel instruction). Opening-range filter: 09:30-09:45 range > 0.66 = no trade. Size stays 7.12 sh ($99.4 notional, risk $3.70 = 1.9%): the 100% cap (14.24 sh, 3.7%) is NOT unlocked because TEM (rank 4) is not scrapped. Index gate: SPY indicated 776.19 < 777.96 - if the first 5-min close after 09:45 is below 777.96, no CTVA entry until a SPY 5-min close back above 779.09 (plan INDEX rule); INDEX OPEN (< 774.83) not tripped. Catalyst intact and improved (KeyBanc OW $17 10-07; Nov 11 earnings confirmed); no AG/DOJ headline. Entry ticks 10:40-14:40; no liquidity cut (199,931 pre-market sh by 08:53; spread not observable). Lesson 'opens above trigger = already broken out' applied: no chase above 14.06."
+  },
+  {
+   "ticker": "VST",
+   "status": "scrapped",
+   "why": "SCRAPPED by the THEME TELL switch: CEG pre-market 289.65 (-3.58%, finviz 08:55) is below its 291.00 gap-hold line ('a CEG open below 291 voids VST before any trigger prints') and below the 300.40 mandatory entry condition (skip, not a size cut). Supporting: VST 156.50 (-2.49%, finviz 08:53) is above the 155.70 (-3%) scrap line so that rule did NOT fire, but it is below the 156.80 structure stop, so the checkable condition 'day LOW >= 156.80' cannot be met if it opens there; 10Y above 5.33% (Investopedia) is 2 bp under the 5.35% RATES switch with TLT at a new 52W low (76.56 < 76.68); Barron's 07:35 'AI rally faces 3 big problems'. Hudson Form 144 10b5-1 status unknown and moot. Mutual-exclusion with NOK moot (both out). No relevel."
+  },
+  {
+   "ticker": "NOK",
+   "status": "scrapped",
+   "why": "SCRAPPED: ADR pre-market 10.54 (-3.93%, finviz 08:54) on 3,777,696 shares (Helsinki-hours flow) is below the 10.60 structure stop (= below the Tue range midpoint 10.63 - the continuation thesis is void by the plan's own invalidation: 'a close back in the lower half of Tue's range ends the continuation thesis'); the checkable condition 'day LOW >= 10.60' cannot be met from a 10.54 open; the gapped-through base case is reversed (open below 10.99 restores the breakout leg) but the breakout has no structure under it. NOKIA.HE x EURUSD not read (budget) - the ADR volume is substantive; CIEN/NVDA conditions not checked (budget) and moot. No relevel; not re-planned as a short (0.68R to 10.31 per plan)."
+  },
+  {
+   "ticker": "TEM",
+   "status": "vwap-retest-only",
+   "why": "RETEST-AND-FAIL ONLY (mirror gapped-through rule, unchanged levels): TEM pre-market 70.40 (-2.20%, finviz 08:54) is below the Tue low 71.34, so the breakdown leg is VOID; valid entry only if price returns to 70.74-71.94 and a 5-min bar closes back below 71.34 after 09:45, fill 71.12-71.34 (any fill < 71.12 skipped; 69.70 cap void). Stop 75.60 / T1 64.40 / runner >= 3R ~58 - no relevel (plan gives none; note SMA20 back-solves to ~75.2 and SMA50 to ~64.5 on the 70.40 print, +/-0.1, the bounce tell is a 5-min close above ~74.8-75.2). Group confirmation is pre-armed: TXG 77.78 (-3.57%) is already below 79.90 (needs a regular-session 5-min close below 79.90 at the trigger); TWST not checked. Squeeze-skip not tripped: SPY 776.19 is 5.4 pts under 781.62. No defence/buyback/ARK re-buy headline on TEM/TXG finviz pages as of 08:55. Short into a red-indicated tape is permitted (not forced). Entry ticks 10:40/11:40/12:40; 13:40/14:40 only on a non-dovish 14:15 read. Size 1.13 sh ($80.5, risk $4.40 = 2.5%). Max 2 concurrent: CTVA + TEM is the only possible book today."
+  }
+ ],
+ "kill_switches_tripped": [
+  "THEME TELL (VST): CEG pre-market 289.65 < 291.00 gap-hold line and < 300.40 mandatory condition (finviz 08:55 ET) -> VST scrapped before any trigger.",
+  "NOK STRUCTURE (plan invalidation / entry condition): ADR pre-market 10.54 < 10.60 structure stop on 3.78M sh (finviz 08:54 ET) -> 'day LOW >= 10.60' cannot print -> NOK scrapped.",
+  "GAPPED-THROUGH (Rules v5 / plan, TEM mirror): TEM 70.40 < Tue low 71.34 -> breakdown leg void, retest-and-fail only (70.74-71.94 band, 5-min close back below 71.34, fill >= 71.12).",
+  "GAPPED-THROUGH / CHASE GUARD (CTVA): indicated 14.15 > prior high 14.06 and fill cap 14.05 -> hold-of-close valid only on a retest into 13.84-13.98 with a 5-min close back above 13.91; no fill above 14.05.",
+  "NOT tripped (for the record): INDEX OPEN (SPY 776.19 > 774.83); RATES (10Y ~5.33% < 5.35%); GEOPOLITICS (Brent 101.33 < 103.50, no confirmed refinery/Hormuz strike); VST -3% line (156.50 > 155.70); TEM SQUEEZE (SPY < 781.62, TXG < 79.90). ARMED: INDEX 777.96 up-drift-void rule - SPY is indicated below 777.96, so the first 5-min close after 09:45 decides; until a SPY 5-min close back above 779.09 no new long (CTVA) entry. No switch in this list references the missing VWAP/bar feed or cuts size."
+ ],
+ "checklist_answers": [
+  {
+   "question": "Pre-market prints at 08:50/09:00 ET for each plan name vs its band",
+   "answer": "CTVA 14.15 at 08:53 (finviz; investing.com 14.10) - ABOVE 14.06, so hold-of-close needs a retest into 13.84-13.98 (no trade if it never trades back to 13.98). VST 156.50 at 08:53 - above the 155.70 scrap line but below the 156.80 stop and outside 159.90-161.10; scrapped via CEG anyway. NOK 10.54 ADR pre-market at 08:54 on 3.78M sh - below 10.60 stop (NOKIA.HE x EURUSD NOT read: unknown); scrapped. TEM 70.40 at 08:54 - below 71.34 -> retest-and-fail only."
+  },
+  {
+   "question": "Brent at 08:50 vs 100.59 and whether Reuters/AP confirm the 'Saudi refineries / Hormuz' title",
+   "answer": "Brent $101.33 +0.75% at 1200 GMT (Reuters 10-07 'Oil rises as storms, air strikes threaten supply'); $101.39 per cruxinvestor; +0.7% vs 100.59, below the $103.50 line. Reuters/WSJ/cruxinvestor describe Houthi attacks on two Saudi AIRPORTS and persistent Hormuz shipping risk - no confirmed refinery or Hormuz strike; the YouTube title remains unverified. Regime stays risk-on-drift (not flipped). BNO/USO not scraped (budget)."
+  },
+  {
+   "question": "10Y level pre-market vs 5.277% and the 5.349% high",
+   "answer": "'Above 5.33%' this morning (Investopedia 10-07); Tue close 5.281% (CNBC). 2 bp under the 5.35% RATES switch -> not tripped; TLT 76.56 -0.93% pre-market is below its 52W low 76.68 (finviz) = yields at/near the highs. VST is removed by CEG, not by rates; the 5.35% level remains the live tell for the 13:00 auction and the 14:15 read (TEM 13:40/14:40 entries)."
+  },
+  {
+   "question": "Verify the event times on primary pages (13:00 10-yr reopening, 14:00 FOMC minutes)",
+   "answer": "Unknown / unverified: no budget for treasurydirect.gov or federalreserve.gov. Reuters, Morningstar and Investopedia (10-07) all confirm the Fed minutes are TODAY; Barron's (Oct 6) confirms this week's Treasury auctions. Keep 13:00 / 14:00 as planned; the 12:40-tick rule is moot (VST scrapped); 13:40/14:40 TEM entries still gated on the 14:15 read."
+  },
+  {
+   "question": "CEG pre-market vs 291.00/300.40",
+   "answer": "CEG 289.65 at 08:55 ET (finviz, -3.58% vs 300.40, on 148,759 sh) - BELOW 291.00 -> VST voided before any trigger; also below the 300.40 mandatory condition. Last insider rows unchanged (Novotny Form 144 Sep 17)."
+  },
+  {
+   "question": "CIEN/MRVL pre-market direction and NVDA vs 238.93",
+   "answer": "Unknown - not scraped (8-scrape budget went to the plan names, SPY, TLT, CEG and TXG). Moot: NOK is scrapped on its own structure (10.54 < 10.60) and VST on CEG. Stocktwits Oct 6 05:12AM noted chips/memory slipping pre-market; Barron's 10-07 flags 'AI rally faces 3 big problems'."
+  },
+  {
+   "question": "SPY pre-market vs 779.09/777.96/774.83 and gap size",
+   "answer": "776.19 at 08:55 ET (finviz), -2.90 / -0.37% = 0.43x ATR 6.61 (< the 3.4-pt extended no-entry threshold); below 777.96 and 779.09, above 774.83. S&P futures -0.39%, VIX +5.3% (WSJ). INDEX OPEN not tripped; the 777.96 up-drift-void rule is the base case at the first 5-min close after 09:45 -> no CTVA entry until SPY 5-min closes back above 779.09."
+  },
+  {
+   "question": "Is the Hudson VST Form 144 sale under a 10b5-1 plan?",
+   "answer": "Unknown - SEC document not read (budget); moot because VST is scrapped by the CEG tell. If VST were ever re-planned, confidence stays low until the 144's plan box is read."
+  },
+  {
+   "question": "Pre-market volume/spread liquidity check for NOK and CTVA",
+   "answer": "CTVA 199,931 sh by 08:53 ET (finviz; avg 34.08M) - normal for a $14 mid-cap, no cut. NOK 3,777,696 sh by 08:54 (avg 83.76M) - liquid, but scrapped on structure. Spreads are not observable on finviz (unknown). No liquidity size cut applied; no other cut allowed."
+  },
+  {
+   "question": "TEM/TXG/TWST pre-market: any defence/buyback/ARK re-buy; further gap below 71.34?",
+   "answer": "TEM 70.40 (-2.20%) IS below 71.34 -> retest-and-fail only, fill still >= 71.12 (band 70.74-71.94, 5-min close back below 71.34 after 09:45). TXG 77.78 (-3.57%) already below the 79.90 confirmation level (needs a regular-session 5-min close). No sell-side defence, buyback or ARK re-buy headline on the TEM or TXG finviz pages as of 08:55; TWST not checked (unknown). Short not cancelled."
+  },
+  {
+   "question": "CTVA: other vendor spin-adjusted high than 14.44; further index-flow event this week; earnings-date conflict",
+   "answer": "Other vendors not checked (unknown) - 14.44 (finviz) stands as the overhead reference at 0.92R. No further index-flow event found (S&P 400 add was at the Oct 6 open). Earnings date RESOLVED: Corteva PR 08:00 ET 10-07 - Q3 2026 results Wednesday Nov 11 after the close (GuruFocus/finviz); the AV Nov 3 date is wrong. New since the plan: KeyBanc upgrade to Overweight, PT $17 (investing.com 10-07 03:26 AM)."
+  },
+  {
+   "question": "Overnight news sweep for all four names plus OPCH/STZ/APLD/LEVI read-through",
+   "answer": "CTVA: KeyBanc OW $17 (10-07), Nov 11 earnings date PR; no AG/DOJ item. VST: nothing new; CEG -3.6% pre-market; Barron's 'AI rally faces 3 big problems' 07:35. NOK: nothing since Oct-06 PM (DigiTimes ICEYE; CEO AI supply constraints). TEM/TXG: nothing new. Macro: Reuters 'futures slip as yields and oil rebound; Fed minutes in focus'; Brent ~101.3 on Houthi attacks on Saudi airports. OPCH/STZ/APLD/LEVI: not checked (unknown) - none is a plan name."
+  },
+  {
+   "question": "For the Coach: should the chase rule admit a hold-of-close day-2 entry as a named setup form; reword the day-2 lesson to names up < 10%",
+   "answer": "Not for this seat - Coach-only, needs >= 10 samples. Today's data point for the log: both > 10% day-2 names (CTVA +12.27%, VST +10.77%) are indicated OUTSIDE their hold-of-close bands at 09:00 (CTVA above, VST below), and the < 10% name (NOK +7.55%) gapped below its structure - sample 1 for whichever form the Coach tracks."
+  }
+ ],
+ "alert_text": "08:55 ET re-level (finviz/Reuters, 15-20 min delayed). Tape: SPY 776.19 (-0.37%) = under Tue low 777.96, above the 774.83 kill; 10Y ~5.33% (2 bp under the 5.35% switch), TLT at a new 52W low; Brent 101.3 (+0.7%, no confirmed Saudi/Hormuz strike). Regime NOT flipped.\nLIVE (retest only): CTVA 14.15 pre-mkt is above the 14.06 prior high -> entry ONLY on a trade back into 13.84-13.98 + 5-min close above 13.91 after 09:45; fill cap 14.05, never above 14.06. Stop 13.44 / T1 14.74 / 1/3 off then ladder. 7.12 sh (1.9%). AND SPY must 5-min close back above 779.09 first if it opens under 777.96. KeyBanc OW $17 overnight.\nLIVE (retest-and-fail only): TEM 70.40 is below Tue low 71.34 -> short only if it bounces into 70.74-71.94 and a 5-min bar closes back below 71.34; fill 71.12-71.34, stop 75.60, T1 64.40, 1.13 sh (2.5%). TXG 77.78 already under 79.90; needs no SPY close above 781.62.\nSCRAPPED: VST - CEG 289.65 is below its 291 gap-hold line (and 300.40); VST 156.50 sits under its own 156.80 stop. NOK - ADR 10.54 on 3.8M sh is below the 10.60 stop; thesis void.\nMax book today = CTVA + TEM (4.4% open risk). No entries 09:30-09:35; first entry tick 10:40; Fed minutes 14:00 / 10-yr auction ~13:00 (times unverified).\n09:45 WATCH: (1) SPY first 5-min close vs 777.96 / reclaim 779.09 - gates CTVA. (2) CTVA 13.98 (retest band top) and TEM 71.34 (fail line); CTVA 09:30-09:45 range > 0.66 = no CTVA.",
+ "data_notes": "Budget used: 8 Firecrawl scrapes (finviz CTVA, VST, NOK, TEM, SPY, TLT, CEG, TXG) + 3 searches (futures/10Y, Brent/Gulf, CTVA news); Alpha Vantage 0 calls (cap 0). EWZ skipped (no Brazil name in the plan). Scrapes 1-5 issued one at a time 7 s apart; TLT/CEG/TXG and the three searches were issued as two small parallel batches (3 req each, under the 10/min desk limit) - CEG was briefly concurrency-queued (1.7 s) but returned. finviz 'Last Close' headline lines stamped 'Oct 07 8:53-8:55 AM ET' are the pre-market prints (delayed 15-20 min); gap_pct = premarket/prev_close - 1 computed from those two finviz fields. Not obtained (unknown): NOKIA.HE x EURUSD, CIEN/MRVL/NVDA pre-market, TWST, BNO/USO, Hudson Form 144 10b5-1 box, treasurydirect/federalreserve event times, OPCH/STZ/APLD/LEVI, other-vendor CTVA spin-adjusted high. 10Y '5.33%' is a search excerpt (Investopedia 10-07) not a quote page; Morningstar's 'Treasury yields hitting 6%' excerpt is context-free and discarded as a level. TEM SMA20/SMA50 re-back-solved from the 70.40 print: ~75.2 / ~64.5 (+/-0.1) vs the plan's 74.8 / 64.0 - levels NOT re-levelled (plan gives no 09:00 relevel instruction); flagged for the monitor's bounce tell. No size was cut for any missing feed (Rules v5 Data absence); the only size decision is that CTVA stays at the 50% notional cap (7.12 sh) because TEM is not scrapped. No vault files written."
+}
