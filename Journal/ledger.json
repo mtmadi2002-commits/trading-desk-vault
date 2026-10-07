@@ -1,23 +1,6 @@
 {
  "equity_start": 200.0,
- "positions": {
-  "TEM": {
-   "side": "short",
-   "qty": 1.16,
-   "qty_initial": 1.16,
-   "entry": 71.34,
-   "stop": 70.674,
-   "stop_initial": 75.6,
-   "t1": 64.4,
-   "t2": null,
-   "risk_pct": 2.5,
-   "setup": "breakdown-short",
-   "trade_id": "20261007-124712-TEM",
-   "opened": "2026-10-07T12:47:12.002295-04:00",
-   "scaled": false,
-   "peak": 70.6
-  }
- },
+ "positions": {},
  "closed": [
   {
    "symbol": "NVDA",
@@ -34,6 +17,22 @@
    "risk_usd": 2.4780000000000024,
    "r": -0.446,
    "opened": "2026-10-06T10:47:43.446485-04:00"
+  },
+  {
+   "symbol": "TEM",
+   "qty": 1.16,
+   "entry": 71.34,
+   "exit": 70.58,
+   "pnl": 0.8816000000000058,
+   "reason": "close-lock take-it-all 15:42 (90% of peak locked; flat-by-15:55 in 13 min)",
+   "day": "2026-10-07",
+   "at": "2026-10-07T15:44:36.175497-04:00",
+   "side": "short",
+   "setup": "breakdown-short",
+   "trade_id": "20261007-124712-TEM",
+   "risk_usd": 4.941599999999989,
+   "r": 0.178,
+   "opened": "2026-10-07T12:47:12.002295-04:00"
   }
  ],
  "day": "2026-10-06",
