@@ -1,8 +1,8 @@
 ---
 type: rules
-version: 5
-updated: 2026-10-06
-updated_by: Coach — [[2026-10-06 Review]]: late-seen triggers and gapped-through breakouts tightened; plan kill switches may not cut size for a missing feed (clarify)
+version: 6
+updated: 2026-10-07
+updated_by: Coach — [[2026-10-07 Review]]: third-party price cards can never trigger an action (tighten); the 15:40 tick is the flat at the hourly cadence and the replay scores that print (clarify); seats discard records dated another session (clarify)
 ---
 # Desk Rules (living — read by every seat, rewritten only by the Coach)
 
@@ -33,6 +33,7 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 - Scale **one third** at T1 (≥ 1.5R), stop to breakeven on the rest. The remaining two thirds is a RUNNER on the **rising stop ladder in [[Trail]]** (peak-tracked; locks 25% of peak profit at 1R, 50% at 2R, 60% at 3R … 99% at 15R; the stop only ever rises). No fixed T2 cap on a trend day. Take the runner only on the trail, a kill switch, a stall (no new high for 45 min with falling volume) or the 15:55 flat rule.
 - Target the runner at ≥ 3R. A day where the runner reaches 3R is the day that pays for the week; never clip it to "lock in" a small gain.
 - A trade that reaches +1R and comes all the way back to breakeven is a scratch, not a loss — do not re-enter it that day.
+- Flat at the cadence: at the hourly cadence the 15:40 tick IS the 15:55 flat (RUNBOOK: `flatten` after the seat's actions; no later run exists). That tick first applies the ladder / 15:25 close-lock as a STOP level against its print (exit at the print only if the print is through the stop), then flattens whatever is still open at the tick's print. The Coach's replay scores the 15:40-tick print as the exit, never the 16:00 close (clarify: [[2026-10-07 Review]] — TEM short covered 70.58 at 15:44 with the 70.674 close-lock untouched; the 16:00 close 70.35 was worth +0.232R vs +0.178R booked — a cadence gap, not an execution error).
 
 ## Data absence (user-set 2026-10-06)
 - A missing data feed never cuts size. If live VWAP is unavailable, the trade uses its HARD level (prior high/low, opening-range extreme, Monday close ± ATR) at the FULL planned size. VWAP is confirmation, never the sole trigger. The Head Trader writes every trade so a hard level is the primary trigger.
@@ -51,11 +52,13 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 - Form 4 (≤ 2-day lag): a cluster of open-market buys > $1M by officers is a real signal; 10b5-1 sales and option exercises are not.
 - Congress (30–45-day lag) and 13F (quarterly) are context only, never a trigger.
 - Real-time items (White House, Musk, DOJ/SEC/OFAC, Gulf) are kill-switch candidates, not entries.
+- Price-bearing items from non-quote sources (aggregator cards, social posts, screenshots, headline tickers) are information only: they never trigger an entry, a scale, an exit or a `critical` alert unless a desk quote source (stockanalysis / finviz / `exec.py quote`) shows the same print at that time; a card that contradicts the desk's own prints is logged as disproved and dropped (tighten: [[2026-10-07 Review]] — a 247wallst card "TEM $64.17 −9.2% at 12:40" was relayed as critical at 13:47 while the desk's real-time prints were 71.34 / 70.84 / 70.60 / 70.56; acting on it would have booked a fictitious T1 scale on the open short).
 
 ## Data hygiene
 - Every level cites its source. "est VWAP" = HLC/3 proxy until replaced by live VWAP at 09:45; if no live VWAP, only hard prior-day levels are valid triggers.
-- Alpha Vantage free key: 25 calls/day desk-wide; premium endpoints return fake sample data — discard anything with 2024 timestamps or MSFT/AAPL/IBM placeholder rows. TIME_SERIES_INTRADAY returned the premium/rate_limit error on 2026-10-06; until Alpaca bars exist the Coach's replay is range-based from stockanalysis quote pages.
+- Alpha Vantage free key: 25 calls/day desk-wide; premium endpoints return fake sample data — discard anything with 2024 timestamps or MSFT/AAPL/IBM placeholder rows. TIME_SERIES_INTRADAY returned the premium/rate_limit error on 2026-10-06 and again on 2026-10-07; until Alpaca bars exist the Coach's replay is print-based (timestamped stockanalysis real-time quotes) plus the day's range from the quote pages.
 - Firecrawl: ~10 requests/min desk-wide; one at a time, 7 s apart.
+- Every tick, journal and snapshot record carries its session date; a seat reading the day's record discards any entry dated another session and says so (clarify: [[2026-10-07 Review]] — six of the seven tick records handed to the Coach were 2026-10-06's NVDA/NU/SPCX ticks; the replay used the journal rows and the real-time snapshots instead).
 
 ## Setup expectancy (binding on the Head Trader and the Coach)
 - Every planned trade carries a `setup_type` and every execution passes it to the broker layer (`--setup`). `Desk/Expectancy.md` (generated from the ledger) is the scorecard per setup.
