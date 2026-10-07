@@ -18,7 +18,7 @@ type: dashboard
 
 ## Lessons
 - [[Lesson - A time-stop with an escape clause is a hold rule]]
-- [[Lesson - At the hourly cadence the 15:40 tick is the flat]]
+- [[Lesson - At the hourly cadence the 15-40 tick is the flat]]
 - [[Lesson - A third-party price card is not a print]]
 - [[Lesson - An index kill blocks the low-beta long that ignores the index]]
 - [[Lesson - A trigger seen late is a chase, not a breakout]]

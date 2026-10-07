@@ -7,7 +7,7 @@ rule_affected: "Winners (flat rule) + Coach replay convention: clarify \u2014 th
 confidence: high
 samples: 1
 ---
-# Lesson - At the hourly cadence the 15:40 tick is the flat
+# Lesson - At the hourly cadence the 15-40 tick is the flat
 
 **Observation.** The desk has no run between 15:40 and 16:00, so the 15:55 flat and the 15:25 close-lock are both executed at the 15:40 tick's print; a replay scored on the 16:00 close overstates what the desk can book.
 
