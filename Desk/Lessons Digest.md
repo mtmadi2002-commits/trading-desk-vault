@@ -19,73 +19,62 @@ Status rule: **sample** (<10 trades) → default size · **proven** (≥10, avg 
 | 2026-10-06 | NVDA | ath-breakout | long | -0.446 | -1.1 |
 | 2026-10-07 | TEM | breakdown-short | short | 0.178 | 0.88 |
 
-## Review 2026-10-07 Review
-# 2026-10-07 Review — Coach
+## Review 2026-10-08 Review
+# 2026-10-08 Review — Coach
 ## Seat grades
+
 | Seat | Grade | Evidence |
 |---|---|---|
-| Screener | A | All four names moved ≥ 2.3% and three in the planned direction (CTVA +3.88%, VST +3.88%, TEM −2.26%); NOK (−3.19%) was the one wrong-way name and the premarket scrapped it; the short list delivered the day's only trade. |
-| Macro | B | Levels were exact (SPY under 777.96 all day, 774.83 traded through at 773.61, the 779.09 reclaim printed once at 779.10 ~15:00) but the "continuation longs in a green tape" shape was wrong (SPY −0.24%) and the rate-sensitivity framing missed: VST ran +3.88% into TLT's 76.43 new low, and the 13:00 reopening / 14:00 minutes moved nothing (TLT 77.18 → 77.24 → 77.13). |
-| Technical | C | Stops respected structure (TEM 75.60 = 0.73× ATR never approached; CTVA 13.44 held a 13.75 low; NOK 10.60 broke pre-market as read), but TEM's T1 64.40 was 6.94 pts = 1.16× ATR from a 12:47 fill with 3 h left, the CTVA band floor 13.84 was undercut by 0.09 on a +3.88% day, and both "overhead" calls failed (CTVA 14.44 → close 14.45, VST 162.69 stall → 168.11). |
-| Catalyst | B | The genomics-unwind read was right (TXG −5.16%, TWST −6.55%, TEM −2.26%) and the Moderna/Merck PR was correctly ruled not a re-rating headline (TEM closed under 71.34); but the 08:30 Business Wire item was missed by the 08:55 premarket ("nothing Oct 7") and found by Execution at 09:45 — the block cost nothing only because no TEM fill existed before 12:40. |
-| Head Trader | C | Every trade tagged (`breakdown-short` scored; no untagged defect) and the 1.5R fill-floor 71.12 was sound, but the plan's two +3.88% longs were unexecutable as written (CTVA needed a tick to land inside 13.91–14.05 after a retest that printed between ticks; VST needed CEG > 300.40, which never printed — high 297.23 by 12:40), and the time-stop's "AND wrong side" escape let a +0.00R trade run 2 h on a one-cent margin (71.33 vs 71.34). |
-| Risk Manager | B | The 50% notional cap and 2.5% low-confidence size were right for a 25.9%-short-float name; the time-stop AND-clause added +0.176R (TEM 71.33 at 14:41 → +0.178R instead of +0.002R); the INDEX 774.83 kill subtracted a hypothetical +0.94R CTVA that the cadence could not have filled anyway; nothing cut size by data absence. |
-| Smart Money | C | Hudson's VST Form 144 correctly treated as priced-in, BORR/SNOW/EBAY/LLY filings correctly dismissed, Hormuz items kept as context — but a 247wallst card "TEM $64.17 −9.2% at 12:40" was relayed at 13:47 as **critical** on the open position while the desk's own prints read 71.34 / 70.84 / 70.60 / 70.56; the orchestrator, not the seat, disproved it. |
-| Execution monitor | B | Caught the TEM PR the premarket missed (09:45); refused CTVA at 14.12 > 14.05 (chase guard); applied `exec.py trail` every tick and the 70.674 close-lock at 15:42; booked +0.178R where the executable replay gives +0.178R (match) — but entered at exactly 71.34, the top of the fill window, with no observable close below the level, and the 15:44 hand cover was 11 minutes early against a lock that never printed. |
+| Screener | B | Both names were genuine large movers with real ranges (IREN 38.69 → 35.24 low, −8.92%, on 54.3M shares; CTVA −4.84% on 35.1M) and the regime's required short was the directionally right one — but rank 1 was a LONG that lost 4.84%. |
+| Macro | B | Levels exact and operative (777.22 / 773.61 / 779.09; SPY pinned inside the range until the afternoon, then broke the pivot to 770.44 exactly as written), but the transmission was wrong: the long end RALLIED (TLT low 77.07, high 77.73, 0.41 through 77.32) through a +4–5% Brent move, so equities fell while bonds bid — the opposite of the coupling the auction switch was built on. |
+| Technical | C | Every prior-session level verified, and the 14.62 trigger is CTVA's true 52W high — but neither entry construction was reachable: the 14.18 stop was target-driven by its own admission and broke 0.57 through inside twelve minutes, and the 38.08 retest floor (pure 0.1×ATR arithmetic) missed the day high by two cents and cost the desk the one thesis that paid. |
+| Catalyst | B | Two of three right, and the wrong one was rank 1: IREN's SemiAnalysis de-rating correctly called fresh and unspent (no rebuttal, price −8.9% to the low), the Moderna/Merck item correctly called as running AGAINST the TEM short (close 69.28 proved it) — but CTVA's double upgrade was read as live when it was already in the price on day 3 of +16.6% at RSI 71.6. |
+| Head Trader | C | Both trades tagged, the plan stated its own fill odds honestly ("0–1 fills; CTVA ~1 in 4, IREN ~1 in 3") and forbade manufacturing a third name — the zero-fill outcome is inside the plan's own forecast. But writing a rank-1 trade priced at 25% to fill on a stop the plan itself called "not a Rules structure level" is a planning defect however well disclosed; **third consecutive session at 0 of 2**. |
+| Risk Manager | B | Every required change was neutral or correct and one was decisive — the GAP-THROUGH-STOP scrap limb killed rank 1 at 09:42 and the 13.75 close proved it right (−1.64% of equity avoided); nothing cut size for a missing feed. The subtraction: it documented that the 0.48 stop was only 0.55× Wednesday's real range — below the 0.7× floor in substance — and approved the trade with caps instead of striking or re-levelling it. |
+| Smart Money | B | Disciplined and honest: CTVA correctly no-signal, the intraday Zacks cut to Strong Sell relayed as a counter-signal not a trigger, every non-quote price card kept as information only under v6, own staleness flagged in the carry verdicts. But nothing it flagged changed a fill, and the IREN BTC guard went UNREAD for three consecutive ticks while being a live precondition — moot only because Brent had already blocked entries. |
+| Execution monitor | B | Indicative and replay agree exactly, and the replay reproduces both decisive numbers; it cleared the earnings-date guard (Nov 11), wrote the TEM carry as a falsifiable conditional, logged the 14:40 deviation openly, and cut its own credit burn 6 → 1 → 0. The defect: it stopped reading SPY after 12:12 and then recorded a tripped kill switch as "NOT tripped." |
 
 ## What worked
-- The genomics-group confirmation (TXG < 79.90, TWST red) held all day; the short never traded against the entry by more than 0.00R on any print.
-- The fill floor 71.12 (1.5R test) and the 0.73× ATR stop at 75.60 kept the short out of noise; peak +0.18R, never threatened.
-- Pre-market scraps were right twice: NOK (−3.19%) and the VST structure call at the open (154.77 < 156.80) — the Rules' structure test, not a mood, made the call.
-- `exec.py trail` ran at every tick and the close-lock stop was computed (70.674) exactly as [[Trail]] says; the ledger carries `setup_type`.
-- The orchestrator cross-checked a third-party price card against the desk's own prints and downgraded it before it could trigger a fictitious T1 scale.
+- The **CTVA GAP-THROUGH-STOP scrap limb** was the day's one decisive rule and it was right; the close confirmed it.
+- **Zero manufactured activity.** 0 of 2 slots, 0% open risk, no invented level, no loosened band, equity unchanged.
+- The **TEM carry written as an explicit conditional** — the right shape for a handoff the Coach can settle with one credit.
+- **Level accuracy across every seat.** Three sessions in, levels are not this desk's problem.
+- **Expectancy machinery clean**: both trades tagged, no split family, no size above the low-confidence number.
+- **Data hygiene held**: non-quote cards stayed information only, the AV premium response was discarded on sight.
 
 ## What failed
-- Both +3.88% longs on the list were unexecutable: CTVA's 13.75 retest printed between the 09:44 and 10:41 ticks and every tick after it saw last > 14.05; VST opened 2 pts through its stop and the desk has no "reclaim" form. Two sessions, four pullback/retest-form entries, zero fills (NU, SPCX-A, CTVA, VST).
-- The TEM entry at 71.34 was a touch of the level, not a demonstrated fail-close below it; the trade then spent 3 h inside ±0.18R — consistent with a level that had not failed (close 70.35 is 0.99 below it).
-- T1 at 1.63R was 1.16× ATR away for a 12:47 entry; the ladder (arms at 1R = 67.08) was never within 3 pts of arming.
-- The hourly cadence turns "flat by 15:55" into "flat at ~15:43": +0.054R (0.13% of equity) was left on the table today; NVDA yesterday (239.27 vs close 239.24) was flat — the Rules now say so and the replay scores it that way.
-- The coach context mixed two sessions' tick records; the Seat 7 relay sent a disproved card as critical. Both are data-hygiene failures, not market ones.
-
-## Lessons
-- [[Lesson - A time-stop with an escape clause is a hold rule]] — TEM at the 14:41 check: +0.5R (69.21) unmet, price 71.33 vs entry 71.34 (+0.002R) → HOLD under the "AND wrong side" clause; outcome +0.178R vs +0.002R if exited. Touches Winners / stall. No change (sample 1, and the escape added R). Confidence low.
-- [[Lesson - At the hourly cadence the 15-40 tick is the flat]] — TEM covered 70.58 at 15:44 with the 70.674 close-lock untouched; the 16:00 close 70.35 was +0.232R vs +0.178R booked; RUNBOOK line 35 flattens at the 15:40 tick. Touches Winners (flat rule) and the Coach's replay convention. Applied as a clarify in v6. Confidence high.
-- [[Lesson - A third-party price card is not a print]] — 247wallst card "TEM $64.17 −9.2% at 12:40" relayed as critical at 13:47 while stockanalysis printed 71.34 / 70.84 / 70.60 / 70.56; T1 64.40 "hit" would have scaled 1/3 at a price that never traded. Touches Seat 7 usage / Data hygiene. Applied as a tighten in v6. Confidence high.
-- [[Lesson - An index kill blocks the low-beta long that ignores the index]] — INDEX 774.83 kill (SPY low 773.61, close −0.24%) blocked CTVA (beta 0.58), which closed +3.88%; the kill was right about SPY and irrelevant to CTVA — but CTVA was uncatchable at the cadence anyway (14.12 at the first tick). Touches plan kill switches / correlation. No change (loosening needs ≥ 10 samples; today is sample 1). Confidence low.
-
-## Rule changes (v5 → v6)
-| Rule | From | To | Kind | Evidence | Samples | Applied |
-|---|---|---|---|---|---|---|
-| Seat 7 usage — third-party price items | no rule; a relayed card could be a critical alert | price-bearing non-quote items (aggregator cards, social posts, screenshots) are info only; no entry/scale/exit/critical unless a desk quote source shows the same print; contradicted cards are logged as disproved | tighten | 247wallst "TEM 64.17 −9.2% at 12:40" vs prints 71.34/70.84/70.60/70.56 | 1 | yes |
-| Winners — flat at the cadence | "Flat by 15:55 ET"; replay scored the 16:00 close | the 15:40 tick is the flat (RUNBOOK): it applies the ladder/close-lock as a stop against its print, then flattens at that print; the Coach's replay scores the 15:40-tick print, never the close | clarify | TEM 70.58 at 15:44 (+0.178R) vs close 70.35 (+0.232R); lock 70.674 untouched | 2 (TEM, NVDA) | yes |
-| Data hygiene — session-dated records | no rule | every tick/journal/snapshot record carries its date; a seat discards records dated another session and says so | clarify | 6 of 7 coach-context ticks were 2026-10-06's | 1 | yes |
-| Winners — strict 2-h time-stop (flat unless ≥ +0.5R) | exit only if +0.5R unmet AND wrong side of entry | exit at 2 h unless ≥ +0.5R | tighten | TEM held at 71.33 on the AND clause, +0.178R | 1 | **no** — the one sample shows the escape clause added +0.176R; tightening against the evidence is not evidence-based; log and revisit at 10 samples |
-| Plan kill switches — scope index kills to beta ≥ 1 | index kill blocks every long | standalone beta < 0.7 names exempt | loosen | CTVA +3.88% vs SPY −0.24% under the 774.83 kill | 1 | **no** — loosening needs ≥ 10 samples; CTVA was not fillable at the cadence anyway |
-| Resting orders — simulate a resting limit for pullback/retest forms in paper-local | `exec.py rest` refused in paper-local; tick must see last inside the fill window | fill at the limit when the tick's range shows the band printed after 09:45 and the stop did not | loosen | CTVA 13.75 retest between ticks, last 14.12 at 10:41; NU/SPCX/VST same family (0 of 4 fills in 2 sessions) | 4 (no fills) | **no** — loosens the fill test and changes exec.py (user-owned); needs ≥ 10 samples and real bars; recorded for the Alpaca migration |
+- A **kill switch recorded as "not tripped" from a 3½-hour-stale read**. SPY low 770.44 broke two limbs; the ledger said otherwise.
+- **Three sessions, nine planned entries, two fills.** Today both misses were arithmetic, not thesis: 0.15 and **0.02**. IREN's thesis then paid 1.06×ATR untouched.
+- The carried **TEM short was one tick from being carried on a 0.17 margin** and was killed by the close.
+- The **Brent switch blocked the whole session** across two names with no crude channel, and nobody recorded what it cost. Measured: **0R** — nothing it blocked was fillable. The desk had an opinion and no data.
+- The **AUCTION_TAIL switch could not resolve**: SPY's limb fired, TLT's went the other way, the AND never fired, and the switch resolved to its own *inverse* limb at 13:12 — which is what closed the entry window.
+- The **per-tick data budget is a hardcoded literal** (`Scripts/desk.workflow.js:461`), and in credits it is **11 per tick**, not 6 calls. Line 452 is a second hardcoded draw (7 credits).
+- The Coach's own IREN scrape **filtered out the price block to save tokens** and lost IREN's close with the last credit.
 
 ## Pace vs targets ([[Targets]])
-- Equity **$199.78**, peak **$200.00** (ledger). Next milestone: **$500** (+150.3% from here). Sessions elapsed since start_equity $200: **2** (cumulative −0.11%).
-- Not on track: milestone 1 asked +150% in 1–2 sessions and two sessions have printed −0.55% and +0.44%; at the desk's own ceiling (+37.5% on a perfect two-position day) milestone 1 still needs at least three perfect sessions. No limit is loosened to chase it.
+- Equity **$199.78**, peak **$200.00** (ledger). Next milestone: **$500** (+150.3% from here). Sessions elapsed since `start_equity` $200: **3** (cumulative **−0.11%**).
+- **Not on track, and the binding constraint is not risk appetite.** The desk is running an aggressive profile it never deploys: today it carried **0% open risk against a 10% cap** and used 0 of 2 slots; across three sessions it has filled **2 of 9 planned entries** and risked a cumulative $7.42. Milestone 1 asks +150% in 1–2 sessions; the desk's own ceiling is +37.5% on a perfect two-position day, so even a perfect week leaves it short. The constraint is **fill rate** — entry constructions that the hourly cadence cannot reach, missing today by 0.15 and by two cents — and the fix is better-reachable levels and real 5-minute bars, not bigger size. **No limit is loosened to chase a milestone.**
 
+## Lessons
+- [[Lesson - A thesis is decided by the close, not by the 15-40 tick]] — TEM 68.49 at 15:41 (0.17 below 68.66, recorded intact) vs close **69.28** (0.62 above, 84.5% of range from the low) after margin decay 1.95 → 1.02 → 0.34 → 0.17 in a frozen range on 2.54M → 7.02M volume. Touches Multi-day thesis. Applied as a tighten in v8. Confidence high.
+- [[Lesson - A kill switch stops being a fact the moment the desk stops reading it]] — SPY last read 12:12 (low 774.18); 15:46 ledger "NOT tripped"; actual low **770.44**, through both the 773.61 kill and the 770.00 flatten limb, close 773.93 concealing it. Touches Data hygiene / plan kill switches. Applied as a tighten in v8. Confidence high.
+- [[Lesson - A retest band built from 0.1x ATR arithmetic is not a structure level]] — IREN floor 38.08 vs day high **38.06** on a 0.52 gap; thesis then paid 1.06×ATR to 35.24 (+1.16R from a 38.06 fill). Prior: CTVA 13.84 by 0.09, NU 15.20 by 0.13. Touches Entries / gapped-through trigger. **Not applied** — a gap-scaled tolerance is a LOOSEN; sample 3 of 10. Confidence medium.
+- [[Lesson - Firecrawl calls are not credits and a tag filter can cost the number]] — four scrapes at `creditsUsed 1`, one search at 2, the hardcoded `1 scrape + 5 searches` = 11 credits; and the Coach's own `includeTags ['table','h1']` on IREN dropped the price block and lost the close. Touches Data hygiene / Firecrawl. Applied as a tighten in v8; the code fix is proposed, not applied. Confidence high.
 
-## Review 2026-10-06 Review
-# 2026-10-06 Review — Coach
-## Seat grades
-| Seat | Grade | Evidence |
-|---|---|---|
-| Screener | B | NU/SPCX/NVDA were the movers (NU +3.16%; SPCX and NVDA both made new highs in the first hour), but no tradeable short survived to the plan on a day both tech names faded. |
-| Macro | B | "CHOP" was wrong on the index (SPY record close 779.09, 10Y eased 5.311 → 5.277 per CNBC via monitor) but the levels were right: pivot 774.83 and kill 769.60 never touched. |
-| Technical | B | NVDA stop 236.00 (0.78× ATR) held a 238.93 low; SPCX's Monday high 172.47 held as support until 14:41; but NU's 15.20 entry was 0.13 under the day low and NVDA's T1 246.60 sat 3.2 pts above the day high. |
-| Catalyst | A | "Reiteration, no new catalyst, day-2 stall" for SPCX and "no signal" for NVDA — both faded exactly as called. |
-| Head Trader | C | All trades tagged (no untagged defect), but the best name (NU) was written to need a pullback it never gave, NVDA's T1 was 1.30R from the trigger (0.80R from the cap fill), and the VWAP-feed switch halved every size for a feed known absent at 20:55. |
-| Risk Manager | B | ≥ 0.7× ATR stops kept NVDA's 236.00 out of the 238.93 low (a 0.5× stop near 238.0 would have been hit at the close); EWZ veto cost nothing (close 42.88, low 42.62); the halving switch saved $1.10 but was size-by-absence. |
-| Smart Money | B | Shotwell's Form 4 sale rightly dismissed; the EWZ 42.74 tell printed (low 42.62) and blocked an NU entry that never triggered anyway — nothing mattered, no false alarm. |
-| Execution monitor | B | NVDA −0.446R indicative vs −0.451R replay (match); SPCX/NU correctly untraded; but the hourly cadence saw the 09:45 trigger at 10:46 and made the 241.90 slippage cap the fill (~0.13R worse than a 240.76 fill). |
+## Rule changes (v7 → v8)
 
-## What worked
-- Structure stop ≥ 0.7× ATR: NVDA exited a −0.45R scratch, not a −1R stop.
-- Order-level fill cap on SPCX refused a 175.62 chase that would have closed −0.34R.
-- Flat-by-15:55 executed at 239.27 (close 239.24); no overnight exposure.
-- Every trade carried a `setup_type`; the ledge
+| Rule | From | To | Kind | Evidence | Samples | Applied |
+|---|---|---|---|---|---|---|
+| Multi-day thesis — `thesis_intact` settles on the close | the 15:40 tick records the verdict and the evening plan reads it | the 15:40 verdict is PROVISIONAL (test, level, margin); the 16:00 close is FINAL and overrides it; monotonic margin decay in a frozen range on rising volume = NOT intact regardless of the last print | tighten | TEM 68.49 at 15:41 → close 69.28 | 1 | **yes** |
+| Data hygiene — a kill switch's state must be read | a switch could be recorded "not tripped" from an earlier tick, or dropped because it could only block a side not held | tripped/not-tripped only from a read at that tick; otherwise `state UNKNOWN since HH:MM`; never dropped for what the book holds | tighten | SPY low 770.44 vs a 15:46 "NOT tripped" on a 12:12 read | 1 | **yes** |
+| Multi-day thesis — the three-session clock | "three consecutive sessions" (expression undefined) | three consecutive CALENDAR sessions from the first plan appearance, position or no position | clarify | TEM and IREN both carried with no position | 2 | **yes** |
+| Data hygiene — Firecrawl budgets in credits | "~10 requests/min, 7 s apart" | budgets in CREDITS (scrape 1, search 2); seats report `creditsUsed`; no tag filter that drops the number the scrape is for | tighten | 4 scrapes × 1 + 1 search × 2 measured; IREN close lost to a tag filter | 1 | **yes** |
+| Plan kill switches — record what a book-wide switch blocked | no rule | per blocked name: live trigger yes/no/level-not-reached + distance to trigger; the Coach sums the cost in R; scoping it later is a LOOSEN needing ≥ 10 rows | tighten | Brent switch blocked the session; measured cost **0R** | 1 | **yes** |
+| Plan kill switches — AND switches must name the disagreement case | AUCTION_TAIL needs TLT < 76.43 AND SPY < 773.61 | an AND across two instruments must state the split-tape case; default = the conservative limb | tighten | SPY broke 773.61 to 770.44 while TLT rallied to 77.73 | 1 | **yes** |
+| Setup expectancy — `ath-breakout` family defined | undefined; the plan asked whether a stub-high breakout is a separate family | covers all-time / 52-week / post-corporate-action stub highs; families are not split on the label of the high | clarify | CTVA's 14.62 = its true 52W high, ≤ 5 clean post-spin bars | 2 | **yes** |
+| Monitor cadence — a flat no-decision tick may be recorded directly | no rule; the 14:40 skip was an unwritten judgement call | permitted under three named conditions, and the tick must still refresh every switch or mark it UNKNOWN | clarify | the 14:40 skip was correct but cost the only SPY read after 12:12 | 1 | **yes** |
+| Entries — retest tolerance on a gapped-through level | within 0.1×ATR of the level | `max(0.1×ATR, 25% of the gap)` | loosen | IREN 38.08 vs 38.06; CTVA by 0.09; NU by 0.13 | 3 | **no** — a LOOSEN needs ≥ 10; sample 3 of 10, and it is a path question the desk cannot measure without real bars |
+| Plan kill switches — scope commodity switches by transmission channel | book-wide | only names with a plausible channel | loosen | Brent blocked TEM and IREN with no crude exposure | 1 | **no** — a LOOSEN needs ≥ 10, and this sample is uninformative: measured cost 0R because nothing blocked was fillable. The new block-accounting rule creates the real samples |
+| `Scripts/desk.workflow.js:461` — hardcoded per-tick budget (CODE) | `Budget: 1 scrape + 5 searches` literal | `${A.watch_budget \|\| '…'}` — read from an optional arg, current values as the default; same for line 452 | clarify | Seat 7 spent 6 calls against a stated cap of 1 at 12:40; the literal i
 
 _(digest truncated at 12000 chars — older material omitted)_
