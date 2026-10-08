@@ -1,8 +1,8 @@
 ---
 type: rules
-version: 6
-updated: 2026-10-07
-updated_by: Coach — [[2026-10-07 Review]]: third-party price cards can never trigger an action (tighten); the 15:40 tick is the flat at the hourly cadence and the replay scores that print (clarify); seats discard records dated another session (clarify)
+version: 7
+updated: 2026-10-08
+updated_by: User — multi-day thesis, daily position: the 15:55 flat ends the position, not the thesis; a setup still valid at the flat is carried forward as a fresh trade next session. Overnight exposure stays forbidden.
 ---
 # Desk Rules (living — read by every seat, rewritten only by the Coach)
 
@@ -34,6 +34,14 @@ The desk reads this note at the start of every run. The nightly [[Coach]] may ch
 - Target the runner at ≥ 3R. A day where the runner reaches 3R is the day that pays for the week; never clip it to "lock in" a small gain.
 - A trade that reaches +1R and comes all the way back to breakeven is a scratch, not a loss — do not re-enter it that day.
 - Flat at the cadence: at the hourly cadence the 15:40 tick IS the 15:55 flat (RUNBOOK: `flatten` after the seat's actions; no later run exists). That tick first applies the ladder / 15:25 close-lock as a STOP level against its print (exit at the print only if the print is through the stop), then flattens whatever is still open at the tick's print. The Coach's replay scores the 15:40-tick print as the exit, never the 16:00 close (clarify: [[2026-10-07 Review]] — TEM short covered 70.58 at 15:44 with the 70.674 close-lock untouched; the 16:00 close 70.35 was worth +0.232R vs +0.178R booked — a cadence gap, not an execution error).
+
+## Multi-day thesis, daily position (user-set 2026-10-08)
+- The 15:55 flat ends the **position**, not the **thesis**. A setup whose thesis is still intact at the 15:40 flat tick is carried forward as a named continuation candidate for the next session instead of being dropped.
+- At the 15:40 tick, for every position it flattens, the monitor records `thesis_intact: yes|no` in the journal row with one line of evidence: did the structure level hold, was the catalyst spent or contradicted, did the group tell hold. The Coach copies that verdict into the Review and the evening plan reads it.
+- A carried thesis is a **NEW trade under every ordinary rule**: a fresh hard level from the latest session's range, a fresh structure stop at 0.7–1.5× ATR, T1 ≥ 1.5R from the realistic fill, full size per the Risk section, and it counts against max 2 concurrent. Yesterday's entry, stop and target are never reused. Carrying a thesis never widens a stop, never averages down and never adds to a closed position.
+- A thesis may be carried at most **three consecutive sessions**; after the third it is retired until a new catalyst or a new structure level appears. A thesis that has produced two losing days is retired immediately (mirrors the same-day "never a third attempt" cap in Risk).
+- **Overnight exposure remains FORBIDDEN** and the Coach may not loosen it. That is the point of this rule's shape: the desk cannot act on a gap, and the names the Screener surfaces are the gap-prone ones (TEM beta 3.54, IREN beta 4.26). Measured on the only two closed trades (2026-10-07): holding both to the next close scored −0.518R against the −0.268R actually booked (NVDA −0.751R vs −0.446R realized, its 236.00 stop never hit so the position would still be open and underwater; TEM +0.232R vs +0.178R realized). Giving a thesis more days is the edge; giving a position more hours is the gap.
+
 
 ## Data absence (user-set 2026-10-06)
 - A missing data feed never cuts size. If live VWAP is unavailable, the trade uses its HARD level (prior high/low, opening-range extreme, Monday close ± ATR) at the FULL planned size. VWAP is confirmation, never the sole trigger. The Head Trader writes every trade so a hard level is the primary trigger.
