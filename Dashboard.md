@@ -18,6 +18,10 @@ type: dashboard
 | 2026-10-08 | 2 | 0 | 0 | 0 | 0.00 | 0.00% | 8 |
 
 ## Lessons
+- [[Lesson - A thesis is decided by the close, not by the 15-40 tick]]
+- [[Lesson - A kill switch stops being a fact the moment the desk stops reading it]]
+- [[Lesson - A retest band built from 0.1x ATR arithmetic is not a structure level]]
+- [[Lesson - Firecrawl calls are not credits, and a tag filter can cost the number]]
 - [[Lesson - A time-stop with an escape clause is a hold rule]]
 - [[Lesson - At the hourly cadence the 15-40 tick is the flat]]
 - [[Lesson - A third-party price card is not a print]]
