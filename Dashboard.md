@@ -6,8 +6,8 @@ type: dashboard
 **Rules:** [[Rules]] · [[Rules Changelog]] · [[Seats]] · [[Live]] (mode + guards) · [[Targets]] (user milestones $500 → $1,000 → $10,000 and what the limits allow) · [[Expectancy]] (per-setup stats, sizes setups) · `Backtests/` (setup replays on 5-min bars)
 
 ## Latest
-- Plan: [[2026-10-07 Plan]] (yesterday: [[2026-10-06 Plan]])
-- Journal: [[2026-10-07 Journal]]
+- Plan: [[2026-10-08 Plan]] (yesterday: [[2026-10-07 Plan]])
+- Journal: [[2026-10-08 Journal]] (yesterday: [[2026-10-07 Journal]])
 - Review: [[2026-10-07 Review]] (yesterday: [[2026-10-06 Review]])
 
 ## Scorecard (updated by the Coach)
@@ -15,6 +15,7 @@ type: dashboard
 |---|---|---|---|---|---|---|---|
 | 2026-10-06 | 3 | 1 (NVDA) | 0 | 1 | -0.446 | -0.55% | 5 |
 | 2026-10-07 | 4 | 1 (TEM) | 1 | 0 | +0.178 | +0.44% | 6 |
+| 2026-10-08 | 2 | — | — | — | — | — | 6 |
 
 ## Lessons
 - [[Lesson - A time-stop with an escape clause is a hold rule]]
