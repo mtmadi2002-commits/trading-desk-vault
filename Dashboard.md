@@ -7,7 +7,8 @@ type: dashboard
 
 ## Latest
 - Plan: [[2026-10-08 Plan]] (yesterday: [[2026-10-07 Plan]])
-- Journal: [[2026-10-08 Journal]] (yesterday: [[2026-10-07 Journal]])
+- Journal: [[2026-10-12 Journal]] (last traded session: [[2026-10-08 Journal]])
+- Outage: [[Outage 2026-10-09 to 2026-10-12]] — 17 runs lost to worker restarts; Friday 2026-10-09 never ran
 - Review: [[2026-10-08 Review]] (yesterday: [[2026-10-07 Review]])
 
 ## Scorecard (updated by the Coach)
@@ -16,6 +17,8 @@ type: dashboard
 | 2026-10-06 | 3 | 1 (NVDA) | 0 | 1 | -0.446 | -0.55% | 5 |
 | 2026-10-07 | 4 | 1 (TEM) | 1 | 0 | +0.178 | +0.44% | 6 |
 | 2026-10-08 | 2 | 0 | 0 | 0 | 0.00 | 0.00% | 8 |
+| 2026-10-09 | — | **NO SESSION** | — | — | — | — | 8 |
+| 2026-10-12 | 0 | **NO PLAN** | — | — | 0.00 | 0.00% | 8 |
 
 ## Lessons
 - [[Lesson - A thesis is decided by the close, not by the 15-40 tick]]
