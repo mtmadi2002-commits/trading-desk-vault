@@ -9,7 +9,7 @@ type: dashboard
 - Plan: [[2026-10-08 Plan]] (yesterday: [[2026-10-07 Plan]])
 - Journal: [[2026-10-12 Journal]] (last traded session: [[2026-10-08 Journal]])
 - Outage: [[Outage 2026-10-09 to 2026-10-12]] — 17 runs lost to worker restarts; Friday 2026-10-09 never ran
-- Review: [[2026-10-08 Review]] (yesterday: [[2026-10-07 Review]])
+- Review: [[2026-10-12 Review]] — no replay possible, no seat graded; the faults reviewed are the orchestrator's (yesterday: [[2026-10-08 Review]])
 
 ## Scorecard (updated by the Coach)
 | Date | Trades planned | Triggered | Wins | Losses | Day R | Day P&L % | Rules v |
@@ -18,9 +18,11 @@ type: dashboard
 | 2026-10-07 | 4 | 1 (TEM) | 1 | 0 | +0.178 | +0.44% | 6 |
 | 2026-10-08 | 2 | 0 | 0 | 0 | 0.00 | 0.00% | 8 |
 | 2026-10-09 | — | **NO SESSION** | — | — | — | — | 8 |
-| 2026-10-12 | 0 | **NO PLAN** | — | — | 0.00 | 0.00% | 8 |
+| 2026-10-12 | 0 | **NO PLAN** | — | — | 0.00 | 0.00% | 9 |
 
 ## Lessons
+- [[Lesson - A rule the desk wrote does not bind the desk that wrote it]]
+- [[Lesson - A session the desk refuses to trade still needs a complete record]]
 - [[Lesson - A thesis is decided by the close, not by the 15-40 tick]]
 - [[Lesson - A kill switch stops being a fact the moment the desk stops reading it]]
 - [[Lesson - A retest band built from 0.1x ATR arithmetic is not a structure level]]

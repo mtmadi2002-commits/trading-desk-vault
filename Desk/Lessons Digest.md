@@ -19,6 +19,30 @@ Status rule: **sample** (<10 trades) → default size · **proven** (≥10, avg 
 | 2026-10-06 | NVDA | ath-breakout | long | -0.446 | -1.1 |
 | 2026-10-07 | TEM | breakdown-short | short | 0.178 | 0.88 |
 
+## Review 2026-10-12 Review
+# 2026-10-12 Review — the day the desk had nothing to trade
+## What worked
+1. **The refusal held, and held cleanly.** Nine ticks — 09:44, 10:41, 11:41, 12:41, 13:40, 14:40, 15:40, plus the 10:12/13:11/15:11 refresh records — every one naming `no plan for this session` as the ground, every one re-reading equity, positions and the P&L/floor guards from `exec.py preflight` at that tick rather than carrying the 08:57 numbers forward. No tick was skipped. Under Rules v8 a kill switch's state must be read, not assumed, and that held all day.
+2. **The chain is unbroken, which is new.** 2026-10-08 skipped its 14:40 tick for defensible reasons and that gap is now the single hole in an otherwise complete day. Today's record has no gap, so it cannot be mistaken afterwards for a run that silently failed — which matters precisely because that is what the Oct 9 outage looked like. This is now Rules v9.
+3. **The 15:55 flat and 15:00 no-entry rules passed vacuously and were recorded as such**, rather than being reported as if the desk had done something.
+4. **Credit discipline where it was deliberate.** Three of six scheduled refreshes skipped their scrape on purpose, each logged with its reason: with no plan and no position, a quote can trigger nothing, and the credits belonged to tonight's plan. That reasoning was right.
+
+## What failed — and it was the orchestrator, not a seat
+**One symbol, on a day the desk could not trade, cost 6 Firecrawl credits: the entire stated refresh budget.**
+
+At 13:10 I scraped SPY with `includeTags: ["table"]` and `excludeTags: ["nav","footer","a"]`. That dropped the real-time price card, so the response contained a statistics table and **no last price** — a quote with no quote in it. This is verbatim the failure Rules v8 forbids, in a clause I wrote myself six days earlier: *"A scrape taken to obtain a specific number must not filter that number out of the response."* I then recovered with `formats: ["json"]`, which returned `creditsUsed: 5`.
+
+Two facts come out of it, one about the tool and one about the desk:
+- **A json extraction costs 5 credits, five times a markdown scrape.** Previously unmeasured. It is never the right way to recover a number a correct tag set would have returned for 1.
+- **A rule the desk writes does not bind the desk that wrote it.** The v8 clause was live, indexed, and in the file I had re-read that morning. It did not stop me, because nothing in the act of scraping made me consult it. A rule enforced only by the memory of whoever happens to be acting is enforced by nothing. The remedy that actually changes behaviour is not "remember the rule" — it is **naming the known-good recipe in the rule itself** so the compliant action is the one that is easiest to copy.
+
+Irony worth recording plainly: I skipped the 11:10 and 12:10 scrapes to conserve 2 credits, then burned 6 through carelessness within the hour.
+
+Two smaller process faults, both caught before they reached `main`:
+- A malformed shell guard of mine committed the 14:40 tick with the message `x` and a typo'd author email (`desk@users.noreply36.github.com`). Local only — remote was still at `8f57330` — so it was amended, not pushed and not force-rewritten.
+- The 09:44 `git pull --rebase` errored on unstaged changes before the commit. Harmless, but the pull belongs *after* staging or before editing, not between.
+
+
 ## Review 2026-10-08 Review
 # 2026-10-08 Review — Coach
 ## Seat grades
@@ -65,16 +89,6 @@ Status rule: **sample** (<10 trades) → default size · **proven** (≥10, avg 
 
 | Rule | From | To | Kind | Evidence | Samples | Applied |
 |---|---|---|---|---|---|---|
-| Multi-day thesis — `thesis_intact` settles on the close | the 15:40 tick records the verdict and the evening plan reads it | the 15:40 verdict is PROVISIONAL (test, level, margin); the 16:00 close is FINAL and overrides it; monotonic margin decay in a frozen range on rising volume = NOT intact regardless of the last print | tighten | TEM 68.49 at 15:41 → close 69.28 | 1 | **yes** |
-| Data hygiene — a kill switch's state must be read | a switch could be recorded "not tripped" from an earlier tick, or dropped because it could only block a side not held | tripped/not-tripped only from a read at that tick; otherwise `state UNKNOWN since HH:MM`; never dropped for what the book holds | tighten | SPY low 770.44 vs a 15:46 "NOT tripped" on a 12:12 read | 1 | **yes** |
-| Multi-day thesis — the three-session clock | "three consecutive sessions" (expression undefined) | three consecutive CALENDAR sessions from the first plan appearance, position or no position | clarify | TEM and IREN both carried with no position | 2 | **yes** |
-| Data hygiene — Firecrawl budgets in credits | "~10 requests/min, 7 s apart" | budgets in CREDITS (scrape 1, search 2); seats report `creditsUsed`; no tag filter that drops the number the scrape is for | tighten | 4 scrapes × 1 + 1 search × 2 measured; IREN close lost to a tag filter | 1 | **yes** |
-| Plan kill switches — record what a book-wide switch blocked | no rule | per blocked name: live trigger yes/no/level-not-reached + distance to trigger; the Coach sums the cost in R; scoping it later is a LOOSEN needing ≥ 10 rows | tighten | Brent switch blocked the session; measured cost **0R** | 1 | **yes** |
-| Plan kill switches — AND switches must name the disagreement case | AUCTION_TAIL needs TLT < 76.43 AND SPY < 773.61 | an AND across two instruments must state the split-tape case; default = the conservative limb | tighten | SPY broke 773.61 to 770.44 while TLT rallied to 77.73 | 1 | **yes** |
-| Setup expectancy — `ath-breakout` family defined | undefined; the plan asked whether a stub-high breakout is a separate family | covers all-time / 52-week / post-corporate-action stub highs; families are not split on the label of the high | clarify | CTVA's 14.62 = its true 52W high, ≤ 5 clean post-spin bars | 2 | **yes** |
-| Monitor cadence — a flat no-decision tick may be recorded directly | no rule; the 14:40 skip was an unwritten judgement call | permitted under three named conditions, and the tick must still refresh every switch or mark it UNKNOWN | clarify | the 14:40 skip was correct but cost the only SPY read after 12:12 | 1 | **yes** |
-| Entries — retest tolerance on a gapped-through level | within 0.1×ATR of the level | `max(0.1×ATR, 25% of the gap)` | loosen | IREN 38.08 vs 38.06; CTVA by 0.09; NU by 0.13 | 3 | **no** — a LOOSEN needs ≥ 10; sample 3 of 10, and it is a path question the desk cannot measure without real bars |
-| Plan kill switches — scope commodity switches by transmission channel | book-wide | only names with a plausible channel | loosen | Brent blocked TEM and IREN with no crude exposure | 1 | **no** — a LOOSEN needs ≥ 10, and this sample is uninformative: measured cost 0R because nothing blocked was fillable. The new block-accounting rule creates the real samples |
-| `Scripts/desk.workflow.js:461` — hardcoded per-tick budget (CODE) | `Budget: 1 scrape + 5 searches` literal | `${A.watch_budget \|\| '…'}` — read from an optional arg, current values as the default; same for line 452 | clarify | Seat 7 spent 6 calls against a stated cap of 1 at 12:40; the literal i
+| Multi-day thesis — `thesis_intact` settles on the close | the 15:40 tick records the verdict and the evening plan reads it | the 15:40 verdict is PROVISIONAL (test, l
 
 _(digest truncated at 12000 chars — older material omitted)_
