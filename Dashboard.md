@@ -6,8 +6,8 @@ type: dashboard
 **Rules:** [[Rules]] · [[Rules Changelog]] · [[Seats]] · [[Live]] (mode + guards) · [[Targets]] (user milestones $500 → $1,000 → $10,000 and what the limits allow) · [[Expectancy]] (per-setup stats, sizes setups) · `Backtests/` (setup replays on 5-min bars)
 
 ## Latest
-- Plan: [[2026-10-08 Plan]] (yesterday: [[2026-10-07 Plan]])
-- Journal: [[2026-10-12 Journal]] (last traded session: [[2026-10-08 Journal]])
+- Plan: **[[2026-10-13 Plan]]** — 2 ranked, max 1 concurrent (previous: [[2026-10-08 Plan]])
+- Journal: [[2026-10-13 Journal]] (previous: [[2026-10-12 Journal]]; last traded session: [[2026-10-08 Journal]])
 - Outage: [[Outage 2026-10-09 to 2026-10-12]] — 17 runs lost to worker restarts; Friday 2026-10-09 never ran
 - Review: [[2026-10-12 Review]] — no replay possible, no seat graded; the faults reviewed are the orchestrator's (yesterday: [[2026-10-08 Review]])
 
@@ -19,6 +19,7 @@ type: dashboard
 | 2026-10-08 | 2 | 0 | 0 | 0 | 0.00 | 0.00% | 8 |
 | 2026-10-09 | — | **NO SESSION** | — | — | — | — | 8 |
 | 2026-10-12 | 0 | **NO PLAN** | — | — | 0.00 | 0.00% | 9 |
+| 2026-10-13 | 2 | — | — | — | — | — | 9 |
 
 ## Lessons
 - [[Lesson - A rule the desk wrote does not bind the desk that wrote it]]
