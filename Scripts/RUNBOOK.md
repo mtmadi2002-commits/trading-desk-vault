@@ -37,8 +37,19 @@ The seven-seat machinery is expensive and most intraday ticks decide nothing. **
 
 Measured basis: on 2026-10-12 the desk ran 09:44→15:40 with zero workflow spawns and the record is complete and auditable. On 2026-10-08, by contrast, every tick spawned seats and the day still produced 0 fills.
 
+### THE SCHEDULE WAS CUT TOO (2026-10-13, USER-DIRECTED) — 16 scheduled runs/weekday became 6
+| Run | Cron (ET) | Before | Now |
+|---|---|---|---|
+| premarket | 08:50 | 1/day, full seats | **unchanged, full seats** — the gate that catches a gap-through before it becomes a chase |
+| monitor | **10:40, 12:40, 15:40** | hourly 09:40–15:40 = 7/day | **3/day**, each cost-gated; 15:40 is still the mandatory flat |
+| quote refresh | — | hourly :10 = 6/day | **DISABLED**, folded into the monitor ticks |
+| coach | 16:24 | 1/day, full replay | **1/day, fills-only**; a zero-fill day's Review is written directly |
+| plan | 20:55 | 1/day, full seats | **unchanged, full strength** — the source of every edge, and it already failed twice |
+
+**OPEN-POSITION ESCALATION, the safety valve that makes the thinner schedule safe.** With only three scheduled ticks, two of them are two hours apart, and a position must never sit unwatched that long. So: if a position is open at the end of any tick and it is before 15:00 ET, that run schedules its own follow-up 60 minutes later (`send_later`, delay_minutes 60) and keeps doing so each tick until the book is flat. Cheap when flat, dense when it matters — the cost follows the risk instead of the clock. The routine prompt carries this instruction, so it survives a fresh session that reads nothing else.
+
 ### The same gate, applied to the other modes
-- **quote-refresh (:10)** — scrape ONLY if a position is open, or a trigger is within 0.5× ATR, or it is the **10:10** or **15:10** tick (those two are kept unconditionally: the first gives the session its shape, the last captures the full range for the evening plan). Otherwise record the tick and skip the scrape, with the reason. On 2026-10-12 three of six refreshes were skipped this way.
+- **quote-refresh** — ROUTINE NOW DISABLED (2026-10-13); its work folds into the monitor ticks. If it is ever re-enabled: scrape ONLY if a position is open, or a trigger is within 0.5× ATR, or it is the **10:10** or **15:10** tick (those two are kept unconditionally: the first gives the session its shape, the last captures the full range for the evening plan). Otherwise record the tick and skip the scrape, with the reason. On 2026-10-12 three of six refreshes were skipped this way.
 - **coach (16:24)** — if the session had **ZERO fills**, there is no replay to run and no seat to grade: write the Review DIRECTLY, state `seat grades N/A` with the reason, and spawn nothing. Spawn the full coach only when the ledger gained at least one closed trade, which is the only case where a bar replay and seat grades mean anything.
 - **premarket (08:50)** — KEEP the full run. It is the gate that re-levels every trigger against the overnight tape and catches a gap-through before it becomes a chase; it is the cheapest run that prevents a bad entry.
 - **plan (20:55)** — KEEP the full run at full strength, and do not trim it to save tokens. Every edge the desk has comes from this run, and two of the last four sessions were lost precisely because it failed to complete. If anything is worth its cost, this is it.
