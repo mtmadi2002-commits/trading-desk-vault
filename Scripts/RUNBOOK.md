@@ -25,6 +25,24 @@ CARRIED THESES (Rules v7): if state/desk `carried_theses` holds a `thesis_intact
 Write: append a "## Premarket update (HH:MM ET)" section to the Plan note with the trade_status table, checklist answers, kill switches tripped and the alert text; `update` state/desk premarket (the whole object) and premarket_status (e.g. "2 live, 1 scrapped"). Push: the alert_text.
 
 ## monitor (hourly at :40, 09:40–15:40 ET weekdays — the platform minimum is 1 h; session date = today)
+
+### COST GATE — read this before spawning anything (added 2026-10-12 after one plan run measured 1,548,143 subagent tokens)
+The seven-seat machinery is expensive and most intraday ticks decide nothing. **Spawn the workflow ONLY if at least one of these is true at the tick:**
+1. **A position is open.** Any open position always gets the full seats — management is where money is lost.
+2. **A trigger is live or near.** The last print is within **0.5× ATR** of a ranked trade's trigger level, so a fill is genuinely in play this hour.
+3. **A kill switch needs a judgment**, not just a reading — a limb has flipped, or an AND-switch has split limbs and the conservative rule has to be applied to a real position.
+4. **A headline has moved a plan ticker** and the thesis may be void.
+
+**Otherwise record the tick DIRECTLY** — no workflow, no seats. Rules v9 already requires a complete record on a refusal day, and a directly-recorded tick must still do everything the record needs: `$E preflight` for equity / positions / day P&L, every live kill switch's state read at that tick (or `UNKNOWN since HH:MM`), the journal row, the alert and activity docs, and the commit. **The saving is seat tokens, never the record.** Write the ground for recording directly in the row, as on 2026-10-12 where all seven ticks were direct and the chain had no gap.
+
+Measured basis: on 2026-10-12 the desk ran 09:44→15:40 with zero workflow spawns and the record is complete and auditable. On 2026-10-08, by contrast, every tick spawned seats and the day still produced 0 fills.
+
+### The same gate, applied to the other modes
+- **quote-refresh (:10)** — scrape ONLY if a position is open, or a trigger is within 0.5× ATR, or it is the **10:10** or **15:10** tick (those two are kept unconditionally: the first gives the session its shape, the last captures the full range for the evening plan). Otherwise record the tick and skip the scrape, with the reason. On 2026-10-12 three of six refreshes were skipped this way.
+- **coach (16:24)** — if the session had **ZERO fills**, there is no replay to run and no seat to grade: write the Review DIRECTLY, state `seat grades N/A` with the reason, and spawn nothing. Spawn the full coach only when the ledger gained at least one closed trade, which is the only case where a bar replay and seat grades mean anything.
+- **premarket (08:50)** — KEEP the full run. It is the gate that re-levels every trigger against the overnight tape and catches a gap-through before it becomes a chase; it is the cheapest run that prevents a bad entry.
+- **plan (20:55)** — KEEP the full run at full strength, and do not trim it to save tokens. Every edge the desk has comes from this run, and two of the last four sessions were lost precisely because it failed to complete. If anything is worth its cost, this is it.
+
 If NOW_ET < 09:30 or > 16:05, stop (say why). Read additionally: the Plan and Journal notes, `Desk/Live.md`, and `Journal/ledger.json` if present. args.plan = state.plan, args.premarket = state.premarket, args.journal = `list` collection `journal` ordered by ts (today's rows only) PLUS the ledger positions.
 EXECUTION (this is where paper orders happen): the workflow's execution seat only DECIDES (paper_actions); you EXECUTE each one, in order, through the broker layer, which enforces the guards and refuses anything outside them. Always the exact command form below (`E=python3 -I /home/user/trading-desk-vault/Scripts/broker/exec.py --unattended`):
 - FIRST, every tick: `$E quote --symbol SPY`. If ok → REAL-TIME QUOTES ARE AVAILABLE: pass that sentence in args.journal context, quote every plan ticker with `$E quote` and give the seat those prices (indicative=false). If refused (no keys) → finviz delayed quotes as before.
